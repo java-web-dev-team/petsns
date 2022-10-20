@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://rds.crcp79odgpcq.ap-northeast-2.rds.amazonaws.com/snsdb
+    username: admin
+    password: pizzadbmysql1!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    javawebdev.petsns: debug
+
