@@ -9,3 +9,8 @@ logging:
   level:
     javawebdev.petsns: debug
 
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: javawebdev.petsns.*.dto
