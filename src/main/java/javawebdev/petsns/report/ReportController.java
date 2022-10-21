@@ -7,4 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ReportController {
 
+    @GetMapping("/report/write")
+    public String reportwriteForm() {
+
+        return "reportwrite";
+    }
 }
