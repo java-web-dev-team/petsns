@@ -15,10 +15,16 @@
         where nickname = #{nickname}
     </select>
 
-    <select id="selectMemberNickname" resultType="String" parameterType="String">
+    <select id="findMemberByNickname" resultType="String" parameterType="String">
         select snsdb.member.nickname
         from snsdb.member
         where nickname = #{nickname}
+    </select>
+
+    <select id="findMemberByEmail" parameterType="String" resultType="Member">
+        select *
+        from snsdb.member
+        where email = #{email}
     </select>
 
     <insert id="insertMember" parameterType="Member">

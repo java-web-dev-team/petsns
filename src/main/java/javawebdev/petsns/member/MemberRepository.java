@@ -7,7 +7,9 @@ public interface MemberRepository {
 
     Member selectMember(String nickname) throws Exception;
 
-    String selectMemberNickname(String nickname) throws Exception;
+    String findMemberByNickname(String nickname) throws Exception;
+
+    Member findMemberByEmail(String email) throws Exception;
 
     int insert(Member member) throws Exception;
 
