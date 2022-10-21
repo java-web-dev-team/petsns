@@ -1,4 +1,4 @@
-package javawebdev.petsns.comment;
+package javawebdev.petsns.comment.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

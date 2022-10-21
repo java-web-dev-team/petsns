@@ -1,5 +1,6 @@
 package javawebdev.petsns.comment;
 
+import javawebdev.petsns.comment.dto.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
