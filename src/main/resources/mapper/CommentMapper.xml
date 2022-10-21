@@ -7,7 +7,14 @@
         insert into comment (member_id, post_id, content, registered_at)
         values (#{memberId}, #{postId}, #{content}, #{registeredAt})
     </insert>
-    
+
+    <update id="updateCountOfPost">
+        update post
+        set comment_count = (select comment_count
+                             from post
+                             where id = #{postId}) + 1
+        where id = #{postId};
+    </update>
 
     <select id="findByPostId" resultType="Comment">
         select member_id, post_id, content, registered_at

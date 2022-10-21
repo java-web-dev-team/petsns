@@ -22,6 +22,7 @@ public class CommentService {
     public Comment create(Integer postId, Integer memberId, String content) {
         Comment comment = new Comment(postId, memberId, content);
         commentMapper.save(comment);
+        commentMapper.updateCountOfPost(postId);
         return comment;
     }
 
