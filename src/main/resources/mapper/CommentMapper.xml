@@ -5,10 +5,10 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into comment (member_id, post_id, content, registered_at)
-        values (#{memberId}, #{postId}, #{content}, #{registeredAt})
+        values (#{memberId}, #{postId}, #{content}, #{registeredAt});
     </insert>
 
-    <update id="updateCountOfPost">
+    <update id="plusCount">
         update post
         set comment_count = (select comment_count
                              from post
@@ -19,16 +19,28 @@
     <select id="findByPostId" resultType="Comment">
         select member_id, post_id, content, registered_at
         from comment
-        where post_id = #{postId}
+        where post_id = #{postId} and deleted_at is null;
     </select>
 
     <update id="update">
         update comment
         set content = #{content}
-        where id = #{id}
+        where id = #{id};
     </update>
 
-    <delete id="delete">
-        delete from comment where id = #{id}
-    </delete>
+    <update id="delete">
+        update comment
+        set deleted_at = now()
+        where id = #{id};
+    </update>
+
+    <update id="minusCount">
+        update post
+        set comment_count = (select comment_count
+                             from post
+                             where id = #{postId}) - 1
+        where id = #{postId};
+    </update>
+
+
 </mapper>

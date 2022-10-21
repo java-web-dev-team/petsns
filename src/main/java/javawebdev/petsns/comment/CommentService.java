@@ -22,7 +22,7 @@ public class CommentService {
     public Comment create(Integer postId, Integer memberId, String content) {
         Comment comment = new Comment(postId, memberId, content);
         commentMapper.save(comment);
-        commentMapper.updateCountOfPost(postId);
+        commentMapper.plusCount(postId);
         return comment;
     }
 
@@ -32,7 +32,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Integer commentId) {
+    public void delete(Integer postId, Integer commentId) {
         commentMapper.delete(commentId);
+        commentMapper.minusCount(postId);
     }
 }
