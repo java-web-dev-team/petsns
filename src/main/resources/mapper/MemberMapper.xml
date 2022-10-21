@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="javawebdev.petsns.member.dto.Member">
+
+    <select id="count" resultType="int">
+        select count(*)
+        from snsdb.member;
+    </select>
+
+    <select id="selectMember" parameterType="String" resultType="Member">
+        select *
+        from snsdb.member
+        where nickname = #{nickname}
+    </select>
+
+    <select id="selectMemberNickname" resultType="String" parameterType="String">
+        select snsdb.member.nickname
+        from snsdb.member
+        where nickname = #{nickname}
+    </select>
+
+    <insert id="insertMember" parameterType="Member">
+        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email)
+        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email});
+    </insert>
+
+    <delete id="deleteMember">
+        DELETE
+        FROM snsdb.member
+        WHERE nickname = #{nickname};
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM snsdb.member
+    </delete>
+
+
+    <update id="updateMember" parameterType="Member">
+        UPDATE snsdb.member
+        SET password = #{password},
+            introduce = #{introduce},
+            update_at = NOW(),
+            email = #{email}
+        WHERE nickname = #{nickname}
+    </update>
+
+</mapper>

@@ -1,4 +1,14 @@
 package javawebdev.petsns.member;
 
-public class MemberService {
+import javawebdev.petsns.member.dto.Member;
+
+public interface MemberService {
+
+    void joinMember(Member member) throws Exception;
+
+    void updateMember(Member member) throws Exception;
+
+    Member findByNickname(String nickname) throws Exception;
+
+    void deleteMember(String nickname) throws Exception;
 }
