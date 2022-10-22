@@ -4,9 +4,13 @@ import javawebdev.petsns.comment.dto.Comment;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface CommentMapper {
+
+    Optional<Comment> findById(Integer id);
+
     // save
     void save(Comment comment);
 
