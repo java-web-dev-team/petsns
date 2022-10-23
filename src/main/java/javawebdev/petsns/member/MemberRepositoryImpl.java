@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepository{
@@ -52,5 +54,11 @@ public class MemberRepositoryImpl implements MemberRepository{
     public void deleteAll() throws Exception {
         sqlSession.delete(namespace + "deleteAll");
     }
+
+    @Override
+    public Optional<Member> selectById(Integer id) throws Exception {
+        return sqlSession.selectOne(namespace + "selectMember", id);
+    }
+
 
 }

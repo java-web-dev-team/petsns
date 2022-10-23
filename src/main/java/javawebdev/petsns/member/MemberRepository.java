@@ -3,6 +3,8 @@ package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
 
+import java.util.Optional;
+
 public interface MemberRepository {
 
     Member selectMember(String nickname) throws Exception;
@@ -20,5 +22,7 @@ public interface MemberRepository {
     int count() throws Exception;
 
     void deleteAll() throws Exception;
+
+    Optional<Member> selectById(Integer id) throws Exception;
 
 }

@@ -3,6 +3,12 @@
 
 <mapper namespace="javawebdev.petsns.comment.CommentMapper">
 
+    <select id="findById" resultType="Comment">
+        select id, member_id, post_id, content, registered_at
+        from comment
+        where id = #{id}
+    </select>
+
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into comment (member_id, post_id, content, registered_at)
         values (#{memberId}, #{postId}, #{content}, #{registeredAt});
@@ -10,14 +16,12 @@
 
     <update id="plusCount">
         update post
-        set comment_count = (select comment_count
-                             from post
-                             where id = #{postId}) + 1
+        set comment_count = comment_count + 1
         where id = #{postId};
     </update>
 
     <select id="findByPostId" resultType="Comment">
-        select member_id, post_id, content, registered_at
+        select id, member_id, post_id, content, registered_at
         from comment
         where post_id = #{postId} and deleted_at is null;
     </select>
@@ -36,9 +40,7 @@
 
     <update id="minusCount">
         update post
-        set comment_count = (select comment_count
-                             from post
-                             where id = #{postId}) - 1
+        set comment_count = comment_count - 1
         where id = #{postId};
     </update>
 
