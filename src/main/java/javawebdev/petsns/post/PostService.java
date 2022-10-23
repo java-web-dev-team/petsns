@@ -1,5 +1,7 @@
 package javawebdev.petsns.post;
 
+import javawebdev.petsns.post.dto.Post;
+
 import java.util.List;
 
 public interface PostService {

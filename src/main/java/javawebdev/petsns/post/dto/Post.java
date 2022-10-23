@@ -1,7 +1,6 @@
-package javawebdev.petsns.post;
+package javawebdev.petsns.post.dto;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data

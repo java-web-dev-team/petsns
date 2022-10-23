@@ -1,5 +1,6 @@
 package javawebdev.petsns.post;
 
+import javawebdev.petsns.post.dto.Post;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
