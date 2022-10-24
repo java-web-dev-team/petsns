@@ -25,4 +25,6 @@ public interface MemberRepository {
 
     Optional<Member> selectById(Integer id) throws Exception;
 
+    Optional<Member> selectMemberByNickname(String nickname) throws Exception;
+
 }

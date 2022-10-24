@@ -15,6 +15,9 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     @Override
     public void joinMember(Member member) throws Exception {
+        if(memberRepository.findMemberByNickname(member.getNickname()) != null){
+            throw new RuntimeException("이미 존재하는 유저입니다. ");
+        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.insert(member);
@@ -29,10 +32,10 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     @Override
     public Member findByNickname(String nickname) throws Exception {
-        if (memberRepository.selectMember(nickname) != null) {
-            return memberRepository.selectMember(nickname);
+        if (memberRepository.selectMember(nickname) == null) {
+            throw new UsernameNotFoundException("UsernameNotFoundException");
         }
-        return null;
+        return memberRepository.selectMember(nickname);
     }
 
     @Override
@@ -49,4 +52,6 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
             throw new UsernameNotFoundException(nickname);
         }
     }
+
+
 }

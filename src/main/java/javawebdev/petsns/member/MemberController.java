@@ -87,7 +87,6 @@ public class MemberController {
     @PostMapping("/signUp")
     public String register(Member member) throws Exception {
         memberService.joinMember(member);
-        System.out.println("member = " + member);
         return "redirect:/login";
     }
 
