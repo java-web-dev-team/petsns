@@ -4,6 +4,7 @@ import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -21,14 +22,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/")
-    public String main(){
+    @GetMapping("/member")
+    public String main(@AuthenticationPrincipal Member member){
         return "maintest";
     }
 
     @GetMapping("/admin")
-    public String admin(){
-        return "admintest";
+    public String admin(@AuthenticationPrincipal Member member){
+        return "maintest";
     }
 
     @GetMapping("/login")
