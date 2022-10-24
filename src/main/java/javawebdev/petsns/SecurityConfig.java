@@ -17,20 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MemberService memberService;
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         {
             http.authorizeRequests()
                 .antMatchers("/register", "/login", "/signUp").permitAll()
-                .antMatchers("/*").hasRole("MEMBER")
-                .antMatchers("/admin/*").hasRole("ADMIN")
+                .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();       // 나머지 모든 요청은 권한종류 상관없이 권한이 있어야 접근가능
 
             http.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/member")
                 .usernameParameter("nickname");
 
             http.logout()
@@ -38,12 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true);
         }
     }
-
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(memberService)
-//                .passwordEncoder(new BCryptPasswordEncoder());
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
