@@ -21,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepository{
     }
 
     @Override
-    public String findMemberByNickname(String nickname) throws Exception {
+    public Member findMemberByNickname(String nickname) throws Exception {
         return sqlSession.selectOne(namespace + "findMemberByNickname", nickname);
     }
 

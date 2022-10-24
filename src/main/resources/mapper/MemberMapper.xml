@@ -15,8 +15,8 @@
         where nickname = #{nickname}
     </select>
 
-    <select id="findMemberByNickname" resultType="String" parameterType="String">
-        select snsdb.member.nickname
+    <select id="findMemberByNickname" resultType="Member" parameterType="String">
+        select *
         from snsdb.member
         where nickname = #{nickname}
     </select>
@@ -28,8 +28,8 @@
     </select>
 
     <insert id="insertMember" parameterType="Member">
-        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email)
-        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email});
+        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email, auth)
+        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email}, #{auth});
     </insert>
 
     <delete id="deleteMember">
