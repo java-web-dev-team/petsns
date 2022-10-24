@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>sign up</title>
+</head>
+<body>
+<h1>Sign Up</h1> <hr>
+
+<form th:action="@{/signUp}" method="POST">
+  nickname : <input type="text" name="nickname"> <br>
+  email : <input type="text" name="email"> <br>
+  password : <input type="password" name="password"> <br>
+  introduce : <input type="text" name="introduce"> <br>
+  <input type="radio" name="auth" value="ROLE_ADMIN"> admin
+  <input type="radio" name="auth" value="ROLE_MEMBER" checked="checked"> member <br>
+  <button type="submit">Join</button>
+</form> <br>
+
+<a href="/login">Go to login →</a>
+</body>
+</html>

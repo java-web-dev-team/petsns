@@ -2,12 +2,14 @@ package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     private final MemberRepository memberRepository;
 
@@ -38,4 +40,13 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.delete(nickname);
     }
 
+    @Override
+    public Member loadUserByUsername(String nickname){
+        try {
+            return memberRepository.findMemberByNickname(nickname);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UsernameNotFoundException(nickname);
+        }
+    }
 }
