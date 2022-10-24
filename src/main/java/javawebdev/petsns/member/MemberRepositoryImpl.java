@@ -60,5 +60,10 @@ public class MemberRepositoryImpl implements MemberRepository{
         return sqlSession.selectOne(namespace + "selectMember", id);
     }
 
+    @Override
+    public Optional<Member> selectMemberByNickname(String nickname) throws Exception {
+        return sqlSession.selectOne(namespace + "selectMember", nickname);
+    }
+
 
 }
