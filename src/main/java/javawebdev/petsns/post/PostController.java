@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/petsns/*")
+@RequestMapping("/anipic/*")
 @AllArgsConstructor
 @Slf4j
 public class PostController {
@@ -29,7 +29,7 @@ public class PostController {
         log.info("register");
         service.register(post);
         rttr.addFlashAttribute("result");
-        return "redirect:/petsns/main";
+        return "redirect:/anipic/main";
         }
 
     @PostMapping("/modify") //수정
@@ -38,13 +38,13 @@ public class PostController {
         if(service.modify(post)) {
             rttr.addFlashAttribute("result", "success");
         }
-        return "redirect:/petsns/main";
+        return "redirect:/anipic/main";
     }
 
 
     @PostMapping("/remove") //삭제
     public String remove(@RequestParam("id") Integer id) {
         log.info("remove" + id);
-        return "redirect:/petsns/main";
+        return "redirect:/anipic/main";
     }
 }

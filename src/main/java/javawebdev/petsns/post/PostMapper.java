@@ -7,9 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
-    public List<Post> getPostList();
-    public void insert(Post post);
-    public Post post(Integer id);
-    public int update(Post post);
-    public int delete(Integer id);
+    List<Post> getPostList();
+    void insert(Post post);
+    Post read(Integer id);
+    int update(Post post);
+    int delete(Integer id);
 }
