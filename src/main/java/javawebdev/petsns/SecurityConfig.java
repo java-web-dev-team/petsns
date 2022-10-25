@@ -1,10 +1,8 @@
 package javawebdev.petsns;
 
-import javawebdev.petsns.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,13 +20,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         {
             http.authorizeRequests()
                 .antMatchers("/register", "/login", "/signUp").permitAll()
-                .antMatchers("/member/**").hasAnyRole("MEMBER","ADMIN")
+                .antMatchers("/feed/**").hasAnyRole("MEMBER","ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();       // 나머지 모든 요청은 권한종류 상관없이 권한이 있어야 접근가능
 
             http.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/member")
+                .defaultSuccessUrl("/feed")
                 .usernameParameter("nickname");
 
             http.logout()

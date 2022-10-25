@@ -20,14 +20,14 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberRepository.insert(member);
+        memberRepository.insertMember(member);
     }
 
     @Override
     public void updateMember(Member member) throws Exception {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             member.setPassword(passwordEncoder.encode(member.getPassword()));
-            memberRepository.update(member);
+            memberRepository.updateMember(member);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     @Override
     public void deleteMember(String nickname) throws Exception {
-        memberRepository.delete(nickname);
+        memberRepository.deleteMember(nickname);
     }
 
     @Override
