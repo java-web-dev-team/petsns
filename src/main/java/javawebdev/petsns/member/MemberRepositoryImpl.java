@@ -21,7 +21,7 @@ public class MemberRepositoryImpl implements MemberRepository{
     }
 
     @Override
-    public String findMemberByNickname(String nickname) throws Exception {
+    public Member findMemberByNickname(String nickname) throws Exception {
         return sqlSession.selectOne(namespace + "findMemberByNickname", nickname);
     }
 
@@ -58,6 +58,11 @@ public class MemberRepositoryImpl implements MemberRepository{
     @Override
     public Optional<Member> selectById(Integer id) throws Exception {
         return sqlSession.selectOne(namespace + "selectMember", id);
+    }
+
+    @Override
+    public Optional<Member> selectMemberByNickname(String nickname) throws Exception {
+        return sqlSession.selectOne(namespace + "selectMember", nickname);
     }
 
 

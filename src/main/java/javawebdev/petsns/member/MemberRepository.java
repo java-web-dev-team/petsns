@@ -9,7 +9,7 @@ public interface MemberRepository {
 
     Member selectMember(String nickname) throws Exception;
 
-    String findMemberByNickname(String nickname) throws Exception;
+    Member findMemberByNickname(String nickname) throws Exception;
 
     Member findMemberByEmail(String email) throws Exception;
 
@@ -24,5 +24,7 @@ public interface MemberRepository {
     void deleteAll() throws Exception;
 
     Optional<Member> selectById(Integer id) throws Exception;
+
+    Optional<Member> selectMemberByNickname(String nickname) throws Exception;
 
 }

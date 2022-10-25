@@ -3,11 +3,9 @@ package javawebdev.petsns.comment;
 import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
-import javawebdev.petsns.post.Post;
 import javawebdev.petsns.post.PostMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,9 +63,9 @@ public class CommentService {
     }
 
     // TODO: 포스트 확인
-    private Post getPostOrException(Integer postId) {
-        return postMapper.post(postId);
-    }
+//    private Post getPostOrException(Integer postId) {
+//        return postMapper.post(postId);
+//    }
 
     // TODO: 댓글 확인
     private Comment getCommentOrException(Integer commentId) {
