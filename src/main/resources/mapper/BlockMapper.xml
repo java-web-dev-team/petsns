@@ -1,0 +1,24 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="javawebdev.petsns.block.BlockMapper">
+<!--    차단하기-->
+    <insert id="block">
+        insert into block (blocker, blocked, registered_at)
+        values (#{blocker}, #{blocked}, now());
+    </insert>
+
+<!--    차단 취소-->
+    <update id="cancel">
+        update block
+        set canceled_at = now()
+        where blocker = #{blocker}
+          and blocked = #{blocked};
+    </update>
+
+<!--    모든 차단 조회-->
+    <select id="findAll" resultType="Block">
+        select *
+        from block;
+    </select>
+</mapper>
