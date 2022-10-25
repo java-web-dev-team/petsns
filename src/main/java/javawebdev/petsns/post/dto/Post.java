@@ -1,12 +1,21 @@
 package javawebdev.petsns.post.dto;
 
-import lombok.Data;
+import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Data
+@NoArgsConstructor
+@Getter
 public class Post {
     private Integer id;
-    private String content;
-    private String nickname;
-    private Date registered_at;
+    @Setter private String content;
+    @Setter private String nickname;
+    @Setter private LocalDateTime registered_at;
+
+    public Post(String content, String nickname) {
+        this.content = content;
+        this.nickname = nickname;
+        this.registered_at = LocalDateTime.now();
+    }
 }
