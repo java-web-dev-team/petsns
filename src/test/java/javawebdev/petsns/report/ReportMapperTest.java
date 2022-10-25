@@ -103,7 +103,7 @@ class ReportMapperTest {
         reportMapper.checkReport(id);
 
         //  then
-        assertThat(reportMapper.findAll().get(0).isCheck()).isEqualTo(true);
+        assertThat(reportMapper.findAll().get(0).getCheck()).isEqualTo(true);
 
     }
 }

@@ -15,7 +15,7 @@ public class Report {
     @Setter private String reported;
     @Setter private String content;
     @Setter private LocalDateTime registeredAt;
-    @Setter private boolean check;
+    @Setter private Boolean check;
 
     public Report(String reporter, String reported, String content) {
         this.reporter = reporter;
