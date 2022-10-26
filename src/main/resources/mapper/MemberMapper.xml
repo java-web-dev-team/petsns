@@ -58,10 +58,10 @@
         WHERE nickname = #{nickname}
     </update>
 
-    <select id="selectById" resultType="Member" parameterType="String">
+    <select id="selectById" resultType="Member" parameterType="int">
         select *
         from snsdb.member
-        where nickname = #{nickname}
+        where id = #{id}
     </select>
 
 
