@@ -1,6 +1,11 @@
 package javawebdev.petsns.comment;
 
 import javawebdev.petsns.comment.dto.Comment;
+import javawebdev.petsns.member.MemberRepository;
+import javawebdev.petsns.member.MemberServiceImpl;
+import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.post.PostMapper;
+import javawebdev.petsns.post.dto.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,65 +20,87 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CommentServiceTest {
 
     @Autowired
+    CommentService commentService;
+
+    @Autowired
     CommentMapper commentMapper;
 
     @Autowired
-    CommentService commentService;
+    PostMapper postMapper;
+
+    @Autowired
+    MemberServiceImpl memberService;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
-    void getComments() {
+    void getCommentsByPostId() throws Exception {
+        Member member = memberRepository.findAll().get(0);
+        Post post = postMapper.findAll().get(0);
+
         String content = "content";
-        Integer postId = 1;
-        Integer memberId = 1;
+        commentService.create(post.getId(), member.getId(), content);
+        commentService.create(post.getId(), member.getId(), content);
 
-        commentService.create(postId, memberId, content);
-        commentService.create(postId, memberId, content);
-
-        List<Comment> comments = commentService.getComments(postId);
+        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
 
         assertThat(comments.size()).isEqualTo(2);
     }
 
     @Test
-    void create() {
-        String content = "content";
-        Integer postId = 1;
-        Integer memberId = 1;
+    void create() throws Exception {
+        Member member = memberRepository.findAll().get(0);
+        Post post = postMapper.findAll().get(0);
 
-        Comment comment = commentService.create(postId, memberId, content);
+        String content = "content";
+        commentService.create(post.getId(), member.getId(), content);
+
+        Comment comment = commentService.getCommentsByPostId(post.getId()).get(0);
 
         assertThat(comment.getContent()).isEqualTo(content);
-        assertThat(comment.getMemberId()).isEqualTo(memberId);
-        assertThat(comment.getPostId()).isEqualTo(postId);
+        assertThat(comment.getMemberId()).isEqualTo(member.getId());
+        assertThat(comment.getPostId()).isEqualTo(post.getId());
     }
 
     @Test
-    void update() {
+    void update() throws Exception {
+        // given
+        Member member = memberRepository.findAll().get(0);
+        Post post = postMapper.findAll().get(0);
+
         String content = "content";
-        Integer postId = 1;
-        Integer memberId = 1;
+        commentService.create(post.getId(), member.getId(), content);
 
-        Comment comment = commentService.create(postId, memberId, content);
-        Integer id = comment.getId();
+        Comment comment = commentService.getCommentsByPostId(post.getId()).get(0);
 
-        String modifiedContent = "modifiedContent";
-        commentService.update(id, modifiedContent);
-        assertThat(commentService.findById(id).getContent()).isEqualTo(modifiedContent);
+        // when
+        String updatedContent = "updatedContent";
+        commentService.update(comment.getId(), member.getId(), updatedContent);
+
+        // then
+        Comment updatedComment = commentService.getCommentsByPostId(post.getId()).get(0);
+        assertThat(updatedComment.getContent()).isEqualTo(updatedContent);
+        assertThat(updatedComment.getMemberId()).isEqualTo(member.getId());
+        assertThat(updatedComment.getPostId()).isEqualTo(post.getId());
     }
 
     @Test
-    void delete() {
+    void delete() throws Exception {
+        // given
+        Member member = memberRepository.findAll().get(0);
+        Post post = postMapper.findAll().get(0);
+
         String content = "content";
-        Integer postId = 1;
-        Integer memberId = 1;
+        commentService.create(post.getId(), member.getId(), content);
 
-        Comment comment = commentService.create(postId, memberId, content);
-        Integer id = comment.getId();
-        commentService.delete(postId, id);
+        Comment comment = commentService.getCommentsByPostId(post.getId()).get(0);
 
-        List<Comment> comments = commentService.getComments(postId);
-        for (Comment c : comments) {
-            assertThat(c.getId()).isNotEqualTo(id);
-        }
+        // when
+        commentService.delete(post.getId(), comment.getId(), member.getId());
+
+        //then
+        List<Comment> comments = commentService.getCommentsByPostId(post.getId());
+        assertThat(comments.size()).isEqualTo(0);
     }
 }
