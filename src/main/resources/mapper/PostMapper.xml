@@ -16,7 +16,7 @@
         from post;
     </select>
 
-    <select id="findById" resultType="Post">
+    <select id="read" resultType="Post">
         select *
         from post
         where id = #{id};

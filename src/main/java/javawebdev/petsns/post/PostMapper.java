@@ -11,7 +11,7 @@ public interface PostMapper {
     List<Post> getPostList();
     Optional<Post> findById(Integer id);
     void insert(Post post);
-    Post read(Integer id);
+    List<Post> read(Integer id);
     int update(Post post);
     int delete(Integer id);
 
