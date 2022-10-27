@@ -4,6 +4,7 @@ package javawebdev.petsns.member;
 import javawebdev.petsns.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -28,5 +29,7 @@ public interface MemberRepository {
     Optional<Member> selectById(Integer id) throws Exception;
 
     Optional<Member> selectMemberByNickname(String nickname) throws Exception;
+
+    List<Member> findAll();
 
 }

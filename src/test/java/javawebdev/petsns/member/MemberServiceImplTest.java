@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MemberServiceImplTest {
 
     @Autowired
-    MemberServiceImpl memberService;
+    MemberService memberService;
 
     @Autowired
     MemberRepository memberRepository;

@@ -64,5 +64,10 @@
         where id = #{id}
     </select>
 
+    <select id="findAll" resultType="Member">
+        select *
+        from member;
+    </select>
+
 
 </mapper>
