@@ -1,32 +1,24 @@
 package javawebdev.petsns;
 
-import javawebdev.petsns.member.CustomOAuth2MemberService;
+import javawebdev.petsns.member.PrincipalOauth2MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomOAuth2MemberService customOAuth2MemberService;
+    private final PrincipalOauth2MemberService principalOauth2MemberService;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -40,10 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             http.oauth2Login()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/member")
-                    .failureUrl("/login")
+//                    .defaultSuccessUrl("/oauth/loginInfo")
+//                    .failureUrl("/login")
                     .userInfoEndpoint()
-                    .userService(customOAuth2MemberService);
+                    .userService(principalOauth2MemberService);
 
             http.formLogin()
                 .loginPage("/login")
@@ -51,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("nickname");
 
             http.logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/login")
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true);
