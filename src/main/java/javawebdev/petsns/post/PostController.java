@@ -55,17 +55,16 @@ public class PostController {
     @GetMapping("/read/{id}")
     public String read(Model model, @PathVariable Integer id){
         log.info("read" + id);
-        List<Post> posts = service.read(id);
+        Post posts = service.read(id);
         log.info(posts.toString());
         model.addAttribute("postDetail", posts);
         return "post/view";
     }
 
     @PostMapping("/modify") //수정
-    public String modify(Post post, RedirectAttributes rttr, @AuthenticationPrincipal Member member, Model model) {
+    public String modify(Post post, RedirectAttributes rttr) {
         log.info("modify" + post);
         if(service.modify(post)) {
-            model.addAttribute("nickname", member.getNickname());
             rttr.addFlashAttribute("result", "success");
 
         }

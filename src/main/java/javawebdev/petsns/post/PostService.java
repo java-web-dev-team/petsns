@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PostService {
     List<Post> getList();
     void insert(Post post);
-    List<Post> read(Integer id);
+    Post read(Integer id);
     void register(Post post);
     boolean modify(Post post);
     boolean remove(Integer id);
