@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/Side.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidebar">
+    <div style="margin-bottom: 50px;">A N I P I C</div>
+    <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
+    <div><img src="/img/foot2.png" style="width:25px;"> 알    람</div>
+    <div><img src="/img/foot3.png" style="width:25px;"> <a href="/posts/post-form">게시물작성</a></button></div>
+    <div><img src="/img/foot4.png" style="width:25px;"> 마이프로필</div>
+    <div><img src="/img/foot2.png" style="width:25px;">
+        <input type="text" style="border: white; border-bottom: outset; width: 100px;">
+    </div>
+    <div><img src="/img/foot5.png" style="width:25px;"> H E L P</div>
+    <div><img src="/img/foot1.png" style="width:25px;"> 로 그 아 웃1212</div>
+</div>
+<div class="body-text">
+    안녕하세요
+    <table>
+        <thead>
+        <tr>
+            <th>글번호</th>
+            <th>닉네임</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post:${postDetail}">
+            <td th:text="${post.id}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+

@@ -6,7 +6,7 @@ public interface MemberService {
 
     void joinMember(Member member) throws Exception;
 
-    void updateMember(Member member) throws Exception;
+    Member updateMember(Member member) throws Exception;
 
     Member findByNickname(String nickname) throws Exception;
 

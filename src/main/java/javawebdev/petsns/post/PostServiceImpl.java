@@ -21,16 +21,23 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void register(Post post) {
-        log.info("register" + post);
+    public void insert(Post post) {
+        log.info("register service " + post);
         postMapper.insert(post);
     }
 
     @Override
     public Post read(Integer id) {
-        log.info("read" + id);
-        return postMapper.read(id);
+        return postMapper.findById(id).get();
     }
+
+    @Override
+    public void register(Post post) {
+        log.info("register" + post);
+        postMapper.insert(post);
+    }
+
+
 
     @Override
     public boolean modify(Post post) {

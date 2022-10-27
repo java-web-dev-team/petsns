@@ -8,6 +8,19 @@
 
     <insert id="insert">
         insert into post (nickname, content)
-    values (#{nickname}, #{content})
+        values (#{nickname}, #{content})
     </insert>
-    </mapper>
+
+    <select id="findAll" resultType="Post">
+        select *
+        from post;
+    </select>
+
+    <select id="findById" resultType="Post">
+        select *
+        from post
+        where id = #{id};
+    </select>
+
+
+</mapper>

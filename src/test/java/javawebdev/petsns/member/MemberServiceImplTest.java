@@ -3,6 +3,7 @@ package javawebdev.petsns.member;
 import javawebdev.petsns.member.dto.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MemberServiceImplTest {
 
     @Autowired
-    MemberServiceImpl memberService;
+    MemberService memberService;
 
     @Autowired
     MemberRepository memberRepository;
@@ -47,6 +48,14 @@ class MemberServiceImplTest {
         Assertions.assertTrue(memberRepository.count() == 1);
         memberService.deleteMember("asdf");
         Assertions.assertTrue(memberRepository.count() == 0);
+    }
+
+    @Test
+    @DisplayName("selectMemberByNickname")
+    void selectTest() throws Exception {
+        Member member = new Member("asdf", "1234", "hi", "aaa@aaa.com", "ROLE_MEMBER");
+        memberService.joinMember(member);
+        System.out.println("memberRepository.selectMemberByNickname(\"asdf\") = " + memberRepository.selectMemberByNickname("asdf"));
     }
 
 
