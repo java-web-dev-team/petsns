@@ -58,4 +58,16 @@
         WHERE nickname = #{nickname}
     </update>
 
+    <select id="selectById" resultType="Member" parameterType="int">
+        select *
+        from snsdb.member
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Member">
+        select *
+        from member;
+    </select>
+
+
 </mapper>
