@@ -30,4 +30,11 @@
         from heart;
     </select>
 
+    <select id="findByNicknameAndPostId" resultType="Heart">
+        select *
+        from heart
+        where nickname = #{nickname}
+          and post_id = #{postId};
+    </select>
+
 </mapper>

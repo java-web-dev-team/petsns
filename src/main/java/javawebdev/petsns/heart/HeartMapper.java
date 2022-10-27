@@ -17,5 +17,7 @@ public interface HeartMapper {
 
     List<Heart> findByPostId(Integer postId);
 
+    Optional<Heart> findByNicknameAndPostId(String nickname, Integer postId);
+
     List<Heart> findAll();
 }
