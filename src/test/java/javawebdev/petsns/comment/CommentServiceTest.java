@@ -76,7 +76,7 @@ class CommentServiceTest {
 
         // when
         String updatedContent = "updatedContent";
-        commentService.update(comment.getId(), member.getId(), updatedContent);
+        commentService.update(member.getId(), post.getId(), comment.getId(),  updatedContent);
 
         // then
         Comment updatedComment = commentService.getCommentsByPostId(post.getId()).get(0);
@@ -97,7 +97,7 @@ class CommentServiceTest {
         Comment comment = commentService.getCommentsByPostId(post.getId()).get(0);
 
         // when
-        commentService.delete(post.getId(), comment.getId(), member.getId());
+        commentService.delete(member.getId(), post.getId(), comment.getId());
 
         //then
         List<Comment> comments = commentService.getCommentsByPostId(post.getId());

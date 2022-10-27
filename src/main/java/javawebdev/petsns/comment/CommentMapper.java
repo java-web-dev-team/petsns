@@ -17,7 +17,7 @@ public interface CommentMapper {
     void plusCount(Integer postId);
     // save-end
 
-    void update(Integer id, String content);
+    void update(Comment comment);
 
     // delete
     void delete(Integer id);

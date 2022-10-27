@@ -44,21 +44,30 @@ public class CommentService {
     }
 
     @Transactional
-    public void update(Integer commentId, Integer memberId, String updatedContent) throws Exception {
+    public void update(Integer memberId, Integer postId, Integer commentId, String updatedContent) throws Exception {
         Member member = getMemberOrException(memberId);
+        Post post = getPostOrException(postId);
         Comment comment = getCommentOrException(commentId);
 
-        if (Objects.equals(member.getId(), comment.getMemberId())) {
+        if (
+                Objects.equals(member.getId(), comment.getMemberId())
+                && Objects.equals(post.getId(), comment.getPostId())
+        ) {
             comment.setContent(updatedContent);
             commentMapper.update(comment);
         } else {
-            log.info("Member is Unauthorized. memberId = {}", memberId);
+            log.info("Unauthorized. " +
+                    "comment.memberId = {}" +
+                    "current memberId = {}" +
+                    "comment.postId = {}" +
+                    "current postId = {}",
+                    comment.getMemberId(), memberId, comment.getPostId(), postId);
             throw new IllegalArgumentException();
         }
     }
 
     @Transactional
-    public void delete(Integer postId, Integer commentId, Integer memberId) throws Exception {
+    public void delete(Integer memberId, Integer postId, Integer commentId) throws Exception {
         Member member = getMemberOrException(memberId);
         Comment comment = getCommentOrException(commentId);
 
