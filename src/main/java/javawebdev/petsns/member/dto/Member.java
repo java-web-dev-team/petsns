@@ -1,5 +1,6 @@
 package javawebdev.petsns.member.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,10 +8,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import static java.lang.annotation.ElementType.PARAMETER;
 
 
 @Getter
@@ -27,8 +33,17 @@ public class Member implements UserDetails {
 
     private String auth;
 
-    public Member(){}
+    private Map<String, Object> attributes;
 
+    public Member() {
+    }
+
+    public Member update(String nickname){
+        this.nickname = nickname;
+        return this;
+    }
+
+    @Builder
     public Member(String nickname, String password, String introduce, String email, String auth) {
         this.nickname = nickname;
         this.password = password;
@@ -36,6 +51,16 @@ public class Member implements UserDetails {
         this.update_at = LocalDateTime.now();
         this.email = email;
         this.auth = auth;
+    }
+
+    public Member(String nickname, String password, String introduce, String email, String auth, Map<String, Object> attributes) {
+        this.nickname = nickname;
+        this.password = password;
+        this.introduce = introduce;
+        this.update_at = LocalDateTime.now();
+        this.email = email;
+        this.auth = auth;
+        this.attributes = attributes;
     }
 
     @Override
