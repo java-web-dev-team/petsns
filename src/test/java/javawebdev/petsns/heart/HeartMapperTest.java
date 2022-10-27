@@ -1,6 +1,10 @@
 package javawebdev.petsns.heart;
 
 import javawebdev.petsns.heart.dto.Heart;
+import javawebdev.petsns.member.MemberRepository;
+import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.post.PostMapper;
+import javawebdev.petsns.post.dto.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +20,12 @@ class HeartMapperTest {
 
     @Autowired
     HeartMapper heartMapper;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    PostMapper postMapper;
 
     @Test
     void findByNickName() {
@@ -61,5 +71,17 @@ class HeartMapperTest {
         Heart findHearts = heart3.get(0);
 
         assertThat(findHearts.getPostId()).isEqualTo(50);
+    }
+
+    @Test
+    void findByNicknameAndPostId() {
+        Member member = memberRepository.findAll().get(0);
+        Post post = postMapper.findAll().get(0);
+
+        heartMapper.save(new Heart(member.getNickname(), post.getId()));
+        Heart heart = heartMapper.findByNicknameAndPostId(member.getNickname(), post.getId()).get();
+        assertThat(heart.getNickName()).isEqualTo(member.getNickname());
+        assertThat(heart.getPostId()).isEqualTo(post.getId());
+
     }
 }
