@@ -5,6 +5,27 @@ spring:
     password: pizzadbmysql1!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    oauth2:
+      client:
+        registration:
+          #Google
+          google:
+            client-id: 709627835975-csuqklg0dv8onspg1uq4l8vp4lebni6v.apps.googleusercontent.com
+            client-secret: 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
+        provider:
+          #KAKAO
+          kakao:
+            authorization_uri: https://kauth.kakao.com/oauth/authorize
+            token_uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kauth.kakao.com/oauth/v2/user/me
+            user_name_attribute: id
+
+custom:
+  oauth2:
+    kakao:
+      client-id: a20980458986232608718c57c6d843e9
+
 logging:
   level:
     javawebdev.petsns: debug
@@ -14,3 +35,5 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: javawebdev.petsns.*.dto
+
+
