@@ -2,7 +2,6 @@ package javawebdev.petsns.comment;
 
 import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.member.MemberRepository;
-import javawebdev.petsns.member.MemberServiceImpl;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.PostMapper;
 import javawebdev.petsns.post.dto.Post;
@@ -23,13 +22,7 @@ class CommentServiceTest {
     CommentService commentService;
 
     @Autowired
-    CommentMapper commentMapper;
-
-    @Autowired
     PostMapper postMapper;
-
-    @Autowired
-    MemberServiceImpl memberService;
 
     @Autowired
     MemberRepository memberRepository;
