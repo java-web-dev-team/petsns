@@ -100,14 +100,14 @@ public class Validation {
         }
     }
 
-    public boolean isValidAccess(Help help, Member member) {
-        if (Objects.equals(member.getId(), help.getMemberId())) {
-            return true;
-        } else {
-            log.info("Not valid access. help.memberId = {}, current memberId = {}", help.getMemberId(), member.getId());
-            throw new IllegalArgumentException();
-        }
-    }
+//    public boolean isValidAccess(Help help, Member member) {
+//        if (Objects.equals(member.getId(), help.getMemberId())) {
+//            return true;
+//        } else {
+//            log.info("Not valid access. help.memberId = {}, current memberId = {}", help.getMemberId(), member.getId());
+//            throw new IllegalArgumentException();
+//        }
+//    }
 
     public boolean isValidAccess(Report report, Member member) {
         if (Objects.equals(member.getNickname(), report.getReporter())) {
