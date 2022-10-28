@@ -4,14 +4,17 @@ import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,12 +23,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/member")
-    public String main(@AuthenticationPrincipal Member member){
+    public String main(@AuthenticationPrincipal Member member) {
         return "maintest";
     }
 
     @GetMapping("/admin")
-    public String admin(@AuthenticationPrincipal Member member){
+    public String admin(@AuthenticationPrincipal Member member) {
         return "maintest";
     }
 
@@ -92,5 +95,16 @@ public class MemberController {
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/login";
+    }
+
+    @GetMapping("/oauth/loginInfo")
+    @ResponseBody
+    public String oauthLoginInfo(@AuthenticationPrincipal OAuth2User oAuth2User){
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        System.out.println("attributes = " + attributes);
+
+        // attributes == attributes1
+
+        return attributes.toString();
     }
 }
