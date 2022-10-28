@@ -100,9 +100,9 @@ public class Validation {
         }
     }
 
-    public boolean isValidAccess(Help help, Member member) {
+    public Help isValidAccess(Help help, Member member) {
         if (Objects.equals(member.getId(), help.getMemberId())) {
-            return true;
+            return help;
         } else {
             log.info("Not valid access. help.memberId = {}, current memberId = {}", help.getMemberId(), member.getId());
             throw new IllegalArgumentException();
@@ -117,5 +117,4 @@ public class Validation {
             throw new IllegalArgumentException();
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package javawebdev.petsns.help;
 
 import javawebdev.petsns.help.dto.Help;
+import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,118 +19,73 @@ class HelpMapperTest {
     @Autowired
     HelpMapper helpMapper;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @Test
     void save() {
         //  given
-        Help help = new Help("nickname", "content");
+        Member member = memberRepository.findAll().get(0);
 
         //  when
-        helpMapper.save(help);
+        String content = "help content";
+        helpMapper.save(new Help(member.getId(), content));
 
         //  then
-        Help help1 = helpMapper.findAll().get(0);
-        assertThat(helpMapper.findAll().size()).isEqualTo(1);
-    }
-
-    @Test
-    void findAllByMember() {
-        //  given
-        String nickname = "nickname";
-        Member member = new Member();
-        member.setNickname(nickname);
-
-        String content = "content";
-        Help help = new Help(nickname, content);
-        helpMapper.save(help);
-
-        //  when
-        List<Help> helps = helpMapper.findAllByMember(member);
-
-        //  then
-        assertThat(helps.size()).isEqualTo(1);
-        assertThat(helps.get(0).getNickname()).isEqualTo(nickname);
-        assertThat(helps.get(0).getContent()).isEqualTo(content);
-    }
-
-    @Test
-    void findById() {
-        //  given
-        String nickname = "nickname";
-        Member member = new Member();
-        member.setNickname(nickname);
-
-        String content = "content";
-        Help help = new Help(nickname, content);
-        helpMapper.save(help);
-
-        //  when
-        List<Help> helps = helpMapper.findAllByMember(member);
-        Help findHelp = helpMapper.findById(helps.get(0).getId()).get();
-
-        // then
-        assertThat(findHelp.getNickname()).isEqualTo(nickname);
-        assertThat(findHelp.getContent()).isEqualTo(content);
+        Help help = helpMapper.findAllByMemberId(member.getId()).get(0);
+        assertThat(help.getMemberId()).isEqualTo(member.getId());
+        assertThat(help.getCheck()).isEqualTo(false);
+        assertThat(help.getContent()).isEqualTo(content);
     }
 
     @Test
     void update() {
         //  given
-        String nickname = "nickname";
-        Member member = new Member();
-        member.setNickname(nickname);
-
-        String content = "content";
-        Help help = new Help(nickname, content);
-        helpMapper.save(help);
+        Member member = memberRepository.findAll().get(0);
+        String content = "help content";
+        helpMapper.save(new Help(member.getId(), content));
+        Help help = helpMapper.findAll().get(0);
 
         //  when
-        List<Help> helps = helpMapper.findAllByMember(member);
-        Help findHelp = helpMapper.findById(helps.get(0).getId()).get();
         String updatedContent = "updatedContent";
-        findHelp.setContent(updatedContent);
-        helpMapper.update(findHelp);
+        help.setContent(updatedContent);
+        helpMapper.update(help);
 
         // then
-        assertThat(helpMapper.findById(findHelp.getId()).get().getContent()).isEqualTo(updatedContent);
+        assertThat(helpMapper.findById(help.getId()).get().getContent()).isEqualTo(updatedContent);
     }
 
     @Test
     void delete() {
         //  given
-        String nickname = "nickname";
-        Member member = new Member();
-        member.setNickname(nickname);
-
-        String content = "content";
-        Help help = new Help(nickname, content);
-        helpMapper.save(help);
+        Member member = memberRepository.findAll().get(0);
+        String content = "help content";
+        helpMapper.save(new Help(member.getId(), content));
+        int beforeSize = helpMapper.findAll().size();
 
         // when
-        Help findHelp = helpMapper.findAll().get(0);
-        helpMapper.delete(findHelp.getId());
+        Help help = helpMapper.findAll().get(0);
+        helpMapper.delete(help.getId());
 
         // then
-        assertThat(helpMapper.findAll().size()).isEqualTo(0);
+        int afterSize = helpMapper.findAll().size();
+        assertThat(afterSize).isEqualTo(beforeSize - 1);
 
     }
 
     @Test
     void checkHelp() {
         //  given
-        String nickname = "nickname";
-        Member member = new Member();
-        member.setNickname(nickname);
-
-        String content = "content";
-        Help help = new Help(nickname, content);
-        helpMapper.save(help);
+        Member member = memberRepository.findAll().get(0);
+        String content = "help content";
+        helpMapper.save(new Help(member.getId(), content));
 
         // when
-        Help findHelp = helpMapper.findAll().get(0);
-        helpMapper.checkHelp(findHelp.getId());
+        Help help = helpMapper.findAll().get(0);
+        helpMapper.checkHelp(help.getId());
 
         // then
-        assertThat(helpMapper.findById(findHelp.getId()).get().getCheck()).isEqualTo(true);
+        assertThat(helpMapper.findById(help.getId()).get().getCheck()).isEqualTo(true);
 
     }
 }
