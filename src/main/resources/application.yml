@@ -13,6 +13,7 @@ spring:
           google:
             client-id: 709627835975-csuqklg0dv8onspg1uq4l8vp4lebni6v.apps.googleusercontent.com
             client-secret: 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
+            scope: profile, email
         provider:
           #KAKAO
           kakao:

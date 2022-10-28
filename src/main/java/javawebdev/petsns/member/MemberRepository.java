@@ -10,25 +10,25 @@ import java.util.Optional;
 @Mapper
 public interface MemberRepository {
 
-    Member selectMember(String nickname) throws Exception;
+    Member selectMember(String nickname);
 
-    Member findMemberByNickname(String nickname) throws Exception;
+    Member findMemberByNickname(String nickname);
 
-    Member findMemberByEmail(String email) throws Exception;
+    Member findMemberByEmail(String email);
 
-    int insertMember(Member member) throws Exception;
+    int insertMember(Member member);
 
-    int updateMember(Member member) throws Exception;
+    int updateMember(Member member);
 
-    int deleteMember(String nickname) throws Exception;
+    int deleteMember(String nickname);
 
-    int count() throws Exception;
+    int count();
 
-    void deleteAll() throws Exception;
+    void deleteAll();
 
-    Optional<Member> selectById(Integer id) throws Exception;
+    Optional<Member> selectById(Integer id);
 
-    Optional<Member> selectMemberByNickname(String nickname) throws Exception;
+    Optional<Member> selectMemberByNickname(String nickname);
 
     List<Member> findAll();
 

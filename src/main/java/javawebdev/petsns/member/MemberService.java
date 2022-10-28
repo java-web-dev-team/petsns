@@ -4,11 +4,11 @@ import javawebdev.petsns.member.dto.Member;
 
 public interface MemberService {
 
-    void joinMember(Member member) throws Exception;
+    void joinMember(Member member);
 
-    Member updateMember(Member member) throws Exception;
+    Member updateMember(Member member);
 
-    Member findByNickname(String nickname) throws Exception;
+    Member findByNickname(String nickname);
 
-    void deleteMember(String nickname) throws Exception;
+    void deleteMember(String nickname);
 }
