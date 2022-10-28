@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -22,19 +23,15 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member")
-    public String main(@AuthenticationPrincipal Member member) {
-        return "maintest";
+
+    @GetMapping("/")
+    public String main(){
+        return "redirect:/posts";
     }
 
-    @GetMapping("/admin")
-    public String admin(@AuthenticationPrincipal Member member) {
-        return "maintest";
-    }
-
-    @GetMapping("/login")
+    @GetMapping("/login-form")
     public String loginForm() {
-        return "login";
+        return "login-form";
     }
 
     @GetMapping("/register")
@@ -42,7 +39,7 @@ public class MemberController {
         return "registertest";
     }
 
-    @GetMapping("/member/{nickname}")
+    @GetMapping("/members/{nickname}")
     public String GetMember(@PathVariable("nickname") String nickname, Model model) throws Exception {
         Member member = memberService.findByNickname(nickname);
         model.addAttribute("member", member);
@@ -80,7 +77,7 @@ public class MemberController {
     }
 
     @PutMapping("/member/{nickname}")
-    public ResponseEntity update(@RequestBody Member member) throws Exception {
+    public ResponseEntity update(@AuthenticationPrincipal Member member) throws Exception {
         memberService.updateMember(member);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -92,19 +89,10 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        new SecurityContextLogoutHandler().logout(request, response, authentication);
         return "redirect:/login";
     }
 
-    @GetMapping("/oauth/loginInfo")
-    @ResponseBody
-    public String oauthLoginInfo(@AuthenticationPrincipal OAuth2User oAuth2User){
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        System.out.println("attributes = " + attributes);
-
-        // attributes == attributes1
-
-        return attributes.toString();
-    }
 }
+

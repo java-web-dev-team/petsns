@@ -43,6 +43,7 @@ public class Member implements UserDetails {
         return this;
     }
 
+
     @Builder
     public Member(String nickname, String password, String introduce, String email, String auth) {
         this.nickname = nickname;
