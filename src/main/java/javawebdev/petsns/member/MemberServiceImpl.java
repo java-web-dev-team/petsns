@@ -1,12 +1,18 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service
 @Slf4j
@@ -65,17 +71,10 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public Member loadUserByUsername(String nickname){
-        try {
-            Member member = memberRepository.findMemberByNickname(nickname);
-            if(member != null){
-                return member;
-            }
-        } catch (Exception e) {
-            log.error("findMemberByNickname - error : ", e);
-            throw new UsernameNotFoundException(nickname);
-        }
-        return null;
+    public UserDetails loadUserByUsername(String nickname){
+        log.info("loadUserByName: " + nickname);
+        Member member = memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
+        return new User(member.getNickname(), member.getPassword(), Arrays.asList(new SimpleGrantedAuthority(member.getAuth())));
     }
 
 

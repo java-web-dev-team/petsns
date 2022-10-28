@@ -38,7 +38,7 @@ a {
 
 .heading {
   margin: 22px auto 12px;
-  background-image: url(../resources/static/img/login-logo.png);
+  background-image: url(../img/login-logo.png);
   height: 51px;
   width: 177px;
   overflow: hidden;
