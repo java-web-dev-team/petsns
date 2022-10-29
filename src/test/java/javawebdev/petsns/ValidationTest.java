@@ -80,6 +80,5 @@ class ValidationTest {
         assertThrows(IllegalArgumentException.class, () -> {
             validation.isValidAccess(help, notValidMember);
         });
-
     }
 }
