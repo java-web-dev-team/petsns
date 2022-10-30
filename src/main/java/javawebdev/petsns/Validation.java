@@ -1,5 +1,7 @@
 package javawebdev.petsns;
 
+import javawebdev.petsns.block.BlockMapper;
+import javawebdev.petsns.block.dto.Block;
 import javawebdev.petsns.comment.CommentMapper;
 import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.heart.HeartMapper;
@@ -29,9 +31,10 @@ public class Validation {
     private final HeartMapper heartMapper;
     private final HelpMapper helpMapper;
     private final ReportMapper reportMapper;
+    private final BlockMapper blockMapper;
 
     // 유저 확인(id)
-    public Member getMemberOrException(Integer memberId) throws Exception {
+    public Member getMemberOrException(Integer memberId) {
         return memberRepository.selectById(memberId).orElseThrow(() -> {
             log.info("Member not found. memberId = {}", memberId);
             throw new IllegalArgumentException();
@@ -39,7 +42,7 @@ public class Validation {
     }
 
     // 유저 확인(nickname)
-    public Member getMemberOrException(String nickname) throws Exception {
+    public Member getMemberOrException(String nickname) {
         return memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> {
             log.info("Member not found. nickname = {}", nickname);
             throw new IllegalArgumentException();
@@ -70,8 +73,7 @@ public class Validation {
         });
     }
 
-
-    // 좋아요 확인
+    // 이미 좋아요했는지 확인
     public boolean isNotExistentHeart(String nickname, Integer postId) {
         return heartMapper.findByNicknameAndPostId(nickname, postId).equals(Optional.empty());
     }
@@ -84,8 +86,28 @@ public class Validation {
         });
     }
 
+    // 이미 차단 했는지 확인
+    public boolean isNotExistentBlock(Block block) {
+        if (blockMapper.findByBlock(block).equals(Optional.empty())) {
+            return true;
+        } else {
+            log.info("Already blocked.");
+            throw new IllegalArgumentException();
+        }
+    }
+
+    // 차단 확인
+    public Block getBlockOrException(Block block) {
+        return blockMapper.findByBlock(block).orElseThrow(() -> {
+            log.info("Block not found. " +
+                    "blocker = {}" +
+                    "blocked = {}", block.getBlocker(), block.getBlocked());
+            throw new IllegalArgumentException();
+        });
+    }
+
     // admin 확인
-    public Member getAdminOrException(Integer memberId) throws Exception {
+    public Member getAdminOrException(Integer memberId) {
         Member member = getMemberOrException(memberId);
         if (Objects.equals(member.getAuth(), "ROLE_ADMIN")) {
             return member;

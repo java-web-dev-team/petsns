@@ -1,15 +1,17 @@
 package javawebdev.petsns.block;
 
-import groovy.util.logging.Slf4j;
 import javawebdev.petsns.block.dto.Block;
+import javawebdev.petsns.member.MemberRepository;
+import javawebdev.petsns.member.dto.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 @Transactional
 @SpringBootTest
 class BlockMapperTest {
@@ -17,28 +19,37 @@ class BlockMapperTest {
     @Autowired
     BlockMapper blockMapper;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @Test
     void block() {
-        String blocker = "blocker";
-        String blocked = "blocked";
-        Block block = new Block(blocker, blocked);
+        List<Member> members = memberRepository.findAll();
+        Member blocker = members.get(0);
+        Member blocked = members.get(1);
+
+        Block block = new Block(blocker.getNickname(), blocked.getNickname());
         blockMapper.block(block);
-        assertThat(blockMapper.findAll().size()).isEqualTo(1);
-        assertThat(blockMapper.findAll().get(0).getBlocked()).isEqualTo(blocked);
-        assertThat(blockMapper.findAll().get(0).getBlocker()).isEqualTo(blocker);
+        Block findBlock = blockMapper.findByBlock(block).get();
+
+        assertThat(findBlock.getBlocker()).isEqualTo(blocker.getNickname());
+        assertThat(findBlock.getBlocked()).isEqualTo(blocked.getNickname());
     }
 
     @Test
     void cancel() {
-        String blocker = "blocker";
-        String blocked = "blocked";
-        Block block = new Block(blocker, blocked);
+        List<Member> members = memberRepository.findAll();
+        Member blocker = members.get(0);
+        Member blocked = members.get(1);
+
+        Block block = new Block(blocker.getNickname(), blocked.getNickname());
         blockMapper.block(block);
+        int beforeSize = blockMapper.findAll().size();
 
-        blockMapper.cancel(block);
+        Block findBlock = blockMapper.findByBlock(block).get();
+        blockMapper.cancel(findBlock);
+        int afterSize = blockMapper.findAll().size();
 
-        Block findBlock = blockMapper.findAll().get(0);
-        System.out.println(findBlock.getCanceledAt());
-        assertThat(findBlock.getCanceledAt()).isNotNull();
+        assertThat(afterSize).isEqualTo(beforeSize - 1);
     }
 }

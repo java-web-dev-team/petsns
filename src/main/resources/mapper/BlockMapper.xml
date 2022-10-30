@@ -9,12 +9,27 @@
     </insert>
 
 <!--    차단 취소-->
-    <update id="cancel">
-        update block
-        set canceled_at = now()
+    <delete id="cancel">
+        delete
+        from block
         where blocker = #{blocker}
           and blocked = #{blocked};
-    </update>
+    </delete>
+    
+<!--    개별 차단 조회(validation 용)-->
+    <select id="findByBlock" resultType="Block">
+        select *
+        from block
+        where blocker = #{blocker}
+          and blocked = #{blocked};
+    </select>
+
+<!--    내가 차단한 목록-->
+    <select id="findByBlocker" resultType="Block">
+        select *
+        from block
+        where blocker = #{nickname};
+    </select>
 
 <!--    모든 차단 조회-->
     <select id="findAll" resultType="Block">
