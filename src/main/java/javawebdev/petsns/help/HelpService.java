@@ -37,8 +37,34 @@ public class HelpService {
         return validation.isValidAccess(help, member);
     }
 
+    public Help update(Integer memberId, Integer id, String updatedContent) throws Exception {
+        Help help = validation.isValidAccess(validation.getHelpOrException(id), validation.getMemberOrException(memberId));
+
+        help.setContent(updatedContent);
+        helpMapper.update(help);
+
+        return help;
+    }
+
+    public void delete(Integer memberId, Integer id) throws Exception {
+        Help help = validation.isValidAccess(validation.getHelpOrException(id), validation.getMemberOrException(memberId));
+
+        helpMapper.delete(help.getId());
+    }
+
     //    회원용 --end
 
-//    관리자용
-//    모든 문의 보기
+    //    관리자용
+    //    모든 문의 보기
+    public List<Help> getAll(Integer memberId) throws Exception {
+        validation.getAdminOrException(memberId);
+
+        return helpMapper.findAll();
+    }
+
+    //    문의 확인
+    public void check(Integer memberId, Integer id) throws Exception {
+        validation.getAdminOrException(memberId);
+        helpMapper.checkHelp(id);
+    }
 }

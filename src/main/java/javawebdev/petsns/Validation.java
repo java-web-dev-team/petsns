@@ -66,9 +66,9 @@ public class Validation {
     }
 
     // admin 확인
-    public Member getAdminMemberOrException(Integer memberId) throws Exception {
+    public Member getAdminOrException(Integer memberId) throws Exception {
         Member member = getMemberOrException(memberId);
-        if (Objects.equals(member.getAuth(), "ADMIN")) {
+        if (Objects.equals(member.getAuth(), "ROLE_ADMIN")) {
             return member;
         } else {
             log.info("Member is not admin. member.auth = {}", member.getAuth());
