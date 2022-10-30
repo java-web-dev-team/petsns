@@ -1,9 +1,8 @@
 package javawebdev.petsns.report;
 
-import javawebdev.petsns.member.MemberServiceImpl;
+import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.report.dto.Report;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,92 +11,126 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
 class ReportServiceTest {
 
     @Autowired
-    private ReportService reportService;
+    ReportService reportService;
 
     @Autowired
-    private MemberServiceImpl memberService;
+    MemberRepository memberRepository;
+
+
+    // Mock data
+
+
+    void createMockReport() throws Exception {
+        Member admin = memberRepository.selectMember("admin");
+        Member reporter = memberRepository.findAll().get(0);
+        Member reported = memberRepository.findAll().get(1);
+        String content = "content";
+        reportService.create(reporter.getNickname(), reported.getNickname(), content);
+    }
 
     @Test
     void create() throws Exception {
         //  given
-        Member member = new Member();
-        member.setNickname("admin");
+        Member admin = memberRepository.selectMember("admin");
 
         //  when
-        String reported = "reported";
-        String content = "content";
-        reportService.create(member, reported, content);
+        createMockReport();
 
         //  then
-        assertThat(reportService.getAllReports().size()).isEqualTo(1);
+        assertThat(reportService.getAllReports(admin.getId()).size()).isEqualTo(1);
     }
 
-    @Disabled
     @Test
     void getReportsByMember() throws Exception {
         //  given
-        Member member = memberService.findByNickname("admin");
-        String reported = "reported";
-        String content = "content";
-        reportService.create(member, reported, content);
+        Member reporter = memberRepository.findAll().get(0);
+        createMockReport();
 
         //  when
-        List<Report> reports = reportService.getReportsByMember(member);
+        List<Report> reports = reportService.getReportsByMember(reporter.getId());
 
         //  then
-
+        assertThat(reports.size()).isEqualTo(1);
     }
 
     @Test
-    void getReportById() {
+    void getReportById() throws Exception {
+        //  given
+        Member admin = memberRepository.selectMember("admin");
+        Member reporter = memberRepository.findAll().get(0);
+        Member reported = memberRepository.findAll().get(1);
+        String content = "content";
+        createMockReport();
+
+        //  when
+        Report report = reportService.getReportById(reporter.getId(), reportService.getAllReports(admin.getId()).get(0).getId());
+
+        //  then
+        assertThat(report.getReporter()).isEqualTo(reporter.getNickname());
+        assertThat(report.getReported()).isEqualTo(reported.getNickname());
+        assertThat(report.getContent()).isEqualTo(content);
     }
 
     @Test
     void update() throws Exception {
         //  given
-        Member member = new Member("nickname", "password", "introduce", "email@email", "MEMBER");
-        member.setId(10000);
-        String reported = "reported";
-        String content = "content";
-        reportService.create(member, reported, content);
-        List<Report> reports = reportService.getAllReports();
+        Member admin = memberRepository.selectMember("admin");
+        Member reporter = memberRepository.findAll().get(0);
+        Member reported = memberRepository.findAll().get(1);
+        createMockReport();
+        Report report = reportService.getAllReports(admin.getId()).get(0);
 
         //  when
-        Report report = reports.get(0);
-        String modifiedReported = "modified reported";
-        String modifiedContent = "modified content";
-        reportService.update(report.getId(), member, modifiedReported, modifiedContent);
+        String updatedContent = "updatedContent";
+        reportService.update(reporter.getNickname(), reported.getNickname(), report.getId(), updatedContent);
 
         //  then
-        Report updatedReport = reportService.getAllReports().get(0);
-        assertThat(updatedReport.getReported()).isEqualTo(modifiedReported);
-        assertThat(updatedReport.getContent()).isEqualTo(modifiedContent);
+        Report updatedReport = reportService.getReportById(reporter.getId(), report.getId());
+        assertThat(updatedReport.getReporter()).isEqualTo(reporter.getNickname());
+        assertThat(updatedReport.getReported()).isEqualTo(reported.getNickname());
+        assertThat(updatedReport.getContent()).isEqualTo(updatedContent);
     }
 
     @Test
     void delete() throws Exception {
         //  given
-        Member member = new Member("nickname", "password", "introduce", "email@email", "MEMBER");
-        member.setId(10000);
-        String reported = "reported";
-        String content = "content";
-        reportService.create(member, reported, content);
-        List<Report> reports = reportService.getAllReports();
+        Member admin = memberRepository.selectMember("admin");
+        Member reporter = memberRepository.findAll().get(0);
+        createMockReport();
+
+        List<Report> reports = reportService.getAllReports(admin.getId());
+        Report report = reports.get(0);
+        int beforeSize = reports.size();
 
         //  when
-
+        reportService.delete(report.getId(), reporter.getNickname());
+        int afterSize = reportService.getAllReports(admin.getId()).size();
 
         //  then
+        assertThat(afterSize).isEqualTo(beforeSize - 1);
     }
 
     @Test
-    void checkReport() {
+    void checkReport() throws Exception {
+        //  given
+        Member admin = memberRepository.selectMember("admin");
+        Member reporter = memberRepository.findAll().get(0);
+        createMockReport();
+
+        Report report = reportService.getAllReports(admin.getId()).get(0);
+
+        //  when
+        reportService.checkReport(admin.getId(), report.getId());
+
+        //  then
+        Report checkedReport = reportService.getReportById(reporter.getId(), report.getId());
+        assertThat(checkedReport.getCheck()).isEqualTo(true);
+
     }
 }

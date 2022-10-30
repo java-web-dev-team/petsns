@@ -9,6 +9,7 @@ import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.PostMapper;
 import javawebdev.petsns.post.dto.Post;
+import javawebdev.petsns.report.ReportMapper;
 import javawebdev.petsns.report.dto.Report;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +28,20 @@ public class Validation {
     private final CommentMapper commentMapper;
     private final HeartMapper heartMapper;
     private final HelpMapper helpMapper;
+    private final ReportMapper reportMapper;
 
-    // 유저 확인
+    // 유저 확인(id)
     public Member getMemberOrException(Integer memberId) throws Exception {
         return memberRepository.selectById(memberId).orElseThrow(() -> {
             log.info("Member not found. memberId = {}", memberId);
+            throw new IllegalArgumentException();
+        });
+    }
+
+    // 유저 확인(nickname)
+    public Member getMemberOrException(String nickname) throws Exception {
+        return memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> {
+            log.info("Member not found. nickname = {}", nickname);
             throw new IllegalArgumentException();
         });
     }
@@ -51,6 +61,15 @@ public class Validation {
             throw new IllegalArgumentException();
         });
     }
+
+    // 문의 확인
+    public Report getReportOrException(Integer reportId) {
+        return reportMapper.findById(reportId).orElseThrow(() -> {
+            log.info("Report not found. reportId = {}", reportId);
+            throw new IllegalArgumentException();
+        });
+    }
+
 
     // 좋아요 확인
     public boolean isNotExistentHeart(String nickname, Integer postId) {

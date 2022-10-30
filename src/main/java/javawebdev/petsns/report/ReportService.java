@@ -1,5 +1,6 @@
 package javawebdev.petsns.report;
 
+import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.report.dto.Report;
@@ -16,85 +17,64 @@ import java.util.Objects;
 public class ReportService {
 
     private final ReportMapper reportMapper;
-    private final MemberRepository memberRepository;
+    private final Validation validation;
 
     //    회원용
     //    신고하기
-    public void create(Member member, String reported, String content) throws Exception {
-        getMemberOrException(member.getNickname());
-        Report report = new Report(member.getNickname(), reported, content);
+    public void create(String reporter, String reported, String content) throws Exception {
+        Member reporterMember = validation.getMemberOrException(reporter);
+        Member reportedMember = validation.getMemberOrException(reported);
+        Report report = new Report(reporterMember.getNickname(), reportedMember.getNickname(), content);
         reportMapper.save(report);
     }
 
     //    내 신고목록
-    public List<Report> getReportsByMember(Member member) throws Exception {
-        getMemberOrException(member.getNickname());
+    public List<Report> getReportsByMember(Integer memberId) throws Exception {
+        Member member = validation.getMemberOrException(memberId);
         return reportMapper.findAllByMember(member);
     }
 
     /*    개별 신고 조회(관리자 겸용)*/
-    public Report getReportById(Integer reportId, Member member) throws Exception {
-        getMemberOrException(member.getNickname());
-        return getReportOrException(reportId);
+    public Report getReportById(Integer memberId, Integer reportId) throws Exception {
+        validation.getMemberOrException(memberId);
+        return validation.getReportOrException(reportId);
     }
 
     //    신고 수정
-    public Report update(Integer id, Member member, String reported, String content) throws Exception {
-        Report report = getReportOrException(id);
-        getMemberOrException(member.getNickname());
-        if (Objects.equals(member.getNickname(), report.getReporter())) {
-            report.setReported(reported);
-            report.setContent(content);
-            reportMapper.update(report);
-            return report;
-        } else {
-            log.info("Member not authorized. nickname = {}", member.getNickname());
-            throw new IllegalArgumentException();
-        }
+    public Report update(String reporter, String reported, Integer id, String updatedContent) throws Exception {
+        Report report = validation.getReportOrException(id);
+        Member reporterMember = validation.getMemberOrException(reporter);
+        Member reportedMember = validation.getMemberOrException(reported);
+
+        report.setReported(reportedMember.getNickname());
+        report.setReporter(reporterMember.getNickname());
+        report.setContent(updatedContent);
+
+        reportMapper.update(report);
+
+        return report;
     }
 
     //    신고 삭제
-    public void delete(Integer id, Member member) {
-        Report report = getReportOrException(id);
-        if (Objects.equals(member.getNickname(), report.getReporter())) {
-            reportMapper.delete(id);
-        } else {
-            log.info("Member not authorized. nickname = {}", member.getNickname());
-            throw new IllegalArgumentException();
-        }
+    public void delete(Integer id, String reporter) throws Exception {
+        Member member = validation.getMemberOrException(reporter);
+        Report report = validation.getReportOrException(id);
+
+        reportMapper.delete(report.getId());
     }
     //    회원용 --end
 
     //    관리자용
     //    전체 신고 조회
-    public List<Report> getAllReports() {
+    public List<Report> getAllReports(Integer memberId) throws Exception {
+        validation.getAdminOrException(memberId);
         return reportMapper.findAll();
     }
 
     //    신고 확인
-    public void checkReport(Integer id) {
-        getReportOrException(id);
+    public void checkReport(Integer memberId, Integer id) throws Exception {
+        validation.getAdminOrException(memberId);
+        validation.getReportOrException(id);
         reportMapper.checkReport(id);
-    }
-
-    // TODO: validation
-
-    private Report getReportOrException(Integer id) {
-        return reportMapper.findById(id).orElseThrow(() ->{
-            log.info("Report not found. reportId = {}", id);
-            throw new IllegalArgumentException();
-        });
-    }
-
-    private Member getMemberOrException(String nickname) throws Exception {
-        return memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> {
-            log.info("Member not found. nickname = {}", nickname);
-            throw new IllegalArgumentException();
-        });
-    }
-
-    //  test
-    public void deleteAll() {
-        reportMapper.deleteAll();
     }
 }
