@@ -1,28 +1,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="javawebdev.petsns.follow.HeartMapper">
+<mapper namespace="javawebdev.petsns.follow.FollowMapper">
 
     <insert id="save">
-        insert into follow (following_id, follower_id, registered_at)
-        values (#{followingId}, #{followerId}, #{registerd_at});
+        insert into follow (following, follower, registered_at)
+        values (#{following}, #{follower}, #{registerd_at});
     </insert>
 
     <delete id="delete">
         delete from follow
-        where following_id = #{followingId} and follower_id = #{followerId};
+        where following = #{following} and follower = #{follower};
     </delete>
 
-    <select id="findByFollowingId" resultType="Follow">
+    <select id="findByFollowing" resultType="Follow">
         select *
         from follow
-        where following_id = #{followingId};
+        where following = #{following};
     </select>
 
-    <select id="findByFollowerId" resultType="Follow">
+    <select id="findByFollower" resultType="Follow">
         select *
         from follow
-        where follower_id = #{followerId};
+        where follower = #{follower};
     </select>
 
     <select id="findAll" resultType="Follow">
@@ -30,11 +30,11 @@
         from follow;
     </select>
 
-    <select id="findByFollowingIdAndFollowerId" resultType="Follow">
+    <select id="findByFollowingAndFollower" resultType="Follow">
         select *
         from follow
-        where following_id = #{followingId}
-          and follower_id = #{followerId};
+        where following = #{following}
+          and follower = #{follower};
     </select>
 
 </mapper>

@@ -11,11 +11,11 @@ public interface FollowMapper {
 
     void delete(Follow follow);
 
-    List<Follow> findByFollowingId(Integer followingId);
+    List<Follow> findByFollowing(String following);
 
-    List<Follow> findByFollowerId(Integer followerId);
+    List<Follow> findByFollower(String follower);
 
-    Optional<Follow> findByFollowingIdAndFollowerId(Integer followingId, Integer followerId);
+    Optional<Follow> findByFollowingAndFollower(String following, String follower);
 
     List<Follow> findAll();
 

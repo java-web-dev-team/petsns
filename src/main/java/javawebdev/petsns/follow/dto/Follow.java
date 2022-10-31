@@ -11,18 +11,18 @@ public class Follow {
     private Integer id;
 
     @Setter
-    private Integer followingId;
+    private String following;
 
     @Setter
-    private Integer followerId;
+    private String follower;
 
     @Setter
     private LocalDateTime registeredAt;
 
 
-    public Follow(Integer followingId, Integer followerId) {
-        this.followingId = followingId;
-        this.followerId = followerId;
+    public Follow(String following, String follower) {
+        this.following = following;
+        this.follower = follower;
         this.registeredAt = LocalDateTime.now();
     }
 
