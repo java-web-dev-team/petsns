@@ -2,6 +2,8 @@ package javawebdev.petsns;
 
 import javawebdev.petsns.heart.HeartMapper;
 import javawebdev.petsns.heart.dto.Heart;
+import javawebdev.petsns.help.HelpMapper;
+import javawebdev.petsns.help.dto.Help;
 import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.PostMapper;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ValidationTest {
@@ -27,6 +30,9 @@ class ValidationTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    HelpMapper helpMapper;
 
     @Test
     void getMemberOrException() {
@@ -61,5 +67,18 @@ class ValidationTest {
 
         assertThat(validation.isNotExistentHeart(member.getNickname(), post.getId()))
                 .isEqualTo(false);
+    }
+
+    @Test
+    void isValidAccess() {
+        Member validMember = memberRepository.findAll().get(0);
+        Member notValidMember = memberRepository.findAll().get(1);
+
+        Help help = new Help(validMember.getId(), "content");
+        helpMapper.save(help);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            validation.isValidAccess(help, notValidMember);
+        });
     }
 }

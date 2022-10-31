@@ -13,7 +13,6 @@ public class Block {
     private String blocker;
     private String blocked;
     private LocalDateTime registeredAt;
-    private LocalDateTime canceledAt;
 
     public Block(String blocker, String blocked) {
         this.blocker = blocker;

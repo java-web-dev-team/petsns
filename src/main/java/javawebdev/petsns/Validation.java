@@ -1,5 +1,7 @@
 package javawebdev.petsns;
 
+import javawebdev.petsns.block.BlockMapper;
+import javawebdev.petsns.block.dto.Block;
 import javawebdev.petsns.comment.CommentMapper;
 import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.heart.HeartMapper;
@@ -9,6 +11,7 @@ import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.PostMapper;
 import javawebdev.petsns.post.dto.Post;
+import javawebdev.petsns.report.ReportMapper;
 import javawebdev.petsns.report.dto.Report;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +30,21 @@ public class Validation {
     private final CommentMapper commentMapper;
     private final HeartMapper heartMapper;
     private final HelpMapper helpMapper;
+    private final ReportMapper reportMapper;
+    private final BlockMapper blockMapper;
 
-    // 유저 확인
-    public Member getMemberOrException(Integer memberId) throws Exception {
+    // 유저 확인(id)
+    public Member getMemberOrException(Integer memberId) {
         return memberRepository.selectById(memberId).orElseThrow(() -> {
             log.info("Member not found. memberId = {}", memberId);
+            throw new IllegalArgumentException();
+        });
+    }
+
+    // 유저 확인(nickname)
+    public Member getMemberOrException(String nickname) {
+        return memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> {
+            log.info("Member not found. nickname = {}", nickname);
             throw new IllegalArgumentException();
         });
     }
@@ -52,7 +65,15 @@ public class Validation {
         });
     }
 
-    // 좋아요 확인
+    // 문의 확인
+    public Report getReportOrException(Integer reportId) {
+        return reportMapper.findById(reportId).orElseThrow(() -> {
+            log.info("Report not found. reportId = {}", reportId);
+            throw new IllegalArgumentException();
+        });
+    }
+
+    // 이미 좋아요했는지 확인
     public boolean isNotExistentHeart(String nickname, Integer postId) {
         return heartMapper.findByNicknameAndPostId(nickname, postId).equals(Optional.empty());
     }
@@ -65,10 +86,30 @@ public class Validation {
         });
     }
 
+    // 이미 차단 했는지 확인
+    public boolean isNotExistentBlock(Block block) {
+        if (blockMapper.findByBlock(block).equals(Optional.empty())) {
+            return true;
+        } else {
+            log.info("Already blocked.");
+            throw new IllegalArgumentException();
+        }
+    }
+
+    // 차단 확인
+    public Block getBlockOrException(Block block) {
+        return blockMapper.findByBlock(block).orElseThrow(() -> {
+            log.info("Block not found. " +
+                    "blocker = {}" +
+                    "blocked = {}", block.getBlocker(), block.getBlocked());
+            throw new IllegalArgumentException();
+        });
+    }
+
     // admin 확인
-    public Member getAdminMemberOrException(Integer memberId) throws Exception {
+    public Member getAdminOrException(Integer memberId) {
         Member member = getMemberOrException(memberId);
-        if (Objects.equals(member.getAuth(), "ADMIN")) {
+        if (Objects.equals(member.getAuth(), "ROLE_ADMIN")) {
             return member;
         } else {
             log.info("Member is not admin. member.auth = {}", member.getAuth());
@@ -100,9 +141,9 @@ public class Validation {
         }
     }
 
-    public boolean isValidAccess(Help help, Member member) {
+    public Help isValidAccess(Help help, Member member) {
         if (Objects.equals(member.getId(), help.getMemberId())) {
-            return true;
+            return help;
         } else {
             log.info("Not valid access. help.memberId = {}, current memberId = {}", help.getMemberId(), member.getId());
             throw new IllegalArgumentException();
@@ -117,5 +158,4 @@ public class Validation {
             throw new IllegalArgumentException();
         }
     }
-
 }

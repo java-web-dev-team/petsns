@@ -5,15 +5,15 @@
 <!--    회원용-->
 <!--    문의하기-->
     <insert id="save">
-        insert into help (nickname, content, registered_at, `check`)
-        VALUES (#{nickname}, #{content}, NOW(), #{check});
+        insert into help (member_id, content, registered_at, `check`)
+        VALUES (#{memberId}, #{content}, NOW(), #{check});
     </insert>
 
 <!--    내 문의목록-->
-    <select id="findAllByNickname" resultType="Help">
+    <select id="findAllByMemberId" resultType="Help">
         select *
         from help
-        where nickname = #{nickname};
+        where member_id = #{memberId};
     </select>
 
 <!--    개별 문의 조회-->

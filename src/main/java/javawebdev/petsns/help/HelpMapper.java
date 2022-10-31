@@ -15,7 +15,7 @@ public interface HelpMapper {
     void save(Help help);
 
     //    내 문의 목록
-    List<Help> findAllByMember(Member member);
+    List<Help> findAllByMemberId(Integer memberId);
 
     //    개별 문의 조회(관리자 겸용)
     Optional<Help> findById(Integer id);

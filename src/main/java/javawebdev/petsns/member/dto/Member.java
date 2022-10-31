@@ -8,15 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static java.lang.annotation.ElementType.PARAMETER;
 
 
 @Getter
@@ -42,6 +38,7 @@ public class Member implements UserDetails {
         this.nickname = nickname;
         return this;
     }
+
 
     @Builder
     public Member(String nickname, String password, String introduce, String email, String auth) {

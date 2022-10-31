@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 public class Help {
 
     private Integer id;
-    @Setter private String nickname;
+    @Setter private Integer memberId;
     @Setter private String content;
     @Setter private Boolean check;
 
     @Setter private LocalDateTime registeredAt;
 
-    public Help(String nickname, String content) {
-        this.nickname = nickname;
+    public Help(Integer memberId, String content) {
+        this.memberId = memberId;
         this.content = content;
         this.check = false;
         this.registeredAt = LocalDateTime.now();

@@ -4,10 +4,8 @@ import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +23,10 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(request);
         System.out.println("oAuth2User = " + oAuth2User);
 
-        String provider = request.getClientRegistration().getRegistrationId();
+//        String provider = request.getClientRegistration().getRegistrationId();
         String providerId = oAuth2User.getAttribute("sub");
-        String username = provider + "_" + providerId;
+        System.out.println("providerId = " + providerId);
+        String username = providerId;
 
         String uuid = UUID.randomUUID().toString().substring(0, 6);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -42,7 +41,7 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
                     .email(email)
                     .password(password)
                     .auth("ROLE_MEMBER")
-                    .introduce("")
+                    .introduce("Google Login")
                     .build();
             memberService.joinMember(member);
         }
