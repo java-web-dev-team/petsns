@@ -4,25 +4,25 @@
 <mapper namespace="javawebdev.petsns.follow.FollowMapper">
 
     <insert id="save">
-        insert into follow (following, follower, registered_at)
+        insert into follow (follow_ing, follow_er, registered_at)
         values (#{following}, #{follower}, #{registerd_at});
     </insert>
 
     <delete id="delete">
         delete from follow
-        where following = #{following} and follower = #{follower};
+        where follow_ing = #{following} and follow_er = #{follower};
     </delete>
 
     <select id="findByFollowing" resultType="Follow">
         select *
         from follow
-        where following = #{following};
+        where follow_ing = #{following};
     </select>
 
     <select id="findByFollower" resultType="Follow">
         select *
         from follow
-        where follower = #{follower};
+        where follow_er = #{follower};
     </select>
 
     <select id="findAll" resultType="Follow">
@@ -33,8 +33,8 @@
     <select id="findByFollowingAndFollower" resultType="Follow">
         select *
         from follow
-        where following = #{following}
-          and follower = #{follower};
+        where follow_ing = #{following}
+          and follow_er = #{follower};
     </select>
 
 </mapper>
