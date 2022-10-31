@@ -7,15 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class MemberController {
 
 
     @GetMapping("/")
-    public String main(){
+    public String main() {
         return "redirect:/posts";
     }
 
@@ -39,12 +37,12 @@ public class MemberController {
         return "registertest";
     }
 
-    @GetMapping("/members/{nickname}")
-    public String GetMember(@PathVariable("nickname") String nickname, Model model) throws Exception {
-        Member member = memberService.findByNickname(nickname);
-        model.addAttribute("member", member);
-        return "findByNickname";
-    }
+//    @GetMapping("/members/{nickname}")
+//    public String GetMember(@PathVariable("nickname") String nickname, Model model) throws Exception {
+//        Member member = memberService.findByNickname(nickname);
+//        model.addAttribute("member", member);
+//        return "findByNickname";
+//    }
 
     /**
      * 단순 화면 출력이 아닌 데이터를 리턴하고자할 때 사용하는 리턴방식
@@ -52,33 +50,30 @@ public class MemberController {
      * @ResponseEntity : 데이터, 상태코드(200, 400, 404, 405, 500 등)를 함께 리턴할 수 있음.
      * @ResponseBody : 데이터를 리턴할 수 있음.
      */
-    @DeleteMapping("/member/{nickname}")
-    public ResponseEntity deleteByNickname(@PathVariable String nickname) {
+    @GetMapping("/member/delete")
+    public String deleteByNickname(@AuthenticationPrincipal UserDetails member) {
         try {
-            memberService.deleteMember(nickname);
-            return new ResponseEntity(HttpStatus.OK);
+            System.out.println("member = " + member);
+            System.out.println("member.getUsername() = " + member.getUsername());
+            memberService.deleteMember(member.getUsername());
+            SecurityContextHolder.clearContext();   // 탈퇴 시 로그아웃 처리됌
+            new ResponseEntity(HttpStatus.OK);
+            return "redirect:/login-form";
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/member/update")
-    public String updateForm(Model model, @AuthenticationPrincipal Member member) {
-        String nickname = member.getNickname();
-        try {
-            Member member1 = memberService.findByNickname(nickname);
-            model.addAttribute("member", member1);
-            return "redirect:/member/update";
-        } catch (Exception e) {
-            e.printStackTrace();
+            new ResponseEntity(HttpStatus.BAD_REQUEST);
             return null;
         }
     }
 
-    @PutMapping("/member/{nickname}")
-    public ResponseEntity update(@AuthenticationPrincipal Member member) throws Exception {
-        memberService.updateMember(member);
+    @GetMapping("/member/modify")
+    public String updateForm() {
+        return "profile-edit";
+    }
+
+    @PostMapping("/member/modify")
+    public ResponseEntity update(@AuthenticationPrincipal UserDetails member) throws Exception {
+        memberService.updateMember((Member)member);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -91,6 +86,7 @@ public class MemberController {
     @GetMapping("/logout")
     public String logoutPage(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
+        SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
 

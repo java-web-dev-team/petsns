@@ -1,22 +1,17 @@
 package javawebdev.petsns;
 
-//import javawebdev.petsns.member.AppAuthenticationSuccessHandler;
-import javawebdev.petsns.member.MemberService;
+import javawebdev.petsns.member.ClubLoginSuccessHandler;
 import javawebdev.petsns.member.PrincipalOauth2MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -26,7 +21,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PrincipalOauth2MemberService principalOauth2MemberService;
-    private final MemberService memberService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -46,9 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             http.oauth2Login()
                     .loginPage("/login-form")
-                    .defaultSuccessUrl("/posts")
                     .userInfoEndpoint()
-                    .userService(principalOauth2MemberService);
+                    .userService(principalOauth2MemberService)
+                    .and()
+                    .successHandler(successHandler());
 
             http.formLogin()
                     .loginPage("/login-form")
@@ -73,10 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public ClubLoginSuccessHandler successHandler(){
+        return new ClubLoginSuccessHandler();
+    }
 
-//    @Bean
-//    public AuthenticationSuccessHandler appAuthenticationSuccessHandler(){
-//        return new AppAuthenticationSuccessHandler();
-//    }
 
 }

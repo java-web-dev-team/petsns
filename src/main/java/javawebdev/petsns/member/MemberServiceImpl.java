@@ -1,7 +1,6 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
-import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
