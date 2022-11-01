@@ -4,6 +4,8 @@ import javawebdev.petsns.block.BlockMapper;
 import javawebdev.petsns.block.dto.Block;
 import javawebdev.petsns.comment.CommentMapper;
 import javawebdev.petsns.comment.dto.Comment;
+import javawebdev.petsns.follow.FollowMapper;
+import javawebdev.petsns.follow.dto.Follow;
 import javawebdev.petsns.heart.HeartMapper;
 import javawebdev.petsns.help.HelpMapper;
 import javawebdev.petsns.help.dto.Help;
@@ -32,6 +34,7 @@ public class Validation {
     private final HelpMapper helpMapper;
     private final ReportMapper reportMapper;
     private final BlockMapper blockMapper;
+    private final FollowMapper followMapper;
 
     // 유저 확인(id)
     public Member getMemberOrException(Integer memberId) {
@@ -106,6 +109,21 @@ public class Validation {
         });
     }
 
+    // 팔로우 확인
+    public Follow getFollowOrException(Follow follow) {
+        return followMapper.findByFollowingAndFollower(follow.getFollowing(), follow.getFollower()).orElseThrow(() -> {
+            log.info("Follow not found. " +
+                    "following = {}" +
+                    "follower = {}", follow.getFollowing(), follow.getFollower());
+            throw new IllegalArgumentException();
+        });
+    }
+
+    // 이미 팔로우 했는지 확인
+    public boolean isNotExistentFollow(Follow follow) {
+        return followMapper.findByFollowingAndFollower(follow.getFollowing(), follow.getFollower()).equals(Optional.empty());
+    }
+
     // admin 확인
     public Member getAdminOrException(Integer memberId) {
         Member member = getMemberOrException(memberId);
@@ -150,9 +168,9 @@ public class Validation {
         }
     }
 
-    public boolean isValidAccess(Report report, Member member) {
+    public Report isValidAccess(Report report, Member member) {
         if (Objects.equals(member.getNickname(), report.getReporter())) {
-            return true;
+            return report;
         } else {
             log.info("Not valid access. report.reporter = {}, current member = {}", report.getReporter(), member.getNickname());
             throw new IllegalArgumentException();

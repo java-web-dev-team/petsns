@@ -1,0 +1,40 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="javawebdev.petsns.follow.FollowMapper">
+
+    <insert id="save">
+        insert into follow (follow_ing, follow_er, registered_at)
+        values (#{following}, #{follower}, #{registerd_at});
+    </insert>
+
+    <delete id="delete">
+        delete from follow
+        where follow_ing = #{following} and follow_er = #{follower};
+    </delete>
+
+    <select id="findByFollowing" resultType="Follow">
+        select *
+        from follow
+        where follow_ing = #{following};
+    </select>
+
+    <select id="findByFollower" resultType="Follow">
+        select *
+        from follow
+        where follow_er = #{follower};
+    </select>
+
+    <select id="findAll" resultType="Follow">
+        select *
+        from follow;
+    </select>
+
+    <select id="findByFollowingAndFollower" resultType="Follow">
+        select *
+        from follow
+        where follow_ing = #{following}
+          and follow_er = #{follower};
+    </select>
+
+</mapper>
