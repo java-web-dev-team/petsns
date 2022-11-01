@@ -39,7 +39,7 @@ public class HeartServiceTest {
         Post post = postMapper.findAll().get(0);
 
         // when
-       // heartService.save(new Heart(member.getNickname(), post.getId()));
+        heartService.save(new Heart(member.getNickname(), post.getId()));
 
         // then
         Heart heart = heartService.findByPostId(post.getId()).get(0);
@@ -52,14 +52,14 @@ public class HeartServiceTest {
         // given
         Member member = memberRepository.findAll().get(0);
         Post post = postMapper.findAll().get(0);
-      //  heartService.save(new Heart(member.getNickname(), post.getId()));
+        heartService.save(new Heart(member.getNickname(), post.getId()));
         Heart heart = heartService.findByPostId(post.getId()).get(0);
 
         int beforeSize = heartMapper.findAll().size();
 
 
         // when
-      //  heartService.delete(heart);
+        heartService.delete(heart);
 
         // then
         int afterSize = heartMapper.findAll().size();

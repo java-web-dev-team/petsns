@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--divinectorweb.com-->
 <head>
 	<meta charset="UTF-8">
 	<title>profile</title>
-	<link href="/templates/CSS/style.css" rel="stylesheet">
+	<link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<nav>
@@ -18,16 +17,16 @@
 				<a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  알림</a>
 			</li>
 			<li>
-				<a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  글쓰기</a>
+				<a href="/posts"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  글쓰기</a>
 			</li>
 			<li>
-				<a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  프로필</a>
+				<a th:href="@{/member/{id} (id = ${member.id})}"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  프로필</a>
 			</li>
 			<li>
 				<a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  고객센터</a>
 			</li>
 			<li>
-				<a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  로그아웃</a>
+				<a href="/logout"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="" >  로그아웃</a>
 			</li>
 		</ul>
 	</nav>
@@ -45,8 +44,8 @@
 
                 <!--유저 이름-->
                 <div class="profile-user-settings">
-                    <h1 class="profile-user-name">Anipic</h1>
-                    <button class="btn profile-edit-btn">프로필 편집</button>
+                    <h1 class="profile-user-name" th:text="${member.nickname}"></h1>
+                    <button class="btn profile-edit-btn"><a th:href="@{/member/{id} (id = ${member.id})}">프로필 편집</a></button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
 
@@ -131,7 +130,9 @@
 
         </div>
 			</div>
-		</div>
+    </main>
+            </body>
+        </div>
 	</div>
 </body>
 </html>

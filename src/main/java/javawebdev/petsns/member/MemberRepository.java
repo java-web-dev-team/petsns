@@ -28,6 +28,8 @@ public interface MemberRepository {
 
     Optional<Member> selectById(Integer id);
 
+    Member selectByIdNotOptional(Integer id);
+
     Optional<Member> selectMemberByNickname(String nickname);
 
     List<Member> findAll();
