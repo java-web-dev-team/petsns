@@ -17,13 +17,13 @@ public class HeartController {
 
     @PostMapping("/")
     public String save(@PathVariable Integer postId, @AuthenticationPrincipal Member member) throws Exception {
-        heartService.save(postId, member.getId());
+        heartService.save(postId, member.getNickname());
         return "redirect:/posts/{postId}";
     }
 
     @DeleteMapping("/")
     public String delete(@PathVariable Integer postId, @AuthenticationPrincipal Member member) throws Exception {
-         heartService.delete(member.getId(), postId);
+         heartService.delete(postId, member.getNickname());
         return "redirect:/posts/{postId}";
     }
 }

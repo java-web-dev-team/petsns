@@ -33,13 +33,13 @@ public class HeartServiceTest {
     PostMapper postMapper;
 
     @Test
-    void 좋아요() {
+    void 좋아요() throws Exception {
         // given
         Member member = memberRepository.findAll().get(0);
         Post post = postMapper.findAll().get(0);
 
         // when
-        heartService.save(new Heart(member.getNickname(), post.getId()));
+        heartService.save(post.getId(), member.getNickname());
 
         // then
         Heart heart = heartService.findByPostId(post.getId()).get(0);
@@ -48,18 +48,18 @@ public class HeartServiceTest {
     }
 
     @Test
-    void 좋아요취소() {
+    void 좋아요취소() throws Exception {
         // given
         Member member = memberRepository.findAll().get(0);
         Post post = postMapper.findAll().get(0);
-        heartService.save(new Heart(member.getNickname(), post.getId()));
+        heartService.save(post.getId(), member.getNickname());
         Heart heart = heartService.findByPostId(post.getId()).get(0);
 
         int beforeSize = heartMapper.findAll().size();
 
 
         // when
-        heartService.delete(heart);
+        heartService.delete(post.getId(), member.getNickname());
 
         // then
         int afterSize = heartMapper.findAll().size();
