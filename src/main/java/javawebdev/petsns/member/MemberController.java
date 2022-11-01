@@ -40,7 +40,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/profile/{id}")
-    public String profile(Model model, @PathVariable Integer id){
+    public String profile(Model model, @PathVariable Integer id) {
         model.addAttribute("member", memberRepository.selectByIdNotOptional(id));
         return "profile";
     }
@@ -52,12 +52,12 @@ public class MemberController {
     }
 
     @PostMapping("/member/modify")
-    public String updateMember(@AuthenticationPrincipal PrincipalDetails userDetails, Member updatedMember){
+    public String updateMember(@AuthenticationPrincipal PrincipalDetails userDetails, Member updatedMember) {
         Member member = memberRepository.findMemberByNickname(userDetails.getName());
         updatedMember.setId(member.getId());
         System.out.println("updatedMember = " + updatedMember);
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/"+member.getId();
+        return "redirect:/member/profile/" + member.getId();
     }
 
     /**
@@ -86,7 +86,7 @@ public class MemberController {
 
 
     @PostMapping("/signUp")
-    public String register(Member member){
+    public String register(Member member) {
         memberService.joinMember(member);
         return "redirect:/login-form";
     }
@@ -101,5 +101,10 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/emailCheck")
+    @ResponseBody
+    public Member emailCheck(@RequestParam("email") String email) {
+        return memberRepository.findMemberByEmail(email);
+    }
 }
 
