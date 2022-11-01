@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--divinectorweb.com-->
 <head>
 	<meta charset="UTF-8">
 	<title>profile</title>
-	<link href="/templates/CSS/style.css" rel="stylesheet">
+	<link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<nav>
@@ -45,8 +44,8 @@
 
                 <!--유저 이름-->
                 <div class="profile-user-settings">
-                    <h1 class="profile-user-name">Anipic</h1>
-                    <button class="btn profile-edit-btn">프로필 편집</button>
+                    <h1 class="profile-user-name" th:text="${member.nickname}"></h1>
+                    <button class="btn profile-edit-btn"><a th:href="@{/member/{id} (id = ${member.id})}">프로필 편집</a></button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
 
@@ -131,7 +130,9 @@
 
         </div>
 			</div>
-		</div>
+    </main>
+            </body>
+        </div>
 	</div>
 </body>
 </html>
