@@ -1,7 +1,6 @@
 package javawebdev.petsns.post;
 
 import javawebdev.petsns.post.dto.Post;
-import javawebdev.petsns.post.dto.PostAttach;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,22 +36,15 @@ public class PostServiceImpl implements PostService{
         postMapper.insert(post);
     }
 
-
-
     @Override
-    public boolean modify(Post post) {
-        log.info("modift" + post);
-        return postMapper.update(post)> 0 ;
+    public void update(Post post) {
+        log.info("update" + post);
+        postMapper.update(post);
     }
 
     @Override
-    public boolean remove(Integer id) {
-        log.info("remove" + id);
-        return postMapper.delete(id) > 0 ;
+    public void remove(Post post) {
+        postMapper.remove(post);
     }
 
-    @Override
-    public List<PostAttach> getAttachList(Integer id) {
-        return null;
-    }
 }

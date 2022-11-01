@@ -22,5 +22,14 @@
         where id = #{id};
     </select>
 
+    <update id="update">
+        update post
+        set content = #{content}
+        where id = #{id};
+    </update>
+
+    <delete id="remove">
+        DELETE FROM post where id = #{id};
+    </delete>
 
 </mapper>

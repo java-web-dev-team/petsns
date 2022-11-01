@@ -7,11 +7,12 @@ import java.util.Date;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class Post {
-    private Integer id;
-    @Setter private String content;
-    @Setter private String nickname;
-    @Setter private LocalDateTime registered_at;
+    Integer id;
+    private String content;
+    private String nickname;
+    private LocalDateTime registered_at;
 
     public Post(String content, String nickname) {
         this.content = content;
@@ -28,4 +29,6 @@ public class Post {
                 ", registered_at=" + registered_at +
                 '}';
     }
+
+
 }
