@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>profile-edit</title>
-    <link href="/templates/CSS/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
 <!-- 사이드 바 -->
@@ -28,7 +28,7 @@
             <a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  고객센터</a>
         </li>
         <li>
-            <a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  로그아웃</a>
+            <a href="/logout"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  로그아웃</a>
         </li>
     </ul>
 </nav>
@@ -38,19 +38,24 @@
 
         <div class="user">
             <div class="profile-pic"><img src="img/cat3.jpg" alt=""></div>  <!-- 프로필 사진 -->
-            <p class="username">Anipic 계정 이름</p>              <!-- 유저 이름 -->
+            <p class="username" th:text="${member.nickname}"></p>              <!-- 유저 이름 -->
         </div>
     </div>
     <div class="post-content">
 
         <div class="reaction-wrapper">                        <!-- Feed 아래 쪽 -->
         </div>
-
-        <p class="description"><span>이름 </span> <input type="text" name="name"></p>
-        <p class="description"><span>소개 </span> <textarea name="content"></textarea></p>
-        <p class="description"><span>공개 </span> <input type="checkbox">
+        <form th:action="@{/member/modify}" method="POST">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <p class="description"><span>닉네임 </span> <input type="text" name="nickname" id="nickname" th:value="${member.nickname}"></p>
+        <p class="description"><span>비밀번호 </span> <input type="password" name="password" id="password" th:value="${member.password}"></p>
+        <p class="description"><span>이메일 </span> <input type="email" name="email" id="email" th:value="${member.email}" readonly></p>
+        <p class="description"><span>소개 </span> <textarea name="introduce" th:value="${member.introduce}"></textarea></p>
         <p class="description"><span>프로필 </span> <button title="profile-picture">프로필</button>
-        <p><button title="profile-picture">제출</button></p>
+        <p>
+            <button title="profile-picture">제출</button>
+        </p>
+        </form>
     </div>
 
 </div>

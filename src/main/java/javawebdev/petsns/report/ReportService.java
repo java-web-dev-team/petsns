@@ -29,14 +29,16 @@ public class ReportService {
     }
 
     //    내 신고목록
-    public List<Report> getReportsByMember(Integer memberId) throws Exception {
+    public List<Report> getReportsByMember(Integer memberId) {
         Member member = validation.getMemberOrException(memberId);
         return reportMapper.findAllByMember(member);
     }
 
     /*    개별 신고 조회(관리자 겸용)*/
-    public Report getReportById(Integer memberId, Integer reportId) throws Exception {
-        validation.getMemberOrException(memberId);
+    public Report getReportById(Integer memberId, Integer reportId) {
+        Member member = validation.getMemberOrException(memberId);
+        Report report = validation.getReportOrException(reportId);
+        validation.isValidAccess(report, member);
         return validation.getReportOrException(reportId);
     }
 
@@ -66,13 +68,13 @@ public class ReportService {
 
     //    관리자용
     //    전체 신고 조회
-    public List<Report> getAllReports(Integer memberId) throws Exception {
+    public List<Report> getAllReports(Integer memberId) {
         validation.getAdminOrException(memberId);
         return reportMapper.findAll();
     }
 
     //    신고 확인
-    public void checkReport(Integer memberId, Integer id) throws Exception {
+    public void checkReport(Integer memberId, Integer id) {
         validation.getAdminOrException(memberId);
         validation.getReportOrException(id);
         reportMapper.checkReport(id);

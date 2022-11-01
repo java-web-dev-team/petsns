@@ -1,6 +1,6 @@
 package javawebdev.petsns;
 
-import javawebdev.petsns.member.ClubLoginSuccessHandler;
+import javawebdev.petsns.member.handler.ClubLoginSuccessHandler;
 import javawebdev.petsns.member.PrincipalOauth2MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -55,10 +55,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
             http.logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login-form")
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("http://localhost:8080/logout").permitAll()
                     .deleteCookies("JSESSIONID")
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true);
 
         }
     }

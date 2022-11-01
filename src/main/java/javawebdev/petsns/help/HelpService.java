@@ -24,13 +24,13 @@ public class HelpService {
     }
 
     //    내 문의 목록
-    public List<Help> getMyHelps(Integer memberId) throws Exception {
+    public List<Help> getMyHelps(Integer memberId) {
         Member member = validation.getMemberOrException(memberId);
         return helpMapper.findAllByMemberId(member.getId());
     }
 
     //    개별 문의 조회
-    public Help getHelp(Integer memberId, Integer id) throws Exception {
+    public Help getHelp(Integer memberId, Integer id) {
         Member member = validation.getMemberOrException(memberId);
         Help help = validation.getHelpOrException(id);
 
@@ -56,14 +56,14 @@ public class HelpService {
 
     //    관리자용
     //    모든 문의 보기
-    public List<Help> getAll(Integer memberId) throws Exception {
+    public List<Help> getAll(Integer memberId) {
         validation.getAdminOrException(memberId);
 
         return helpMapper.findAll();
     }
 
     //    문의 확인
-    public void check(Integer memberId, Integer id) throws Exception {
+    public void check(Integer memberId, Integer id) {
         validation.getAdminOrException(memberId);
         helpMapper.checkHelp(id);
     }

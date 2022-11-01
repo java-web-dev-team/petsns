@@ -36,9 +36,9 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     @Override
     public Member updateMember(Member member){
+        try {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             member.setPassword(passwordEncoder.encode(member.getPassword()));
-            try {
                 memberRepository.updateMember(member);
             } catch(Exception e){
                 log.error("updateMember - error : ", e);
