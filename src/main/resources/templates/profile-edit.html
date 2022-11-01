@@ -38,7 +38,7 @@
 
         <div class="user">
             <div class="profile-pic"><img src="img/cat3.jpg" alt=""></div>  <!-- 프로필 사진 -->
-            <p class="username">Anipic 계정 이름</p>              <!-- 유저 이름 -->
+            <p class="username" th:text="${member.nickname}"></p>              <!-- 유저 이름 -->
         </div>
     </div>
     <div class="post-content">
