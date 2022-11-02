@@ -26,6 +26,8 @@
 <body>
 <h1>Sign Up</h1> <hr>
 
+<h2 th:text="${regiCheck}" style="color: red"></h2>
+
 <form th:action="@{/signUp}" method="POST">
 
   nickname : <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해주세요." onchange="idCheck()" required >

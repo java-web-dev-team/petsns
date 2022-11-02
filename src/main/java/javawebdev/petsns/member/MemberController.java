@@ -1,5 +1,6 @@
 package javawebdev.petsns.member;
 
+import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+
+    private final Validation validation;
 
 
     @GetMapping("/")
@@ -85,9 +88,13 @@ public class MemberController {
 
 
     @PostMapping("/signUp")
-    public String register(Member member) {
-        memberService.joinMember(member);
-        return "redirect:/login-form";
+    public String register(Member member, Model model) {
+        if(validation.isValidEmail(member.getEmail()) && (memberRepository.findMemberByNickname(member.getNickname()) == null)){
+            memberService.joinMember(member);
+            return "redirect:/login-form";
+        }
+        model.addAttribute("regiCheck", "닉네임, 이메일 중복확인을 진행해 주세요.");
+        return "registertest";
     }
 
     @RequestMapping("/logout")
@@ -108,8 +115,12 @@ public class MemberController {
     public int emailCheck(@RequestParam("email") String email) {
         log.info("/emailCheck ----");
         log.info(email);
-        int count = memberService.emailCheck(email);
-        return count;
+        if(validation.isValidEmail(email)){
+            int count = memberService.emailCheck(email);
+            return count;
+        } else {
+            return -1;
+        }
     }
 
     /**
