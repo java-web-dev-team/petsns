@@ -19,21 +19,21 @@ public class HeartService {
 
     private final Validation validation;
 
-    public Heart save(Integer postId, Integer memberId) throws Exception {
+    public Heart save(Integer postId, String nickName) throws Exception {
         Post post = validation.getPostOrException(postId);
-        Member member = validation.getMemberOrException(memberId);
+        Member member = validation.getMemberOrException(nickName);
         Heart heart = new Heart(member.getNickname(), post.getId());
         heartMapper.save(heart);
         return heart;
     }
 
-    public void delete(Integer memberId, Integer postId) throws Exception {
-        Member member = validation.getMemberOrException(memberId);
+    public void delete(Integer postId, String nickName) throws Exception {
+        Member member = validation.getMemberOrException(nickName);
         Post post = validation.getPostOrException(postId);
         if (validation.isNotExistentHeart(member.getNickname(), post.getId())) {
             throw new IllegalArgumentException();
         } else {
-            delete(memberId, postId);
+            delete(postId, nickName);
         }
 
     }
