@@ -41,7 +41,7 @@ public class MemberController {
 
     @GetMapping("/register")
     public String registerForm() {
-        return "registertest";
+        return "signup";
     }
 
     @GetMapping("/member/profile/{id}")
@@ -94,7 +94,7 @@ public class MemberController {
             return "redirect:/login-form";
         }
         model.addAttribute("regiCheck", "닉네임, 이메일 중복확인을 진행해 주세요.");
-        return "registertest";
+        return "signup";
     }
 
     @RequestMapping("/logout")

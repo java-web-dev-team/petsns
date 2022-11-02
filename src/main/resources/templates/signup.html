@@ -1,30 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/check.js}"></script>    <!-- js 파일 추가 -->
+
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>signup</title>
-  <link rel="stylesheet" href="/templates/CSS/login.css">
+  <link rel="stylesheet" href="/css/login.css">
 </head>
+
 <body>
 <div class="container">
   <div class="box">
-    <img alt="" src="../static/img/login-logo.png">
+    <img alt="" src="img/login-logo.png">
     <p>회원가입 후 친구들에게 반려동물을 자랑해보세요!</p>
-    <form class="login-form">
+
+    <h3 th:text="${regiCheck}" style="color: red"></h3>
+
+    <form class="login-form" th:action="@{/signUp}" method="post">
       <div class="field">
-        <input id="username" type="name" placeholder="username" />
-        <label for="username">username</label>
+        <input id="nickname" type="name" placeholder="nickname" onchange="idCheck()" required />
+        <label for="nickname">nickname</label>
       </div>
+      &nbsp;<span id="msgId"></span><br>
       <div class="field">
-        <input id="Email" type="name" placeholder="Email" />
-        <label for="Email">Email</label>
+        <input id="email" type="name" placeholder="Email ex)aaa@aaa.com" onchange="emailCheck()"/>
+        <label for="email">Email</label>
       </div>
+      &nbsp;<span id="msg"></span><br>
       <div class="field">
-        <input id="password" type="password" placeholder="password" />
+        <input id="password" type="password" placeholder="password" onchange="check_pw()" required />
         <label for="password">Password</label>
+      </div> <br>
+      <div class="field">
+        <input id="passwordCheck" type="password" placeholder="passwordCheck" onchange="check_pw_re()" required />
+        <label for="passwordCheck">Password</label>
+      </div> <br>
+      <div class="field">
+        <input id="introduce" type="text" placeholder="introduce" />
+        <label for="introduce">Introduce</label>
       </div>
+
       <button class="login-button" title="login">회원가입</button>
       <div class="separator">
         <div class="line"></div>
@@ -37,7 +58,7 @@
     </form>
   </div>
   <div class="box">
-    <p>계정이 있으신가요? <a class="signup" href="#">로그인</a></p>
+    <p>계정이 있으신가요? <a class="signup" href="/login">로그인</a></p>
   </div>
 </div>
 </body>
