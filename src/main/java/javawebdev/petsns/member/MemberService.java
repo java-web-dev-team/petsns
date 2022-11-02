@@ -11,4 +11,11 @@ public interface MemberService {
     Member findByNickname(String nickname);
 
     void deleteMember(String nickname);
+
+    int emailCheck(String email);
+
+    int idCheck(String nickname);
+
+
+
 }

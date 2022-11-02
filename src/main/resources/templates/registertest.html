@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/check.js}"></script>    <!-- js 파일 추가 -->
+
+<meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <head>
   <meta charset="UTF-8">
   <title>sign up</title>
+
+  <style>
+ .email_ok {
+   color: green;
+   display: none;
+ }
+
+ .email_no{
+   color: red;
+ }
+
+
+  </style>
 </head>
 <body>
 <h1>Sign Up</h1> <hr>
 
 <form th:action="@{/signUp}" method="POST">
-  nickname : <input type="text" name="nickname"> <br>
-  email : <input type="text" name="email"> <br>
-  password : <input type="password" name="password"> <br>
-  introduce : <input type="text" name="introduce"> <br>
+
+  nickname : <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해주세요." onchange="idCheck()" required >
+  <span id="msgId"></span><br>
+
+  email :  <input type="text" id="email" name="email" placeholder="이메일을 입력해주세요." onchange="emailCheck()" required>
+    <span id = "msg"></span> </br>
+
+  password : <input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요." onchange="check_pw()"> <br>
+  passwordCheck : <input type="password" name="passwordCheck" id="passwordCheck" placeholder="비밀번호를 확인해주세요." onchange="check_pw_re()"><br>
+
+
+  introduce : <input type="text" name="introduce" placeholder="소개글을 작성해주세요."> <br>
+
   <input type="radio" name="auth" value="ROLE_ADMIN"> admin
   <input type="radio" name="auth" value="ROLE_MEMBER" checked="checked"> member <br>
   <button type="submit">Join</button>

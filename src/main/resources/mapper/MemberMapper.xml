@@ -76,5 +76,17 @@
         from member;
     </select>
 
+    <select id="emailCheck" resultType="Integer" parameterType="String">
+        SELECT count(*)
+        FROM snsdb.member
+        WHERE email = #{email};
+    </select>
+
+    <select id="idCheck" resultType="Integer" parameterType="String">
+        SELECT count(*)
+        FROM snsdb.member
+        WHERE nickname = #{nickname};
+    </select>
+
 
 </mapper>

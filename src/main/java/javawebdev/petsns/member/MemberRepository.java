@@ -34,4 +34,7 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
+    int emailCheck(String email);
+    int idCheck(String nickname);
+
 }
