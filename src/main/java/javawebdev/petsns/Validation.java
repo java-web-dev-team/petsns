@@ -1,5 +1,6 @@
 package javawebdev.petsns;
 
+import javassist.NotFoundException;
 import javawebdev.petsns.block.BlockMapper;
 import javawebdev.petsns.block.dto.Block;
 import javawebdev.petsns.comment.CommentMapper;
@@ -38,11 +39,18 @@ public class Validation {
     private final BlockMapper blockMapper;
     private final FollowMapper followMapper;
 
+    //  패스워드 유효성 확인
+    public void isValidPassword(String password) {
+        if (password.contains(" ") || password.equals("")) {
+            throw new IllegalArgumentException("Not valid password.");
+        }
+    }
+
     // 유저 확인(id)
     public Member getMemberOrException(Integer memberId) {
         return memberRepository.selectById(memberId).orElseThrow(() -> {
             log.info("Member not found. memberId = {}", memberId);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Member not found. memberId = " + memberId);
         });
     }
 
@@ -50,7 +58,7 @@ public class Validation {
     public Member getMemberOrException(String nickname) {
         return memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> {
             log.info("Member not found. nickname = {}", nickname);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Member not found. nickname = " + nickname);
         });
     }
 
@@ -58,7 +66,7 @@ public class Validation {
     public Post getPostOrException(Integer postId) {
         return postMapper.findById(postId).orElseThrow(() -> {
             log.info("Post not found. postId = {}", postId);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Post not found. postId = " + postId);
         });
     }
 
@@ -66,7 +74,7 @@ public class Validation {
     public Comment getCommentOrException(Integer commentId) {
         return commentMapper.findById(commentId).orElseThrow(() -> {
             log.info("Comment not found. commentId = {}", commentId);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Comment not found. commentId = " + commentId);
         });
     }
 
@@ -74,7 +82,7 @@ public class Validation {
     public Report getReportOrException(Integer reportId) {
         return reportMapper.findById(reportId).orElseThrow(() -> {
             log.info("Report not found. reportId = {}", reportId);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Report not found. reportId = " + reportId);
         });
     }
 
@@ -87,7 +95,7 @@ public class Validation {
     public Help getHelpOrException(Integer helpId) {
         return helpMapper.findById(helpId).orElseThrow(() -> {
             log.info("Help not found. helpId = {}", helpId);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         });
     }
 
@@ -97,7 +105,7 @@ public class Validation {
             return true;
         } else {
             log.info("Already blocked.");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
@@ -107,7 +115,7 @@ public class Validation {
             log.info("Block not found. " +
                     "blocker = {}" +
                     "blocked = {}", block.getBlocker(), block.getBlocked());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         });
     }
 
@@ -117,7 +125,7 @@ public class Validation {
             log.info("Follow not found. " +
                     "following = {}" +
                     "follower = {}", follow.getFollowing(), follow.getFollower());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         });
     }
 
@@ -133,7 +141,7 @@ public class Validation {
             return member;
         } else {
             log.info("Member is not admin. member.auth = {}", member.getAuth());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
@@ -148,7 +156,7 @@ public class Validation {
                             "comment.postId = {}" +
                             "current postId = {}",
                     comment.getMemberId(), member.getId(), comment.getPostId(), post.getId());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
@@ -157,7 +165,7 @@ public class Validation {
             return true;
         } else {
             log.info("Not valid access. post.memberNickname = {}, current nickname = {}", post.getNickname(), member.getNickname());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
@@ -166,7 +174,7 @@ public class Validation {
             return help;
         } else {
             log.info("Not valid access. help.memberId = {}, current memberId = {}", help.getMemberId(), member.getId());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
@@ -175,7 +183,7 @@ public class Validation {
             return report;
         } else {
             log.info("Not valid access. report.reporter = {}, current member = {}", report.getReporter(), member.getNickname());
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("sample Exception message");
         }
     }
 
