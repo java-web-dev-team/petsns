@@ -1,6 +1,5 @@
 package javawebdev.petsns;
 
-import javassist.NotFoundException;
 import javawebdev.petsns.block.BlockMapper;
 import javawebdev.petsns.block.dto.Block;
 import javawebdev.petsns.comment.CommentMapper;
@@ -8,6 +7,7 @@ import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.follow.FollowMapper;
 import javawebdev.petsns.follow.dto.Follow;
 import javawebdev.petsns.heart.HeartMapper;
+import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.help.HelpMapper;
 import javawebdev.petsns.help.dto.Help;
 import javawebdev.petsns.member.MemberRepository;
@@ -40,9 +40,11 @@ public class Validation {
     private final FollowMapper followMapper;
 
     //  패스워드 유효성 확인
-    public void isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         if (password.contains(" ") || password.equals("")) {
             throw new IllegalArgumentException("Not valid password.");
+        } else {
+            return true;
         }
     }
 
@@ -87,8 +89,10 @@ public class Validation {
     }
 
     // 이미 좋아요했는지 확인
-    public boolean isNotExistentHeart(String nickname, Integer postId) {
-        return heartMapper.findByNicknameAndPostId(nickname, postId).equals(Optional.empty());
+    public void heartOrException(String nickname, Integer postId) {
+        if (!heartMapper.findByNicknameAndPostId(nickname, postId).equals(Optional.empty())) {
+            throw new IllegalArgumentException("Already hearted. nickname = " + nickname + " postId = " + postId);
+        }
     }
 
     // 문의 확인
@@ -126,6 +130,14 @@ public class Validation {
                     "following = {}" +
                     "follower = {}", follow.getFollowing(), follow.getFollower());
             throw new IllegalArgumentException("sample Exception message");
+        });
+    }
+
+    // 하트 확인
+    public Heart getHeartOrException(String nickname, Integer postId) {
+        return heartMapper.findByNicknameAndPostId(nickname, postId).orElseThrow(() -> {
+            log.info("Heart not Found. nickname = {}, postId = {}", nickname, postId);
+            throw new IllegalArgumentException("Heart not Found. nickname = " + nickname + ", postId = " + postId);
         });
     }
 
@@ -184,6 +196,21 @@ public class Validation {
         } else {
             log.info("Not valid access. report.reporter = {}, current member = {}", report.getReporter(), member.getNickname());
             throw new IllegalArgumentException("sample Exception message");
+        }
+    }
+
+    public Heart isValidAccess(Heart heart, Member member, Post post) {
+        if (Objects.equals(member.getNickname(), heart.getNickName()) && Objects.equals(heart.getPostId(), post.getId())) {
+            return heart;
+        } else {
+            log.info("Not valid access. heart.nickname = {}, current member = {}", heart.getNickName(), member.getNickname());
+            throw new IllegalArgumentException(
+                    "Not valid access. heart.nickname = " +
+                    heart.getNickName() +
+                    ", current member = " +
+                    member.getNickname() +
+                    "heart.postId = " +
+                    post.getId());
         }
     }
 
