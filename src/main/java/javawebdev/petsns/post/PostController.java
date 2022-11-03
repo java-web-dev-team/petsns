@@ -49,7 +49,7 @@ public class PostController {
         post.setNickname(name);
         postService.register(post);
         return "redirect:/posts";
-        }
+    }
 
     @GetMapping("/read/{id}")
     public String read(Model model, @PathVariable Integer id){

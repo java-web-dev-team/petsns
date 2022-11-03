@@ -11,6 +11,7 @@ public interface PostMapper {
     List<Post> getPostList();
     Optional<Post> findById(Integer id);
     void insert(Post post);
+    void insertSelectKey(Post post);
 //    List<Post> read(Integer id);
     void update(Post post);
     List<Post> findAll();

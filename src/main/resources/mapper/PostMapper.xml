@@ -11,6 +11,14 @@
         values (#{nickname}, #{content})
     </insert>
 
+    <insert id="insertSelectKey" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into post (nickname, content)
+        values (#{nickname}, #{content})
+    <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+        select last_insert_id() as id
+    </selectKey>
+    </insert>
+
     <select id="findAll" resultType="Post">
         select *
         from post;
