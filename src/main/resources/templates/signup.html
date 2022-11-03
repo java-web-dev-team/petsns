@@ -24,17 +24,17 @@
 
     <form class="login-form" th:action="@{/signUp}" method="post">
       <div class="field">
-        <input id="nickname" type="name" placeholder="nickname" onchange="idCheck()" required />
+        <input id="nickname" name="nickname" type="name" placeholder="nickname" onchange="idCheck()" required />
         <label for="nickname">nickname</label>
       </div>
       &nbsp;<span id="msgId"></span><br>
       <div class="field">
-        <input id="email" type="name" placeholder="Email ex)aaa@aaa.com" onchange="emailCheck()"/>
+        <input id="email" name="email" type="name" placeholder="Email ex)aaa@aaa.com" onchange="emailCheck()"/>
         <label for="email">Email</label>
       </div>
       &nbsp;<span id="msg"></span><br>
       <div class="field">
-        <input id="password" type="password" placeholder="password" onchange="check_pw()" required />
+        <input id="password" name="password" type="password" placeholder="password" onchange="check_pw()" required />
         <label for="password">Password</label>
       </div> <br>
       <div class="field">
@@ -42,7 +42,7 @@
         <label for="passwordCheck">Password</label>
       </div> <br>
       <div class="field">
-        <input id="introduce" type="text" placeholder="introduce" />
+        <input id="introduce" name="introduce" type="text" placeholder="introduce" />
         <label for="introduce">Introduce</label>
       </div>
 
