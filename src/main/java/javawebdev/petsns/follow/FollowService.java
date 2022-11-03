@@ -35,12 +35,12 @@ public class FollowService {
 
     }
 
-    public List<Member> findByFollowing(String following) {
+    public List<Member> getFollowersByFollowing(String following) {
         List<Follow> follows = followMapper.findByFollowing(following);
         return followsToFollowings(follows);
     }
 
-    public List<Member> findByFollower(String follower) {
+    public List<Member> getFollowingsByFollower(String follower) {
         List<Follow> follows = followMapper.findByFollower(follower);
         return followsToFollower(follows);
     }
