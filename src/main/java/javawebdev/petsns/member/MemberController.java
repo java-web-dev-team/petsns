@@ -24,8 +24,6 @@ import java.io.IOException;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
-
     private final Validation validation;
 
 
@@ -35,7 +33,12 @@ public class MemberController {
     }
 
     @GetMapping("/login-form")
-    public String loginForm() {
+    public String loginForm(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "exception", required = false) String exception,
+                            Model model
+                            ) {
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
         return "login-form";
     }
 
@@ -46,50 +49,38 @@ public class MemberController {
 
     @GetMapping("/member/profile/{id}")
     public String profile(Model model, @PathVariable Integer id) {
-        model.addAttribute("member", memberRepository.selectByIdNotOptional(id));
+        model.addAttribute("member", memberService.findById(id));
         return "profile";
     }
 
     @GetMapping("/member/{id}")
     public String updateForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("member", memberRepository.selectByIdNotOptional(id));
+        model.addAttribute("member", memberService.findById(id));
         return "profile-edit";
     }
 
     @PostMapping("/member/modify")
-    public String updateMember(@AuthenticationPrincipal PrincipalDetails userDetails, Member updatedMember) {
-        Member member = memberRepository.findMemberByNickname(userDetails.getName());
+    public String updateMember(@AuthenticationPrincipal UserDetails userDetails, Member updatedMember) {
+        Member member = memberService.findByNickname(userDetails.getUsername());
         updatedMember.setId(member.getId());
         memberService.updateMember(updatedMember);
         return "redirect:/member/profile/" + member.getId();
     }
 
-    /**
-     * 단순 화면 출력이 아닌 데이터를 리턴하고자할 때 사용하는 리턴방식
-     *
-     * @ResponseEntity : 데이터, 상태코드(200, 400, 404, 405, 500 등)를 함께 리턴할 수 있음.
-     * @ResponseBody : 데이터를 리턴할 수 있음.
-     */
     @GetMapping("/member/delete")
-    public String deleteByNickname(@AuthenticationPrincipal UserDetails member) {
-        try {
-            memberService.deleteMember(member.getUsername());
+    public String deleteByNickname(@AuthenticationPrincipal UserDetails userDetails) {
+            memberService.deleteMember(userDetails.getUsername());
             SecurityContextHolder.clearContext();   // 탈퇴 시 로그아웃 처리됌
-
-
-            new ResponseEntity(HttpStatus.OK);
             return "redirect:/login-form";
-        } catch (Exception e) {
-            e.printStackTrace();
-            new ResponseEntity(HttpStatus.BAD_REQUEST);
-            return null;
-        }
     }
 
 
     @PostMapping("/signUp")
     public String register(Member member, Model model) {
-        if(validation.isValidEmail(member.getEmail()) && (memberRepository.findMemberByNickname(member.getNickname()) == null)){
+        if(memberService.isValidNickname(member.getNickname())
+            && memberService.isValidPwd(member.getPassword())
+            && memberService.isValidEmail(member.getEmail())
+            && memberService.expression(member.getEmail())){
             memberService.joinMember(member);
             return "redirect:/login-form";
         }
@@ -98,13 +89,9 @@ public class MemberController {
     }
 
     @RequestMapping("/logout")
-    public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    public void logoutPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         new SecurityContextLogoutHandler().logout(request, null, null);
-        try {
             response.sendRedirect(request.getHeader("referer"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -115,7 +102,7 @@ public class MemberController {
     public int emailCheck(@RequestParam("email") String email) {
         log.info("/emailCheck ----");
         log.info(email);
-        if(validation.isValidEmail(email)){
+        if(memberService.expression(email)){
             int count = memberService.emailCheck(email);
             return count;
         } else {
