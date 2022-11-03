@@ -39,21 +39,7 @@ $(document).ready(function() {
                 formData.append("uploadFiles", files[i]);
             }
 
-        $(".uploadResult").on("click", ".removeBtn", function(e){ //삭제버튼 동작
 
-            var target = $(this);
-            var fileName = target.data("name");
-            var targetDiv = $(this).closest("div");
-
-            console.log(fileName);
-
-            $.post('/removeFile', {fileName: fileName}, function(result){
-                console.log(result);
-                if(result == true){
-                    targetDiv.remove();
-                }
-            })
-        })
 
             //실제 업로드 부분
             //upload ajax
@@ -94,6 +80,23 @@ $(document).ready(function() {
 
         }
 });
+
+$(".uploadResult").on("click", ".removeBtn", function(e){ //삭제버튼 동작
+
+    var target = $(this);
+    var fileName = target.data("name");
+    var targetDiv = $(this).closest("div");
+
+    console.log(fileName);
+
+    $.post('/removeFile', {fileName: fileName}, function(result){
+
+        console.log(result);
+        if(result == true){
+            targetDiv.remove();
+        }
+    })
+})
     </script>
 </body>
 </html>

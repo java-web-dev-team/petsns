@@ -1,0 +1,32 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="javawebdev.petsns.post.UploadMapper">
+
+    <insert id="insert">
+        insert into post_image(uuid, path, img_name, post_id)
+        values (#{uuid}, #{path}, #{imgName}, #{postId})
+    </insert>
+
+    <select id="findAll" resultType="Post">
+        select *
+        from post;
+    </select>
+
+    <select id="findBypid" resultType="UpdateDTO">
+        select *
+        from post_image
+        where post_id = #{post_id};
+    </select>
+
+    <select id="getOldFiles">
+        select
+        from post_id
+        where path = CURRENT_DATE() - INTERVAL 1DAY
+    </select>
+
+    <delete id="delete">
+        DELETE FROM post_image where id = #{id};
+    </delete>
+
+</mapper>

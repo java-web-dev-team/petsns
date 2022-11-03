@@ -1,25 +1,28 @@
 package javawebdev.petsns.post.dto;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+
 @Data
 @AllArgsConstructor
-public class UpdateDTO implements Serializable {
+@NoArgsConstructor
+public class UpdateDTO{
 
-    private String fileName;
+    private String imgName;
     private String uuid;
-    private String folderPath;
+    private String path;
+
+    private int postId;
 
     public String getImageURL() throws UnsupportedEncodingException {
         try{
             return URLEncoder.
-                    encode(folderPath+"/"+uuid+"_"+fileName,"UTF-8");
+                    encode(path +"/"+uuid+"_"+imgName,"UTF-8");
         } catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }
@@ -27,7 +30,7 @@ public class UpdateDTO implements Serializable {
     }
     public String getThumbnailURL() {
         try {
-            return URLEncoder.encode(folderPath + "/s_" + uuid + "_" + fileName, "UTF-8");
+            return URLEncoder.encode(path + "/s_" + uuid + "_" + imgName, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

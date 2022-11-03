@@ -66,7 +66,7 @@ public class UploadController {
         return result;
     }
 
-    @PostMapping("/uploadAjax")
+    @PostMapping("/posts/uploadAjax")
     public ResponseEntity<List<UpdateDTO>> uploadFile(MultipartFile[] uploadFiles){ // uploadFile메서드 -> MultipartFile 배열 받도록-> 여러개의 파일처리
             List<UpdateDTO> UpdateDTOList = new ArrayList<>();
 
@@ -84,13 +84,13 @@ public class UploadController {
                 log.info("fileName : " + fileName);
 
                 //날짜 폴더
-                String folderPath = makeFolder();
+                String path = makeFolder();
 
                 //UUID
                 String uuid = UUID.randomUUID().toString();
 
                 //저장팔 파일 이름 중간에 "-"를 이용해서 구분
-                String saveName = uploadPath + File.separator + folderPath + File.separator + uuid
+                String saveName = uploadPath + File.separator + path + File.separator + uuid
                         + "_" + fileName;
                 Path savePath = Paths.get(saveName);
 
@@ -99,7 +99,7 @@ public class UploadController {
                     uploadFile.transferTo(savePath);
 
                     //썸네일 생성
-                    String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator
+                    String thumbnailSaveName = uploadPath + File.separator + path + File.separator
                              + "s_" + uuid + "_" + fileName;
 
                     // 썸네일 파일 이름은 중간에 s_로 시작하도록
@@ -107,7 +107,7 @@ public class UploadController {
                     // 썸네일 생성
 
                     Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
-                    UpdateDTOList.add(new UpdateDTO(fileName,uuid,folderPath));
+                    UpdateDTOList.add(new UpdateDTO(fileName,uuid,path,0));
                 } catch (IOException e){
                     e.printStackTrace();
                 }
@@ -129,7 +129,7 @@ public class UploadController {
         return folderPath;
     }
 
-        @PostMapping("/remove")
+        @PostMapping("/removeFile")
         public ResponseEntity<Boolean> removeFile(String fileName){
 
         String srcFileName = null;
