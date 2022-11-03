@@ -1,8 +1,10 @@
 package javawebdev.petsns.member;
 
+import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,10 +20,13 @@ import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+
+    private final Validation validation;
 
 
     @GetMapping("/")
@@ -36,7 +41,7 @@ public class MemberController {
 
     @GetMapping("/register")
     public String registerForm() {
-        return "registertest";
+        return "signup";
     }
 
     @GetMapping("/member/profile/{id}")
@@ -55,7 +60,6 @@ public class MemberController {
     public String updateMember(@AuthenticationPrincipal PrincipalDetails userDetails, Member updatedMember) {
         Member member = memberRepository.findMemberByNickname(userDetails.getName());
         updatedMember.setId(member.getId());
-        System.out.println("updatedMember = " + updatedMember);
         memberService.updateMember(updatedMember);
         return "redirect:/member/profile/" + member.getId();
     }
@@ -69,8 +73,6 @@ public class MemberController {
     @GetMapping("/member/delete")
     public String deleteByNickname(@AuthenticationPrincipal UserDetails member) {
         try {
-            System.out.println("member = " + member);
-            System.out.println("member.getUsername() = " + member.getUsername());
             memberService.deleteMember(member.getUsername());
             SecurityContextHolder.clearContext();   // 탈퇴 시 로그아웃 처리됌
 
@@ -86,9 +88,13 @@ public class MemberController {
 
 
     @PostMapping("/signUp")
-    public String register(Member member) {
-        memberService.joinMember(member);
-        return "redirect:/login-form";
+    public String register(Member member, Model model) {
+        if(validation.isValidEmail(member.getEmail()) && (memberRepository.findMemberByNickname(member.getNickname()) == null)){
+            memberService.joinMember(member);
+            return "redirect:/login-form";
+        }
+        model.addAttribute("regiCheck", "닉네임, 이메일 중복확인을 진행해 주세요.");
+        return "signup";
     }
 
     @RequestMapping("/logout")
@@ -101,10 +107,32 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/emailCheck")
+    /**
+     * 이메일 중복 체크
+     */
     @ResponseBody
-    public Member emailCheck(@RequestParam("email") String email) {
-        return memberRepository.findMemberByEmail(email);
+    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST)
+    public int emailCheck(@RequestParam("email") String email) {
+        log.info("/emailCheck ----");
+        log.info(email);
+        if(validation.isValidEmail(email)){
+            int count = memberService.emailCheck(email);
+            return count;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * 닉네임 중복 체크
+     */
+    @ResponseBody
+    @RequestMapping(value = "/idCheck", method = RequestMethod.POST)
+    public int idCheck(@RequestParam("nickname") String nickname) {
+        log.info("/idCheck ----");
+        log.info(nickname);
+        int count = memberService.idCheck(nickname);
+        return count;
     }
 }
 

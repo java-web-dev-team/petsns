@@ -70,11 +70,23 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
+    public int emailCheck(String email) {
+        return memberRepository.emailCheck(email);
+    }
+
+    @Override
+    public int idCheck(String nickname) {
+        return memberRepository.idCheck(nickname);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String nickname){
         log.info("loadUserByName: " + nickname);
         Member member = memberRepository.selectMemberByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
         return new User(member.getNickname(), member.getPassword(), Arrays.asList(new SimpleGrantedAuthority(member.getAuth())));
     }
+
+
 
 
 }
