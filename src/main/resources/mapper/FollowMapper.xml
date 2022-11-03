@@ -5,7 +5,7 @@
 
     <insert id="save">
         insert into follow (follow_ing, follow_er, registered_at)
-        values (#{following}, #{follower}, #{registerd_at});
+        values (#{following}, #{follower}, #{registeredAt});
     </insert>
 
     <delete id="delete">
