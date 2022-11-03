@@ -34,8 +34,8 @@
     </select>
 
     <insert id="insertMember" parameterType="Member">
-        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email, auth)
-        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email}, #{auth});
+        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email)
+        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email});
     </insert>
 
     <delete id="deleteMember">
@@ -74,6 +74,18 @@
     <select id="findAll" resultType="Member">
         select *
         from member;
+    </select>
+
+    <select id="emailCheck" resultType="Integer" parameterType="String">
+        SELECT count(*)
+        FROM snsdb.member
+        WHERE email = #{email};
+    </select>
+
+    <select id="idCheck" resultType="Integer" parameterType="String">
+        SELECT count(*)
+        FROM snsdb.member
+        WHERE nickname = #{nickname};
     </select>
 
 

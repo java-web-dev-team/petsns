@@ -19,10 +19,14 @@ repositories {
 }
 
 dependencies {
+
+//    Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.18'
 
@@ -39,6 +43,9 @@ dependencies {
 //    OAuth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.4'
     implementation 'org.springframework.security:spring-security-oauth2-jose:5.7.3'
+
+//    JSON
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 tasks.named('test') {

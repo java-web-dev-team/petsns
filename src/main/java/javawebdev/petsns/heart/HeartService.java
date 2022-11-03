@@ -1,6 +1,7 @@
 package javawebdev.petsns.heart;
 
 import javawebdev.petsns.Validation;
+import javawebdev.petsns.member.MemberRepository;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.post.dto.Post;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class HeartService {
 
     private final HeartMapper heartMapper;
 
+    private final MemberRepository memberRepository;
     private final Validation validation;
 
     public Heart save(Integer postId, String nickName) throws Exception {
@@ -43,14 +47,22 @@ public class HeartService {
         return heartMapper.findByNickName(nickName);
     }
 
-    public List<Heart> findByPostId(Integer postId) {
-
-        return heartMapper.findByPostId(postId);
+    public List<Member> getMembersByPostId(Integer postId) {
+        List<Heart> hearts = heartMapper.findByPostId(postId);
+        return heartsToMembers(hearts);
     }
 
     public List<Heart> findOne(Integer postId) {
 
         return heartMapper.findByPostId(postId);
+    }
+
+    private List<Member> heartsToMembers(List<Heart> hearts) {
+        List<Member> members = new ArrayList<>();
+        for (Heart heart : hearts) {
+            members.add(validation.getMemberOrException(heart.getNickName()));
+        }
+        return members;
     }
 
 }
