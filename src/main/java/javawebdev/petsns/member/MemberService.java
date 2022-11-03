@@ -10,12 +10,23 @@ public interface MemberService {
 
     Member findByNickname(String nickname);
 
+    Member findById(Integer id);
+
     void deleteMember(String nickname);
 
     int emailCheck(String email);
 
     int idCheck(String nickname);
 
+    boolean isValidNickname(String nickname);
+
+    boolean isValidEmail(String email);
+
+    boolean isValidPwd(String password);
+
+    boolean expression(String email);
 
 
 }
+
+
