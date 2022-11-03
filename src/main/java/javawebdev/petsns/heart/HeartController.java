@@ -25,7 +25,7 @@ public class HeartController {
         return "redirect:/posts/{postId}";
     }
 
-    @DeleteMapping("/}")
+    @DeleteMapping("/")
     public String delete(@PathVariable Integer postId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
         Member member = memberService.findByNickname(userDetails.getUsername());
         heartService.delete(postId, member.getNickname());
