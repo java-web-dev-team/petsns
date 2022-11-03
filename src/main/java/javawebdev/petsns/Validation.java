@@ -41,11 +41,7 @@ public class Validation {
 
     //  패스워드 유효성 확인
     public boolean isValidPassword(String password) {
-        if (password.contains(" ") || password.equals("")) {
-            throw new IllegalArgumentException("Not valid password.");
-        } else {
-            return true;
-        }
+        return !password.contains(" ") && !password.equals("");
     }
 
     // 유저 확인(id)
