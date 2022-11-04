@@ -2,7 +2,6 @@ package javawebdev.petsns;
 
 import javawebdev.petsns.member.handler.ClubLoginSuccessHandler;
 import javawebdev.petsns.member.PrincipalOauth2MemberService;
-import javawebdev.petsns.member.handler.customFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -53,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/login")
                     .usernameParameter("nickname")
                     .passwordParameter("password")
-                    .failureHandler(customFailureHandler())
                     .permitAll();
 
 
@@ -77,11 +74,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new ClubLoginSuccessHandler();
     }
 
-    @Bean
-    public AuthenticationFailureHandler customFailureHandler(){
-        return new customFailureHandler();
-    }
-
 
 }
-
