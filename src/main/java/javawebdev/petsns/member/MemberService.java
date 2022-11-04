@@ -26,7 +26,7 @@ public interface MemberService {
 
     boolean expression(String email);
 
-
+    void updateMember(String password, Integer id);
 }
 
 

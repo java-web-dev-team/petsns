@@ -26,16 +26,20 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     public void joinMember(Member member){
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setPassword(passwordEncoder.encode(member.getPassword()) );
         memberRepository.insertMember(member);
     }
 
     @Override
     public Member updateMember(Member member){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.updateMember(member);
         return member;
+    }
+
+    public void updateMember(String password, Integer id){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String changedPwd = passwordEncoder.encode(password);
+        memberRepository.updatePwd(changedPwd, id);
     }
 
     @Override

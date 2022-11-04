@@ -12,6 +12,19 @@ spring:
       max-request-size: 30MB #한 번에 최대 업로드 가능 용량
       max-file-size: 10MB # 파일 하나의 최대 크기
 
+    multipart2:
+      enabled: true
+      location: /Users/profileImg
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+    devtools:       # 등록한 프로필 사진을 바로 보여주는 설정
+      livereload:
+        enabled: true
+      remote:
+        restart:
+          enabled: true
+
   security:
     oauth2:
       client:
@@ -21,13 +34,13 @@ spring:
             client-id: 709627835975-csuqklg0dv8onspg1uq4l8vp4lebni6v.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-        provider:
-          #KAKAO
-          kakao:
-            authorization_uri: https://kauth.kakao.com/oauth/authorize
-            token_uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kauth.kakao.com/oauth/v2/user/me
-            user_name_attribute: id
+#        provider:
+#          #KAKAO
+#          kakao:
+#            authorization_uri: https://kauth.kakao.com/oauth/authorize
+#            token_uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kauth.kakao.com/oauth/v2/user/me
+#            user_name_attribute: id
 
 custom:
   oauth2:
@@ -46,3 +59,5 @@ mybatis:
 
 upload:
   path: '/Users/upload'
+
+  path2: '/Users/profileImg/'

@@ -57,6 +57,32 @@ function emailCheck(){
     })
 }
 
+// 비밀번호 체크
+function pwdCheck(){
+    const password = $("#pwd").val();
+    const token = $("meta[name='_csrf']").attr("content");      // html 에 저장된 meta 값 불러오기 , 내용에 content 저장
+    const header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        url: "/pwdCheck",
+        data: {password, password},
+        type: "post",
+        beforeSend : function(xhr){
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(result){
+            if(result == 1){
+                $("#pwdMsg").html("현재 비밀번호와 같습니다.");
+                $("#pwdMsg").css("color", "green");
+            } else{
+                $("#pwdMsg").html("현재 비밀번호와 다릅니다.");
+                $("#pwdMsg").css("color", "red");
+            }
+        }
+
+    })
+}
+
 function check_pw(){
     if (document.getElementById("password").value > 0) {
         document.getElementById("password").style.color = 'green';

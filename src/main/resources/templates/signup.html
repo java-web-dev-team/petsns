@@ -23,6 +23,7 @@
     <h3 th:text="${regiCheck}" style="color: red"></h3>
 
     <form class="login-form" th:action="@{/signUp}" method="post">
+
       <div class="field">
         <input id="nickname" name="nickname" type="name" placeholder="nickname" onchange="idCheck()" required />
         <label for="nickname">nickname</label>
