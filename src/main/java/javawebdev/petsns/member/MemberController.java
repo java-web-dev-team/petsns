@@ -74,18 +74,30 @@ public class MemberController {
 
     @PostMapping("/member/modify")
     public String updateMember(@AuthenticationPrincipal UserDetails userDetails, Member updatedMember) {
-        Member member = memberService.findByNickname(userDetails.getUsername());
-        updatedMember.setId(member.getId());
+        Integer id = memberService.findByNickname(userDetails.getUsername()).getId();
+        updatedMember.setId(id);
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/" + member.getId();
+        return "redirect:/member/profile/" + id;
     }
 
     @PostMapping("/member/modify/pwd")
-    public String updatePwd(@AuthenticationPrincipal UserDetails userDetails, String password){
+    public String updatePwd(@AuthenticationPrincipal UserDetails userDetails, String pwd, String password, String passwordCheck, Model model){
         Member member = memberService.findByNickname(userDetails.getUsername());
+        System.out.println("pwd = " + pwd);
         System.out.println("password = " + password);
-        memberService.updateMember(password, member.getId());
-        return "redirect:/member/profile/" + member.getId();
+        System.out.println("passwordCheck = " + passwordCheck);
+        if(pwd.equals(password)){
+            model.addAttribute("pwdCheckMsg", "현재 비밀번호와 같습니다. 다른 비밀번호로 변경해주세요.");
+            return "redirect:/pwdChange";
+        }
+
+        if((!pwd.equals(password)) && (password.equals(passwordCheck))) {
+            memberService.updateMember(password, member.getId());
+            return "redirect:/member/profile/" + member.getId();
+        } else{
+            model.addAttribute("pwdCheckMsg", "바꿀 비밀번호와 바꿀 비밀번호 체크가 다릅니다. 다시 확인해 주세요.");
+            return "redirect:/pwdChange";
+        }
     }
 
     @PostMapping("/member/profile/modify/{nickname}")
