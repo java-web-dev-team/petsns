@@ -34,13 +34,26 @@ spring:
             client-id: 709627835975-csuqklg0dv8onspg1uq4l8vp4lebni6v.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-#        provider:
-#          #KAKAO
-#          kakao:
-#            authorization_uri: https://kauth.kakao.com/oauth/authorize
-#            token_uri: https://kauth.kakao.com/oauth/token
-#            user-info-uri: https://kauth.kakao.com/oauth/v2/user/me
-#            user_name_attribute: id
+
+#java mailSender
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: testcodevv
+    password: zesafjnbgjaxhtow
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+              enable: true
+    transport:
+        protocol: smtp
+    debug: true
+    default:
+        encoding: UTF-8
+
+
 
 custom:
   oauth2:
@@ -61,3 +74,4 @@ upload:
   path: '/Users/upload'
 
   path2: '/Users/profileImg/'
+

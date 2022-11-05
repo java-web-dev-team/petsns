@@ -4,6 +4,8 @@ import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -22,6 +25,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     private final MemberRepository memberRepository;
     private final Validation validation;
 
+    private final JavaMailSender javaMailSender;
     @Override
     public void joinMember(Member member){
 
@@ -105,6 +109,22 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         return validation.isValidPassword(password);
     }
 
+    @Override
+    public String mailSend(String email) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+
+        simpleMailMessage.setTo(email);         // 이메일 보낼 대상
+        simpleMailMessage.setSubject("인증번호 제목");
+        simpleMailMessage.setText(randomInt() + " ");
+
+        javaMailSender.send(simpleMailMessage);
+        return randomInt() + "";
+    }
+
+    public static int randomInt(){
+        int unit = (int)((Math.random() * 999999 - 100000 + 1) + 100000);
+        return unit;
+    }
 
 }
 
