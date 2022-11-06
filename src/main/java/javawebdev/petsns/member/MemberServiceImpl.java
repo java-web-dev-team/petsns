@@ -112,13 +112,14 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     @Override
     public String mailSend(String email) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        String random = randomInt() + "";
 
         simpleMailMessage.setTo(email);         // 이메일 보낼 대상
         simpleMailMessage.setSubject("인증번호 제목");
-        simpleMailMessage.setText(randomInt() + " ");
+        simpleMailMessage.setText(random);
 
         javaMailSender.send(simpleMailMessage);
-        return randomInt() + "";
+        return random;
     }
 
     public static int randomInt(){

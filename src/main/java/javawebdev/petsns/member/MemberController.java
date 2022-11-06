@@ -227,7 +227,7 @@ public class MemberController {
         return savePath;
     }
 
-    @GetMapping("/email/Certification/")
+    @RequestMapping(value = "/email/Certification", method = RequestMethod.POST)
     @ResponseBody
     public String emailCertification(@RequestParam("email") String email){
         log.info("email 인증 메일이 들어옴 email -> " + email);
