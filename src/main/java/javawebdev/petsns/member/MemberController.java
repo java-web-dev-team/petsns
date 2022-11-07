@@ -1,6 +1,7 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ import java.util.UUID;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PostService postService;
 
     @Value("${upload.path2}")
     private String getUpLoadPath;
@@ -65,8 +67,12 @@ public class MemberController {
     }
 
     @GetMapping("/member/profile/{id}")
-    public String MyProfile(Model model, @PathVariable Integer id) {
-        model.addAttribute("member", memberService.findById(id));
+    public String MyProfile(Model model, @PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        Member me = memberService.findByNickname(userDetails.getUsername());
+        Member member = memberService.findById(id);
+        model.addAttribute("isMe", memberService.isMyProfile(me.getNickname(), member.getNickname()));
+        model.addAttribute("member", member);
+        model.addAttribute("posts", postService.getPosts(member.getId()));
         return "profile";
     }
 
@@ -146,7 +152,7 @@ public class MemberController {
     @RequestMapping("/logout")
     public void logoutPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         new SecurityContextLogoutHandler().logout(request, null, null);
-        response.sendRedirect(request.getHeader("referer"));
+        response.sendRedirect("/");
     }
 
     /**

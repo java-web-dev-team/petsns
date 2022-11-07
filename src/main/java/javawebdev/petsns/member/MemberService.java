@@ -10,6 +10,8 @@ public interface MemberService {
 
     Member findByNickname(String nickname);
 
+    boolean isMyProfile(String myNickname, String nickname);
+
     Member findById(Integer id);
 
     void deleteMember(String nickname);
@@ -35,6 +37,7 @@ public interface MemberService {
     Member findByNicknameValid(String nickname);
 
     Member findByNicknameValid(Integer id);
+
 }
 
 

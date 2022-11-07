@@ -45,7 +45,7 @@
                 <!--유저 이름-->
                 <div class="profile-user-settings">
                     <h1 class="profile-user-name" th:text="${member.nickname}"></h1>
-                    <button class="btn profile-edit-btn"><a th:href="@{/member/{id} (id = ${member.id})}">프로필 편집</a></button>
+                    <button th:if="${isMe}" class="btn profile-edit-btn"><a th:href="@{/member/{id} (id = ${member.id})}">프로필 편집</a></button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
 
@@ -68,65 +68,67 @@
         <div class="container">
             <div class="gallery">
 
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat1.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">
+                <!--/*@thymesVar id="posts" type="java.util.List<javawebdev.petsns.post.dto.PostVO>"*/-->
+                <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
+                <div th:each="post:${posts}" class="gallery-item" tabindex="0">
+                    <img th:scr="${post.updateDTOS.get(0).path}" style= "width:285px; height:285px;" class="gallery-image" alt="">
                     <div class="gallery-item-info">
                         <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+                            <li th:value="${post.hearts.size()}" class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 0</li>
+                            <li th:value="${post.comments.size()}" class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
                         </ul>
                     </div>
                 </div>
     
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat2.png" style= "width:285px; height:285px;" class="gallery-image" alt="">
-                    <div class="gallery-item-info">
-                        <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat3.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">
-                    <div class="gallery-item-info">
-                        <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-                        </ul>
-                    </div>
-                </div>
+<!--                <div class="gallery-item" tabindex="0">-->
+<!--                    <img src="/templates/img/cat2.png" style= "width:285px; height:285px;" class="gallery-image" alt="">-->
+<!--                    <div class="gallery-item-info">-->
+<!--                        <ul>-->
+<!--                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>-->
+<!--                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--    -->
+<!--                <div class="gallery-item" tabindex="0">-->
+<!--                    <img src="/templates/img/cat3.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">-->
+<!--                    <div class="gallery-item-info">-->
+<!--                        <ul>-->
+<!--                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>-->
+<!--                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat4.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">
-                    <div class="gallery-item-info">
-                        <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-                        </ul>
-                    </div>
-                </div>
+<!--                <div class="gallery-item" tabindex="0">-->
+<!--                    <img src="/templates/img/cat4.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">-->
+<!--                    <div class="gallery-item-info">-->
+<!--                        <ul>-->
+<!--                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>-->
+<!--                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat5.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">
-                    <div class="gallery-item-info">
-                        <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-                        </ul>
-                    </div>
-                </div>
+<!--                <div class="gallery-item" tabindex="0">-->
+<!--                    <img src="/templates/img/cat5.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">-->
+<!--                    <div class="gallery-item-info">-->
+<!--                        <ul>-->
+<!--                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>-->
+<!--                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="gallery-item" tabindex="0">
-                    <img src="/templates/img/cat6.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">
-                    <div class="gallery-item-info">
-                        <ul>
-                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>
-                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>
-                        </ul>
-                    </div>
-                </div>
+<!--                <div class="gallery-item" tabindex="0">-->
+<!--                    <img src="/templates/img/cat6.jpg" style= "width:285px; height:285px;" class="gallery-image" alt="">-->
+<!--                    <div class="gallery-item-info">-->
+<!--                        <ul>-->
+<!--                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>-->
+<!--                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
 
         </div>
 			</div>

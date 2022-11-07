@@ -25,6 +25,7 @@ public class PostController {
     public String getPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         Member member = memberService.findByNickname(userDetails.getUsername());
         List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
+        model.addAttribute("member", member);
         model.addAttribute("posts", myFollowingPosts);
         return "/post/main";
     }

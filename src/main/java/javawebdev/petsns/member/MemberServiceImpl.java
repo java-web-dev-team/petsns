@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -63,6 +64,11 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     @Override
     public Member findByNicknameValid(Integer id){
         return validation.getMemberOrException(id);
+    }
+
+    @Override
+    public boolean isMyProfile(String myNickname, String nickname) {
+        return Objects.equals(myNickname, nickname);
     }
 
     @Override
