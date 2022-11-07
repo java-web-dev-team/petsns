@@ -21,8 +21,13 @@ public class UpdateDTO{
     private Integer postId;
 
     public String getImageURL() throws UnsupportedEncodingException {
-        return URLEncoder.encode(path +"/" + postId + "/" +uuid+"_"+imgName, StandardCharsets.UTF_8);
+        return URLEncoder.encode(path + "/" + uuid + "_" + imgName, StandardCharsets.UTF_8);
     }
+
+    public String getImagePath() {
+        return path + "/" + uuid + "_" + imgName;
+    }
+
     public String getThumbnailURL() {
         return URLEncoder.encode(path + "/" + postId + "/s_" + uuid + "_" + imgName, StandardCharsets.UTF_8);
     }
