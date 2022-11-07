@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,8 +46,23 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
+    public void updateProfileImg(String Img, Integer id) {
+        memberRepository.updateProfileImg(Img, id);
+    }
+
+    @Override
     public Member findByNickname(String nickname) {
         return memberRepository.selectMember(nickname);
+    }
+
+    @Override
+    public Member findByNicknameValid(String nickname){
+        return validation.getMemberOrException(nickname);
+    }
+
+    @Override
+    public Member findByNicknameValid(Integer id){
+        return validation.getMemberOrException(id);
     }
 
     @Override
@@ -109,22 +123,37 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         return validation.isValidPassword(password);
     }
 
+    /**
+     * 메일 발송
+     */
     @Override
-    public String mailSend(String email) {
+    public StringBuffer mailSend(String email) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        String random = randomInt() + "";
+        StringBuffer random = randomString();
 
         simpleMailMessage.setTo(email);         // 이메일 보낼 대상
         simpleMailMessage.setSubject("인증번호 제목");
-        simpleMailMessage.setText(random);
+        simpleMailMessage.setText(String.valueOf(random));
 
         javaMailSender.send(simpleMailMessage);
         return random;
     }
 
-    public static int randomInt(){
-        int unit = (int)((Math.random() * 999999 - 100000 + 1) + 100000);
-        return unit;
+    /** 난수 생성 */
+    public static StringBuffer randomString(){
+
+        Random rnd = new Random();
+        StringBuffer buffer = new StringBuffer();
+
+        for(int i=0; i<7; i++){
+            if(rnd.nextBoolean()){                  // rnd.nextBoolean() 는 랜덤으로 true, false 를 리턴
+                buffer.append((char)((Math.random() * 26) + 65));     // 랜덤한 대문자를 추가
+            } else{
+                buffer.append(rnd.nextInt(10));               // 랜덤한 숫자를 추가
+            }
+        }
+
+        return buffer;
     }
 
 }

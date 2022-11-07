@@ -1,28 +1,29 @@
 package javawebdev.petsns.member;
 
-import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.Member;
-import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -33,6 +34,9 @@ import java.util.UUID;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @Value("${upload.path2}")
+    private String getUpLoadPath;
 
 
     @GetMapping("/")
@@ -187,16 +191,26 @@ public class MemberController {
         return count;
     }
 
-    @Value("${upload.path2}")       //      /Users/profileImg
-    private String upLoadPath;
-
 
     /**
-     * 회원 프로필 사진 등록
+     * 이메일 인증 구현
+     */
+    @RequestMapping(value = "/email/Certification", method = RequestMethod.POST)
+    @ResponseBody
+    public StringBuffer emailCertification(@RequestParam("email") String email) {
+        log.info("email 인증 메일이 들어옴 email -> " + email);
+        StringBuffer randomInt = memberService.mailSend(email);
+        log.info("randomInt = " + randomInt);
+        return randomInt;
+    }
+
+    /**
+     * 회원 프로필 사진 생성, Ajax
      */
     @PostMapping("/memberImg/upload")
-    public Path upLoadImg(MultipartFile uploadFiles) {
+    public Path upLoadImg(MultipartFile uploadFiles, @AuthenticationPrincipal UserDetails userDetails) {
 
+        Member member = memberService.findByNickname(userDetails.getUsername());
 
         // 지원하지 않는 이미지 형식
         if (uploadFiles.getContentType().startsWith("image") == false) {
@@ -214,7 +228,7 @@ public class MemberController {
         String uuid = UUID.randomUUID().toString();
 
         //저장할 파일 이름 중간에 "_" 를 이용해서 구분
-        String saveName = upLoadPath + File.separator + uuid + "_" + fileName;
+        String saveName = getUpLoadPath + File.separator + uuid + "_" + fileName;
 
         Path savePath = Paths.get(saveName);
 
@@ -227,13 +241,29 @@ public class MemberController {
         return savePath;
     }
 
-    @RequestMapping(value = "/email/Certification", method = RequestMethod.POST)
-    @ResponseBody
-    public String emailCertification(@RequestParam("email") String email){
-        log.info("email 인증 메일이 들어옴 email -> " + email);
-        String randomInt = memberService.mailSend(email);
-        log.info("randomInt = " + randomInt);
-        return randomInt;
+    @GetMapping("/memberImg/display")
+    public ResponseEntity<byte[]> getProfileImgFile(String fileName){
+        ResponseEntity<byte[]> result = null;
+
+        try{
+            String srcFileName = URLEncoder.encode(fileName, "UTF-8");
+            log.info("profileImgFile : " + srcFileName);
+
+            File file = new File(getUpLoadPath + File.separator + srcFileName);
+
+            log.info("file : " + file);
+
+            HttpHeaders header = new HttpHeaders();
+
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+        } catch(Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return result;
     }
 }
 

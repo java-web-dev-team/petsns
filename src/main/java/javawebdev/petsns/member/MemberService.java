@@ -28,7 +28,13 @@ public interface MemberService {
 
     void updateMember(String password, Integer id);
 
-    String mailSend(String email);
+    void updateProfileImg(String Img, Integer id);
+
+    StringBuffer mailSend(String email);
+
+    Member findByNicknameValid(String nickname);
+
+    Member findByNicknameValid(Integer id);
 }
 
 

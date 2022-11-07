@@ -37,7 +37,6 @@ function emailCheck(){
         type:"POST",
         data:{email : email},
         url: "/emailCheck",
-        async:false,
         beforeSend : function(xhr){
             xhr.setRequestHeader(header, token);
         },
@@ -108,7 +107,6 @@ function mail_post_btn() {
             url: "/email/Certification",         // GET 방식이라 뒤에 url 붙이기 가능.
             type: "POST",
             data: {email: email},
-            async: false,
             beforeSend(xhr){
                 xhr.setRequestHeader(header, token);
             },
@@ -134,4 +132,8 @@ function mail_certification_check(){
         target.disabled = true;
     }
 
+}
+
+function alert(){
+    alert("CC");
 }

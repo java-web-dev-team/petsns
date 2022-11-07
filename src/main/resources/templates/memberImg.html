@@ -16,21 +16,20 @@
 <body>
 <div class="container">
     <div class="box">
-        <img alt="" src="img/login-logo.png">
+        <img alt="" src="/img/login-logo.png">
         <p>회원가입 후 친구들에게 반려동물을 자랑해보세요!</p>
 
         <form class="login-form" th:action="@{/member/profile/modify/{nickname} (nickname = ${member.nickname})}" method="post">
 
 <!--            이미지 업로드 -->
 
+            <
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
+                <input type="file" name="uploadFiles" onclick="profileUploadBtn()" />
                 <input id="nickname" name="nickname" type="hidden" th:value="${member.nickname}" />
                 <input id="email" name="email" type="hidden" th:value="${member.email}"/>
 
-                <input id="introduce" name="introduce" type="text" />
-
-            <button class="login-button" title="login">계속</button>
+            <button class="login-button" title="login" onclick="alert()">계속</button>
 
             <div class="separator">
                 <div class="line"></div>
