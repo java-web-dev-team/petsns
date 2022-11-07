@@ -465,8 +465,8 @@
     <div style="margin-bottom: 50px;">A N I P I C</div>
     <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
     <div><img src="/img/foot2.png" style="width:25px;"> 알    람</div>
-    <div><img src="/img/foot3.png" style="width:25px;"> <a href="/posts/post-form">게시물작성</a></button></div>
-    <div><img src="/img/foot4.png" style="width:25px;"> 마이프로필</div>
+    <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
+    <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{id} (id = ${member.id})}">마이프로필</a></div>
     <div><img src="/img/foot2.png" style="width:25px;">
         <input type="text" style="border: white; border-bottom: outset; width: 100px;">
     </div>
@@ -478,24 +478,26 @@
 <div class="main_body">
     <article>
         <div class="empty_box"></div>
-        <div class="feed">
+        <div class="feed" th:each="post:${posts}">
             <div class="feed_id">
                 <div class="id_round">
                     <div class="id_box">
                         <div class="id_box_img">
-                            <img class="id_img" src="img/picture8.png" alt="userphoto">
+                            <img class="id_img" alt="userphoto">
                         </div>
                         <div class="id_container">
-                            <div class="id_name">userid</div>
+                            <div class="id_name" th:value="${post.nickname}">userid</div>
                         </div>
                     </div>
                     <div class="more_details">
                         <img src="/img/more.png" alt="더보기">
+<!--                        TODO: 더보기 -> 삭제 및 신고 활성화 필요-->
                     </div>
                 </div>
             </div>
             <div class="feed_picture">
-                <img src="/img/cat6.jpg" alt="피드 사진">
+                <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
+                <img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}" alt="피드 사진">
             </div>
             <!--feedbottom-->
             <div class="feed_bottom">
@@ -503,34 +505,34 @@
                     <div class="emoticon_box2">
                         <div class="heart_box">
                             <img class="heart" src="/img/heart.png" alt="하트">
+<!--                            TODO: 좋아요 버튼 구현 필요-->
                         </div>
                         <div class="comment_box">
-                            <img class="coment" src="/img/comment.png" alt="코멘트" />
+                            <a th:href="@{/posts/{id} (id = post.id)}"><img class="coment" src="/img/comment.png" alt="코멘트" /></a>
                         </div>
                     </div>
                 </div>
             </div>
             <!--/feedbottom-->
             <div class="feed_like_box">
-                <div class="feed_like">s_sewon님 외 263명이 좋아합니다.</div>
+                <div th:value="${post.hearts.get(0)} + 외 + ${post.hearts.size()} + 명이 좋아합니다." class="feed_like">s_sewon님 외 263명이 좋아합니다.</div>
             </div>
             <div class="feed_article">
                 <div class="feed_article_box">
                     <div class="comments_container">
-                        <div class="comments">s_sewon 귀여운 냥이 산책</div>
+                        <div class="comments" th:value="${post.content}">s_sewon 귀여운 냥이 산책</div>
                         <div class="comments1">더 보기</div>
+<!--                        TODO: 댓글 펼쳐보기-->
                     </div>
                     <div class="comments1">댓글 <span id="count"></span> 모두 보기</div>
                     <div class="comments1_box">
-                        <div class="comments">sunmerrr 고양이 너무 귀여워요</div>
-                        <div class="comments">aida_shin.y 너무 귀엽다</div>
-                        <div class="comments">dooreplay 짱귀엽다</div>
+                        <div class="comments" th:value="${post.comments.get(0)}">sunmerrr 고양이 너무 귀여워요</div>
                     </div>
                     <div class="new_comments">
                     </div>
-                    <div class="comments2">1일 전</div>
                 </div>
             </div>
+            <form th:action="@{/posts/{postId}/comments (postId = post.id)}" th:method="POST">
             <div class="inputContainer">
                 <div class="type_comment">
                     <input class="inputBox" type="text" placeholder="댓글 달기...">
@@ -539,6 +541,7 @@
             <button class="buttonBox" type="summit">게시</button>
           </span>
             </div>
+            </form>
         </div>
     </article>
 </div>
