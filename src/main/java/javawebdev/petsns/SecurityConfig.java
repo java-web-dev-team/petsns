@@ -2,6 +2,7 @@ package javawebdev.petsns;
 
 import javawebdev.petsns.member.handler.ClubLoginSuccessHandler;
 import javawebdev.petsns.member.PrincipalOauth2MemberService;
+import javawebdev.petsns.member.handler.customFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -26,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         {
             web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+            web.ignoring().antMatchers("/favicon.ico", "/resources/**", "/error");
         }
     }
 
@@ -34,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         {
             http.authorizeRequests()
-                    .antMatchers("/register", "/login-form", "/signUp", "/img/**", "/login", "/emailCheck", "/idCheck").permitAll()
+                    .antMatchers("/register", "/login-form", "/signUp", "/img/**", "/login", "/emailCheck", "/idCheck", "/memberImg/**", "/memberImg/img/**", "/member/profile/modify/*", "/email/Certification/**").permitAll()
                     .anyRequest()
                     .authenticated();       // 나머지 모든 요청은 권한종류 상관없이 권한이 있어야 접근가능
 
@@ -51,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/login")
                     .usernameParameter("nickname")
                     .passwordParameter("password")
+                    .failureHandler(customFailureHandler())
                     .permitAll();
 
 
@@ -74,5 +78,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new ClubLoginSuccessHandler();
     }
 
+    @Bean
+    public AuthenticationFailureHandler customFailureHandler(){
+        return new customFailureHandler();
+    }
 
 }

@@ -52,10 +52,21 @@
     <update id="updateMember" parameterType="Member">
         UPDATE snsdb.member
         SET nickname  = #{nickname},
-            password  = #{password},
             introduce = #{introduce},
             update_at = NOW(),
             email     = #{email}
+        WHERE id = #{id};
+    </update>
+
+    <update id="updatePwd" parameterType="Member">
+        UPDATE snsdb.member
+        SET password = #{password}
+        WHERE id = #{id};
+    </update>
+
+    <update id="updateProfileImg" parameterType="Member">
+        UPDATE snsdb.member
+        SET profileImg = ${profileImg}
         WHERE id = #{id};
     </update>
 

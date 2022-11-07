@@ -29,6 +29,8 @@ public class Member implements UserDetails {
 
     private String auth;
 
+    private String profileImg;
+
     private Map<String, Object> attributes;
 
     public Member() {
@@ -50,14 +52,15 @@ public class Member implements UserDetails {
         this.auth = auth;
     }
 
-    public Member(String nickname, String password, String introduce, String email, String auth, Map<String, Object> attributes) {
+    public Member(Integer id, String nickname, String password, String introduce, LocalDateTime update_at, String email, String auth, String profileImg) {
+        this.id = id;
         this.nickname = nickname;
         this.password = password;
         this.introduce = introduce;
-        this.update_at = LocalDateTime.now();
+        this.update_at = update_at;
         this.email = email;
         this.auth = auth;
-        this.attributes = attributes;
+        this.profileImg = profileImg;
     }
 
     @Override

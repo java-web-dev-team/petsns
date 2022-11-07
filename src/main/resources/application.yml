@@ -8,9 +8,22 @@ spring:
   servlet:
     multipart:
       enabled: true #파일 업로드 가능여부
-      location: /Users/kimgeonwoo/Desktop/upload #업로드된 파일의 임시 저장 경로
+      location: classpath:/img/post #업로드된 파일의 임시 저장 경로
       max-request-size: 30MB #한 번에 최대 업로드 가능 용량
       max-file-size: 10MB # 파일 하나의 최대 크기
+
+    multipart2:
+      enabled: true
+      location: /Users/profileImg
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+    devtools:       # 등록한 프로필 사진을 바로 보여주는 설정
+      livereload:
+        enabled: true
+      remote:
+        restart:
+          enabled: true
 
   security:
     oauth2:
@@ -21,13 +34,26 @@ spring:
             client-id: 709627835975-csuqklg0dv8onspg1uq4l8vp4lebni6v.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-        provider:
-          #KAKAO
-          kakao:
-            authorization_uri: https://kauth.kakao.com/oauth/authorize
-            token_uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kauth.kakao.com/oauth/v2/user/me
-            user_name_attribute: id
+
+#java mailSender
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: testcodevv
+    password: zesafjnbgjaxhtow
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+              enable: true
+    transport:
+        protocol: smtp
+    debug: true
+    default:
+        encoding: UTF-8
+
+
 
 custom:
   oauth2:
@@ -45,4 +71,7 @@ mybatis:
   type-aliases-package: javawebdev.petsns.*.dto
 
 upload:
-  path: '/Users/kimgeonwoo/Desktop/upload'
+  path: 'src/main/resources/static/img/post'
+
+  path2: 'src/main/resources/static/img/profile-picture'
+

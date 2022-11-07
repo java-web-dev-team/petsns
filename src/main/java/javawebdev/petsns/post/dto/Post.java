@@ -10,11 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@Data
-
 public class Post {
-    Integer id;
+    private Integer id;
     private String content;
     private String nickname;
     private LocalDateTime registered_at;
@@ -26,16 +23,4 @@ public class Post {
         this.nickname = nickname;
         this.registered_at = LocalDateTime.now();
     }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", registered_at=" + registered_at +
-                '}';
-    }
-
-
 }

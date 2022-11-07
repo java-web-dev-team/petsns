@@ -46,6 +46,10 @@ dependencies {
 
 //    JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+// email certification
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

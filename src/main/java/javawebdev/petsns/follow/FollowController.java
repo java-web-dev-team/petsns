@@ -1,6 +1,6 @@
 package javawebdev.petsns.follow;
 
-import javawebdev.petsns.member.MemberRepository;
+import javawebdev.petsns.member.MemberService;
 import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -8,21 +8,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
-@RequestMapping("/follows/{memberId}")
 @Controller
 public class FollowController {
 
     private final FollowService followService;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    @PostMapping("/{id}")
-    public String click(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
-        Member following = memberRepository.findMemberByNickname(userDetails.getUsername());
-        Member follower = memberRepository.selectByIdNotOptional(id);
-        followService.click(follower.getNickname(), following.getNickname());
+    @PostMapping("/follows/{memberId}")
+    public String click(@PathVariable Integer memberId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        Member target = memberService.findById(memberId);
+        followService.click(member.getNickname(), target.getNickname());
         return "redirect:/follows/{followId}";
     }
 }

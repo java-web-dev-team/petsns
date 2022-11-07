@@ -37,4 +37,8 @@ public interface MemberRepository {
     int emailCheck(String email);
     int idCheck(String nickname);
 
+    void updateProfileImg(String Img, Integer id);
+
+    void updatePwd(String password, Integer id);
+
 }
