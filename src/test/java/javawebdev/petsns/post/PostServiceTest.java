@@ -176,6 +176,35 @@ class PostServiceTest {
     }
 
     @Test
+    void getPosts() {
+        //  given
+        Member member = memberRepository.findAll().get(0);
+        UpdateDTO updateDTO1 = new UpdateDTO();
+        updateDTO1.setPath("testPath");
+        updateDTO1.setUuid(UUID.randomUUID().toString());
+        updateDTO1.setImgName("test");
+
+        UpdateDTO updateDTO2 = new UpdateDTO();
+        updateDTO2.setPath("testPath");
+        updateDTO2.setUuid(UUID.randomUUID().toString());
+        updateDTO2.setImgName("test");
+
+        String content = "content";
+        Post post = new Post(content, member.getNickname());
+        post.setImageDTOList(new ArrayList<>());
+        post.getImageDTOList().add(updateDTO1);
+        post.getImageDTOList().add(updateDTO2);
+        postService.register(member, post);
+
+        //  when
+        List<PostVO> posts = postService.getPosts(member.getId());
+
+        //  then
+        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.get(0).getUpdateDTOS()).isEqualTo(post.getImageDTOList());
+    }
+
+    @Test
     void update() {
     }
 

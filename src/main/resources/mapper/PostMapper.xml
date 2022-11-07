@@ -47,4 +47,10 @@
         where f.follow_er = #{nickname}
         order by p.registered_at desc;
     </select>
+
+    <select id="findByNickname" resultType="Post">
+        select id, content, registered_at, nickname
+        from post
+        where nickname = #{nickname};
+    </select>
 </mapper>

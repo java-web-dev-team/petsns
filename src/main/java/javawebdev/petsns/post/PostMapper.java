@@ -19,4 +19,6 @@ public interface PostMapper {
     List<Post> findAll();
     void delete(Post post);
     List<Post> findAllOfFollowingMember(Member member);
+
+    List<Post> findByNickname(String nickname);
 }

@@ -53,6 +53,17 @@ public class PostService {
         return postToVO(postWithUpdateDTOs);
     }
 
+    //  프로필에서 member 가 작성한 post 불러오기
+    public List<PostVO> getPosts(Integer memberId) {
+        List<PostVO> postVOS = new ArrayList<>();
+        Member member = validation.getMemberOrException(memberId);
+        List<Post> posts = postMapper.findByNickname(member.getNickname());
+        for (Post post : posts) {
+            postVOS.add(postToVO(postWithUpdateDTOs(post.getId())));
+        }
+        return postVOS;
+    }
+
     //  update 용 post 추출
     public Post getPostForUpdate(Integer id) {
         return postWithUpdateDTOs(id);
