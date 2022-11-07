@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>profile</title>
@@ -23,10 +23,10 @@
 				<a th:href="@{/member/profile/{id} (id = ${member.id})}"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  프로필</a>
 			</li>
 			<li>
-				<a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  고객센터</a>
+				<a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  고객센터</a>
 			</li>
 			<li>
-				<a href="/logout"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="" >  로그아웃</a>
+				<a href="/logout"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="" >  로그아웃</a>
 			</li>
 		</ul>
 	</nav>
@@ -63,7 +63,7 @@
             <!-- 유저 프로필 끝 -->
         </div>
     </header>
-    
+
     <main>
         <div class="container">
             <div class="gallery">
@@ -71,13 +71,14 @@
                 <!--/*@thymesVar id="posts" type="java.util.List<javawebdev.petsns.post.dto.PostVO>"*/-->
                 <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
                 <div th:each="post:${posts}" class="gallery-item" tabindex="0">
-                    <img th:scr="${post.updateDTOS.get(0).path}" style= "width:285px; height:285px;" class="gallery-image" alt="">
+                    <a th:href="@{/posts/{id} (id = ${post.id})}"><img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}"
+                         style= "width:285px; height:285px;" class="gallery-image">
                     <div class="gallery-item-info">
                         <ul>
                             <li th:value="${post.hearts.size()}" class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 0</li>
                             <li th:value="${post.comments.size()}" class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
                         </ul>
-                    </div>
+                    </div></a>
                 </div>
     
 <!--                <div class="gallery-item" tabindex="0">-->
