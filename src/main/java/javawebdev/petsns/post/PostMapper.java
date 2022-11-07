@@ -1,5 +1,6 @@
 package javawebdev.petsns.post;
 
+import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.dto.Post;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -8,12 +9,14 @@ import java.util.Optional;
 
 @Mapper
 public interface PostMapper {
-    List<Post> getPostList();
+
+    //  validation 용
     Optional<Post> findById(Integer id);
-    void insert(Post post);
-    void insertSelectKey(Post post);
-//    List<Post> read(Integer id);
+
+    //  저장
+    void saveAndSetId(Post post);
     void update(Post post);
     List<Post> findAll();
-    void remove(Post post);
+    void delete(Post post);
+    List<Post> findAllOfFollowingMember(Member member);
 }

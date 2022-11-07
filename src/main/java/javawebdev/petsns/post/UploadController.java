@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +26,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -46,7 +48,7 @@ public class UploadController {
         ResponseEntity<byte[]> result = null;
 
         try{
-            String srcFileName = URLDecoder.decode(fileName, "UTF-8");
+            String srcFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
 
             log.info("fileName: " + srcFileName );
 
@@ -73,12 +75,13 @@ public class UploadController {
         for (MultipartFile uploadFile : uploadFiles){
 
             //이미지 파일만 업로드 가능
-            if (uploadFile.getContentType().startsWith("image") == false){
+            if (!Objects.requireNonNull(uploadFile.getContentType()).startsWith("image")){
                 log.warn("사진만 업로드 할 수 있습니다");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             //실제 파일 이름 IE나 Edge는 경로가 들어오므로
             String originalName = uploadFile.getOriginalFilename();
+            assert originalName != null;
             String fileName = originalName.substring(originalName.lastIndexOf("\\")+1);
 
                 log.info("fileName : " + fileName);
@@ -123,29 +126,24 @@ public class UploadController {
 
         File uploadPathFolder = new File (uploadPath, folderPath);
 
-        if (uploadPathFolder.exists() == false) {
+        if (!uploadPathFolder.exists()) {
             uploadPathFolder.mkdirs();
         }
         return folderPath;
     }
 
-        @PostMapping("/removeFile")
-        public ResponseEntity<Boolean> removeFile(String fileName){
+    @PostMapping("/removeFile")
+    public ResponseEntity<Boolean> removeFile(String fileName) {
 
         String srcFileName = null;
-        try{
-            srcFileName = URLDecoder.decode(fileName,"UTF-8");
-            File file = new File(uploadPath + File.separator+ srcFileName);
-            boolean result = file.delete();
+        srcFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+        File file = new File(uploadPath + File.separator + srcFileName);
+        boolean result = file.delete();
 
-            File thumbnail = new File(file.getParent(), "s_" + file.getName());
+        File thumbnail = new File(file.getParent(), "s_" + file.getName());
 
-            result = thumbnail.delete();
+        result = thumbnail.delete();
 
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

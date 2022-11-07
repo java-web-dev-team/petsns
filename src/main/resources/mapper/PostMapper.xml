@@ -7,16 +7,16 @@
     </select>
 
     <insert id="insert">
-        insert into post (nickname, content)
-        values (#{nickname}, #{content})
+        insert into post (nickname, content, registered_at)
+        values (#{nickname}, #{content}, now())
     </insert>
 
-    <insert id="insertSelectKey" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into post (nickname, content)
-        values (#{nickname}, #{content})
-    <selectKey keyProperty="id" order="AFTER" resultType="Integer">
-        select last_insert_id() as id
-    </selectKey>
+    <insert id="saveAndSetId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into post (nickname, content, registered_at)
+        values (#{nickname}, #{content}, now())
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            select last_insert_id() as id
+        </selectKey>
     </insert>
 
     <select id="findAll" resultType="Post">
@@ -36,8 +36,15 @@
         where id = #{id};
     </update>
 
-    <delete id="remove">
+    <delete id="delete">
         DELETE FROM post where id = #{id};
     </delete>
 
+    <select id="findAllOfFollowingMember" resultType="Post">
+        select p.id, p.nickname, p.content, p.registered_at
+        from post p
+                 join follow f on f.follow_ing = p.nickname
+        where f.follow_er = #{nickname}
+        order by p.registered_at desc;
+    </select>
 </mapper>

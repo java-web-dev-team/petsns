@@ -13,16 +13,10 @@
         from post;
     </select>
 
-    <select id="findBypid" resultType="UpdateDTO">
+    <select id="findByPostId" resultType="UpdateDTO">
         select *
         from post_image
-        where post_id = #{post_id};
-    </select>
-
-    <select id="getOldFiles">
-        select
-        from post_id
-        where path = CURRENT_DATE() - INTERVAL 1DAY
+        where post_id = #{postId};
     </select>
 
     <delete id="delete">

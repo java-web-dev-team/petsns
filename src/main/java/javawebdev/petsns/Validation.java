@@ -172,9 +172,9 @@ public class Validation {
         }
     }
 
-    public boolean isValidAccess(Post post, Member member) {
+    public Post isValidAccess(Post post, Member member) {
         if (Objects.equals(member.getNickname(), post.getNickname())) {
-            return true;
+            return post;
         } else {
             log.info("Not valid access. post.memberNickname = {}, current nickname = {}", post.getNickname(), member.getNickname());
             throw new IllegalArgumentException("sample Exception message");

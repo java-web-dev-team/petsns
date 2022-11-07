@@ -1,9 +1,10 @@
 package javawebdev.petsns.post;
 
-import javawebdev.petsns.comment.CommentService;
+import javawebdev.petsns.member.MemberService;
+import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.dto.Post;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javawebdev.petsns.post.dto.PostVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,76 +14,66 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/posts")
-@AllArgsConstructor
-@Slf4j
+@RequiredArgsConstructor
 public class PostController {
 
-    private PostService postService;
-    private CommentService commentService;
+    private final PostService postService;
+    private final MemberService memberService;
 
-    @GetMapping
-    public String main(Model model) {
-        List<Post> posts = postService.getList();
-        model.addAttribute("posts", postService.getList());
-
-        log.info("main");
-        return "post/main";
+    //  내가 팔로우한 사람의 게시물 가져오기
+    @GetMapping("/posts")
+    public String getPosts(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
+        model.addAttribute("posts", myFollowingPosts);
+        return "/post/main";
     }
 
-    @GetMapping("/post-form")
-    public String register(){
-        log.info("register get");
-        return "post/register";
+    //  게시물 작성 폼 가져오기
+    @GetMapping("/posts/post-form")
+    public String registerForm(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        model.addAttribute("member", member);
+        return "/post/register";
     }
 
-//    @GetMapping("/read")
-//    public String view() {
-//
-//        return "post/view";
-//    }
-
-    @PostMapping() //등록
-    public String register(@ModelAttribute Post post, @AuthenticationPrincipal UserDetails member){
-        log.info("register post");
-        String name = member.getUsername();
-        post.setNickname(name);
-        postService.register(post);
+    //  게시물 등록
+    @PostMapping("/posts")
+    public String register(@ModelAttribute Post post, @AuthenticationPrincipal UserDetails userDetails){
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        postService.register(member, post);
         return "redirect:/posts";
     }
 
-    @GetMapping("/read/{id}")
-    public String read(Model model, @PathVariable Integer id){
-        log.info("read" + id);
-        Post posts = postService.read(id);
-        log.info(posts.toString());
-        model.addAttribute("postDetail", posts);
-        return "post/view";
+    //  개별 게시물 가져오기
+    @GetMapping("/posts/{postId}")
+    public String read(Model model, @PathVariable Integer postId){
+        PostVO postVO = postService.getPost(postId);
+        model.addAttribute("post", postVO);
+        return "/post/view";
     }
 
-    @GetMapping("/update/{id}")
-    public String edit(Model model, @PathVariable Integer id){
-        log.info("edit: " + id);
-        Post posts = postService.read(id);
-        log.info(posts.toString());
-        model.addAttribute("postDetail", posts);
-        return "post/update";
+    //  게시물 수정 폼 가져오기
+    @GetMapping("/posts/{postId}/update-form")
+    public String updateForm(Model model, @PathVariable Integer postId){
+        Post post = postService.getPostForUpdate(postId);
+        model.addAttribute("post", post);
+        return "/post/update";
     }
 
-    @PostMapping("/update") //수정
-    public String update(Post post, @AuthenticationPrincipal UserDetails member) {
-        log.info("update");
-        post.setNickname(member.getUsername());
-        postService.update(post);
-        return "redirect:/posts";
+    //  게시물 수정하기(content 만 수정 가능)
+    @PostMapping("/posts/{postId}/update")
+    public String update(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer postId, String content) {
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        postService.update(member, postId, content);
+        return "redirect:/posts/{postId}";
     }
 
-
-    @PostMapping("/remove") //삭제
-    public String remove(Post post, @AuthenticationPrincipal UserDetails member) {
-        log.info("remove");
-        post.setNickname(member.getUsername());
-        postService.remove(post);
+    //  게시글 삭제
+    @PostMapping("/posts/{postId}/delete")
+    public String delete(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer postId) {
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        postService.remove(member, postId);
         return "redirect:/posts";
     }
 }

@@ -7,9 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface UploadMapper {
-    public void insert(UpdateDTO dto);
-    public int delete (String uuid);
-    List<UpdateDTO> findBypid(Integer id);
-    public void deleteAll(Integer id);
-    public List<UpdateDTO>getOldFiles();
+    void insert(UpdateDTO dto);
+    int delete (String uuid);
+    List<UpdateDTO> findByPostId(Integer postId);
+
+    void deleteAll(Integer postId);
 }
