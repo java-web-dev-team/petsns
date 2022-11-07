@@ -53,8 +53,7 @@
         UPDATE snsdb.member
         SET nickname  = #{nickname},
             introduce = #{introduce},
-            update_at = NOW(),
-            email     = #{email}
+            update_at = NOW()
         WHERE id = #{id};
     </update>
 
@@ -66,7 +65,7 @@
 
     <update id="updateProfileImg" parameterType="Member">
         UPDATE snsdb.member
-        SET profileImg = ${profileImg}
+        SET profileImg = #{profileImg}
         WHERE id = #{id};
     </update>
 

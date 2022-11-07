@@ -11,7 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>signup</title>
-  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
@@ -33,12 +33,15 @@
       <div class="field">
         <input id="password" name="password" type="password" placeholder="password" onchange="check_pw()" required />
         <label for="password">Password</label>
-      </div> <br>
+        <br>
+      </div>
 
       <div class="field">
-        <input id="passwordCheck" type="password" placeholder="passwordCheck" onchange="check_pw_re()" required />
-        <label for="passwordCheck">Password</label>
-      </div> <br>
+        <input id="passwordCheck" type="password" placeholder="passwordCheck" oninput="check_pw_re()" required />
+        <label for="passwordCheck">PasswordCheck</label>
+        </br>
+        &nbsp;<span id="CheckPwd"></span>
+      </div>
 
       <div class="field">
         <input id="introduce" name="introduce" type="text" placeholder="introduce" />
@@ -49,12 +52,12 @@
         <input id="email" name="email" type="name" placeholder="Email ex)aaa@aaa.com" onchange="emailCheck()"/>
         <label for="email">Email</label>
         </br>
-      &nbsp;<span id="msg"></span><br>
+      &nbsp;&nbsp;<span id="msg"></span><br>
       </div>
 
       <button type="button" class="login-button" onclick="mail_post_btn()">인증번호 요청</button>
       </br>
-      <span id="emailMsg"></span>
+      &nbsp;<span id="emailMsg"></span>
 
       <div class="field">
         <input id="check_mail" name="check_mail" type="name" placeholder="인증번호를 입력해주세요." maxlength="10" oninput="mail_certification_check()">

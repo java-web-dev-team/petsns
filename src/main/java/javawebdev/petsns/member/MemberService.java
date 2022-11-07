@@ -1,6 +1,7 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
@@ -30,13 +31,13 @@ public interface MemberService {
 
     void updateMember(String password, Integer id);
 
-    void updateProfileImg(String Img, Integer id);
+    void updateProfileImg(String profileImg, Integer id);
 
     StringBuffer mailSend(String email);
 
     Member findByNicknameValid(String nickname);
 
-    Member findByNicknameValid(Integer id);
+    Member findByNickIdValid(Integer id);
 
 }
 
