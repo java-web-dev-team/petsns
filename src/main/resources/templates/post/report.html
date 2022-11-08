@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/Side.css" rel="stylesheet">
+    <script src="/js/jquery.js"></script>
+    <style>
+        .uploadResult{
+            width: 100%;
+            background-color: white;
+            margin-top: 10px;
+        }
+
+        .uploadResult ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            vertical-align: top;
+            overflow: auto;
+        }
+
+        .uploadResult ul li{
+            list-style: none;
+            padding: 10px;
+            margin-left: 2em;
+        }
+
+        .uploadResult ul li img{
+            width: 100px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="sidebar">
+    <div style="margin-bottom: 50px;">A N I P I C</div>
+    <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
+    <div><img src="/img/foot2.png" style="width:25px;"> 알    람</div>
+    <div><img src="/img/foot3.png" style="width:25px;"> 게시물작성</div>
+    <div><img src="/img/foot4.png" style="width:25px;"> 마이프로필</div>
+    <div><img src="/img/foot2.png" style="width:25px;">
+        <input type="text" style="border: white; border-bottom: outset; width: 100px;">
+    </div>
+    <div><img src="/img/foot5.png" style="width:25px;"> H E L P</div>
+    <div><img src="/img/foot1.png" style="width:25px;"> 로 그 아 웃</div>
+</div>
+<div class="body-text">
+    <div class="cardbox" style="align-items: center">
+<select name="report">
+    <option value="">목록보기</option>
+    <option value="건의사항">건의사항</option>
+    <option value="신고하기">신고하기</option>
+    <option value="문의하기">문의하기</option>
+</select>
+        <br>
+        제목 :  <input name="title" type="text">
+        <br>
+        <br>
+        내용 : <textarea name="content"></textarea>
+        <br>
+        <button type="submit" value="submit">제출하기</button>
+    </div>
+</div>
+</body>
+</html>
+
