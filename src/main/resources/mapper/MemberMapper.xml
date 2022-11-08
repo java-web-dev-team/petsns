@@ -34,8 +34,8 @@
     </select>
 
     <insert id="insertMember" parameterType="Member">
-        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email)
-        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email});
+        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email, profileImg)
+        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email}, #{profileImg});
     </insert>
 
     <delete id="deleteMember">
@@ -54,19 +54,19 @@
         SET nickname  = #{nickname},
             introduce = #{introduce},
             update_at = NOW()
-        WHERE id = #{id};
+        WHERE email = #{email};
     </update>
 
     <update id="updatePwd" parameterType="Member">
         UPDATE snsdb.member
         SET password = #{password}
-        WHERE id = #{id};
+        WHERE email = #{email};
     </update>
 
     <update id="updateProfileImg" parameterType="Member">
         UPDATE snsdb.member
         SET profileImg = #{profileImg}
-        WHERE id = #{id};
+        WHERE email = #{email};
     </update>
 
     <select id="selectById" resultType="Member" parameterType="int">

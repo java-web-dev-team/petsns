@@ -1,5 +1,6 @@
 package javawebdev.petsns.member;
 
+import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,7 @@ public interface MemberService {
 
     Member findById(Integer id);
 
-    void deleteMember(String nickname);
+    void deleteMember(String email);
 
     int emailCheck(String email);
 
@@ -40,6 +41,8 @@ public interface MemberService {
     Member findByNickIdValid(Integer id);
 
     Member findByEmail(String email);
+
+    Member customUserToMember(CustomUser customUser);
 
 }
 

@@ -33,6 +33,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         member.setPassword(passwordEncoder.encode(member.getPassword()) );
+        member.setProfileImg("profile_normal_image");
         memberRepository.insertMember(member);
     }
 
@@ -75,6 +76,11 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
+    public Member customUserToMember(CustomUser customUser) {
+        return findByEmail(customUser.getUsername());
+    }
+
+    @Override
     public boolean isMyProfile(String myNickname, String nickname) {
         return Objects.equals(myNickname, nickname);
     }
@@ -85,9 +91,8 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public void deleteMember(String nickname){
-        validation.getMemberOrException(nickname);
-        memberRepository.deleteMember(nickname);
+    public void deleteMember(String email){
+        memberRepository.deleteMember(email);
     }
 
     @Override
