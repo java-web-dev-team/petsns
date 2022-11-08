@@ -46,20 +46,23 @@
     <div><img src="/img/foot1.png" style="width:25px;"> 로 그 아 웃</div>
 </div>
 <div class="body-text">
-    <div class="cardbox" style="align-items: center">
-<select name="report">
-    <option value="">목록보기</option>
-    <option value="건의사항">건의사항</option>
-    <option value="신고하기">신고하기</option>
-    <option value="문의하기">문의하기</option>
-</select>
-        <br>
-        제목 : <input name="title" type="text">
+    <div class="reportbox" style="align-items: center; margin-top: 200px; border:1px;">
+    <img src="/img/foot2.png" style="width: 25px;">H E L P<img src="/img/foot2.png" style="width: 25px;">
+        <p>불편하신 사항을 자세히 기입해주세요.</p>
+        이용에 불편하신점을 적어주시면
+        빠르게 확인 후 도움 드리겠습니다 !
         <br>
         <br>
-        내용 : <textarea name="content"></textarea>
+        <input type="text" name="email" placeholder="연락받으실 메일">
         <br>
-        <button type="submit" value="submit">제출하기</button>
+        <br>
+        <input type="text" name="title" placeholder="제 목" style="border-radius:20px; width: 500px;">
+        <br>
+        <br>
+        <textarea name="content" cols="60" placeholder="내 용" style="border-radius:20px; height: 250px;"></textarea>
+        <br>
+        <br>
+        <button type="submit" value="submit" style="border-radius:20px; background-color: white">제출하기</button>
     </div>
 </div>
 </body>
