@@ -1,6 +1,7 @@
 package javawebdev.petsns.heart;
 
 import javawebdev.petsns.heart.dto.Heart;
+import javawebdev.petsns.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface HeartMapper {
     Optional<Heart> findByNicknameAndPostId(String nickname, Integer postId);
 
     List<Heart> findAll();
+
+    List<Member> findMembersByPostId(Integer postId);
 }

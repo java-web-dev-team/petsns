@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -40,6 +41,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         return member;
     }
 
+    @Override
     public void updateMember(String password, Integer id){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String changedPwd = passwordEncoder.encode(password);
@@ -47,8 +49,8 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public void updateProfileImg(String Img, Integer id) {
-        memberRepository.updateProfileImg(Img, id);
+    public void updateProfileImg(String profileImg, Integer id) {
+        memberRepository.updateProfileImg(profileImg, id);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public Member findByNicknameValid(Integer id){
+    public Member findByNickIdValid(Integer id){
         return validation.getMemberOrException(id);
     }
 

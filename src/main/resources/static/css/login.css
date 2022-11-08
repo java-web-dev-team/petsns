@@ -1,4 +1,5 @@
 body {
+  display: flex;
   font-family: sans-serif;
   background-color: #fafafa;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -10,21 +11,73 @@ a {
   text-decoration: none;
 }
 
-.container {
+.container1 {
+  max-width: 850px;
+  margin-left: 480px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 13rem;
+  font-size: 14px;
+}
+
+.container2 {
+  max-width: 700px;
+  margin-left: 180px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 13rem;
+  font-size: 14px;
+}
+
+.container3 {
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rem;
+  margin-top: 3rem;
   font-size: 14px;
 }
 
-.box {
+.box1 {
   max-width: 350px;
-  width: 100%;
+  width: 120%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1px;
+  margin: 0 0 40px;
+  padding: 10px 0;
+  flex-grow: 1;
+}
+
+.box2 {
+  max-width: 350px;
+  width: 120%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #ffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1px;
+  margin: 0 0 10px;
+  padding: 30px 0;
+  flex-grow: 1;
+}
+
+.box3 {
+  max-width: 400px;
+  width: 150%;
+  text-align: center;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -55,7 +108,7 @@ a {
 input {
   padding: 9px 0px 7px 9px;
   font-size: 12px;
-  width: 16rem;
+  width: 19rem;
   height: 1.2rem;
   outline: none;
   background: #fafafa;
@@ -68,7 +121,20 @@ input {
 label {
   position: absolute;
   pointer-events: none;
-  left: 10px;
+  left: 20px;
+  padding-bottom: 15px;
+  transform: translateY(10px);
+  line-height: 6px;
+  transition: all ease-out 0.1s;
+  font-size: 14px;
+  color: #999;
+  padding-top: 6px;
+}
+
+label2 {
+  position: absolute;
+  pointer-events: none;
+  left: 55px;
   padding-bottom: 15px;
   transform: translateY(10px);
   line-height: 6px;
@@ -104,6 +170,18 @@ input:not(:placeholder-shown) {
 .login-button {
   text-align: center;
   width: 100%;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  background-color: #3897f0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-button2 {
+  text-align: center;
+  width: 80%;
   padding: 0.5rem;
   border: 1px solid transparent;
   background-color: #3897f0;
@@ -160,10 +238,5 @@ input:not(:placeholder-shown) {
   font-weight: 600;
 }
 
-img {
-  float: left;
-  padding-right: 2%;
-  width: 177px;
-  height: 58px;
-  object-fit: cover;
-}
+
+
