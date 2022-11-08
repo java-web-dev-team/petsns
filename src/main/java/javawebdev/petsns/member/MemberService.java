@@ -39,6 +39,8 @@ public interface MemberService {
 
     Member findByNickIdValid(Integer id);
 
+    Member findByEmail(String email);
+
 }
 
 

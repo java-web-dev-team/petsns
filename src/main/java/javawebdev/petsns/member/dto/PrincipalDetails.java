@@ -32,6 +32,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return member.getNickname();
     }
 
+    public int getId(){
+        return member.getId();
+    }
+
     @Override
     public <A> A getAttribute(String name) {
         return OAuth2User.super.getAttribute(name);

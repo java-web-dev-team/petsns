@@ -27,11 +27,13 @@
 
         <img alt="" src="/img/login-logo.png">
 
+        <h4 th:text="${exception}" style="margin: 5px; color: red" ></h4>
+
         <form class="login-form" action="/login" method="POST">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="field">
-                <input id="username" name="nickname" type="text" placeholder="username" />
-                <label for="username">Username</label>
+                <input id="username" name="nickname" type="text" placeholder="Nickname / Email" />
+                <label for="username">Nickname / Email</label>
             </div>
             <div class="field">
                 <input id="password" name="password" type="password" placeholder="password" />

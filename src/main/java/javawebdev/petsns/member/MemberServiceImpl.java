@@ -69,6 +69,11 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
+    public Member findByEmail(String email) {
+        return memberRepository.findMemberByEmail(email);
+    }
+
+    @Override
     public boolean isMyProfile(String myNickname, String nickname) {
         return Objects.equals(myNickname, nickname);
     }
@@ -95,9 +100,14 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String nickname){
-        log.info("loadUserByName: " + nickname);
-        Member member = memberRepository.selectMember(nickname);
+    public UserDetails loadUserByUsername(String name){
+        log.info("loadUserByName: " + name);
+        Member member;
+        if(name.contains("@")) {
+            member = memberRepository.findMemberByEmail(name);
+        } else {
+            member = memberRepository.findMemberByNickname(name);
+        }
         return new User(member.getNickname(), member.getPassword(), Arrays.asList(new SimpleGrantedAuthority(member.getAuth())));
     }
 

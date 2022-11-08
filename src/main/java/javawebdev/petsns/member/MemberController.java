@@ -1,6 +1,8 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.MemberDto;
+import javawebdev.petsns.member.dto.PrincipalDetails;
 import javawebdev.petsns.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +25,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -69,8 +74,9 @@ public class MemberController {
     }
 
     @GetMapping("/member/profile/{id}")
-    public String MyProfile(Model model, @PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
-        Member me = memberService.findByNickname(userDetails.getUsername());
+    public String MyProfile(@PathVariable Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+        String email = principalDetails.getMember().getEmail();
+        Member me = memberService.findByEmail(email);
         Member member = memberService.findById(id);
         model.addAttribute("isMe", memberService.isMyProfile(me.getNickname(), member.getNickname()));
         model.addAttribute("member", member);
@@ -79,14 +85,16 @@ public class MemberController {
     }
 
     @GetMapping("/member/{id}")
-    public String updateForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("member", memberService.findById(id));
+    public String updateForm(@PathVariable Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Member member = memberService.findByEmail(principalDetails.getMember().getEmail());
+        model.addAttribute("member", member);
         return "profile-edit";
     }
 
     @PostMapping("/member/modify")
-    public String updateMember(@AuthenticationPrincipal UserDetails userDetails, Member updatedMember) {
-        Integer id = memberService.findByNickname(userDetails.getUsername()).getId();
+    public String updateMember(@AuthenticationPrincipal PrincipalDetails principalDetails, Member updatedMember) {
+        Integer id = (memberService.findByEmail(principalDetails.getMember().getEmail())).getId();
+        System.out.println("id = " + id);
         updatedMember.setId(id);
         memberService.updateMember(updatedMember);
         return "redirect:/member/profile/" + id;
@@ -208,7 +216,7 @@ public class MemberController {
      */
     @ResponseBody
     @RequestMapping(value = "/memberImg/upload", method = RequestMethod.POST)
-    public Path upLoadImg(@Param(value = "profileImg") MultipartFile profileImg) {
+    public MemberDto upLoadImg(@Param(value = "profileImg") MultipartFile profileImg) {
 
         log.info("profileImg = " + profileImg);
         // 지원하지 않는 이미지 형식
@@ -232,11 +240,13 @@ public class MemberController {
 
         try {
             profileImg.transferTo(savePath);
+            MemberDto memberDtos = new MemberDto(uuid, fileName);
+            return memberDtos;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("savePath = " + savePath);
-        return savePath;
+
+        return null;
     }
 
     @PostMapping("/member/profile/modify/{nickname}")
