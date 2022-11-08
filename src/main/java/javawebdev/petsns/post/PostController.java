@@ -58,7 +58,9 @@ public class PostController {
 
     //  게시물 수정 폼 가져오기
     @GetMapping("/posts/{postId}/update-form")
-    public String updateForm(Model model, @PathVariable Integer postId){
+    public String updateForm(Model model, @PathVariable Integer postId, @AuthenticationPrincipal UserDetails userDetails){
+        Member member = memberService.findByNickname(userDetails.getUsername());
+        model.addAttribute("member", member);
         Post post = postService.getPostForUpdate(postId);
         model.addAttribute("post", post);
         return "/post/update";
