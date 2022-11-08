@@ -1,6 +1,7 @@
 package javawebdev.petsns.block;
 
 import javawebdev.petsns.member.MemberService;
+import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,15 +21,15 @@ public class BlockController {
     private final MemberService memberService;
 
     @PostMapping("/{blocked}")
-    public String block(@PathVariable String blocked, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
-        Member member = memberService.findByNickname(userDetails.getUsername());
+    public String block(@PathVariable String blocked, @AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Member member = memberService.customUserToMember(customUser);
         blockService.block(member.getNickname(), blocked);
         return "redirect:..";
     }
 
     @DeleteMapping("/{blocked}")
-    public String cancel(@PathVariable String blocked, @AuthenticationPrincipal UserDetails userDetails) {
-        Member member = memberService.findByNickname(userDetails.getUsername());
+    public String cancel(@PathVariable String blocked, @AuthenticationPrincipal CustomUser customUser) {
+        Member member = memberService.customUserToMember(customUser);
         blockService.cancel(member.getNickname(), blocked);
         return "redirect:..";
     }
