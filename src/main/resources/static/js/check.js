@@ -9,7 +9,6 @@ function idCheck(){
         type:"POST",
         data:{nickname : nickname},
         url: "/idCheck",
-        async:false,
         beforeSend : function(xhr){
             xhr.setRequestHeader(header, token);
         },
@@ -89,10 +88,15 @@ function check_pw(){
 }
 
 function check_pw_re(){
+
     if (document.getElementById("password").value == document.getElementById("passwordCheck").value) {
         document.getElementById("passwordCheck").style.color = 'green';
+        $("#CheckPwd").html("비밀번호가 일치합니다.");
+        $("#CheckPwd").css("color", "green");
     } else{
         document.getElementById("passwordCheck").style.color = 'red';
+        $("#CheckPwd").html("비밀번호가 일치하지 않습니다.");
+        $("#CheckPwd").css("color", "red");
     }
 }
 
@@ -126,8 +130,8 @@ function mail_certification_check(){
     console.log("check_mail ->" + check_mail)
     console.log("check_mail_certification2 ->" + check_mail_certification)
     console.log()
-    if(check_mail == check_mail_certification){
-        target.disabled = false;
+    if(check_mail == check_mail_certification && (document.getElementById("password").value == document.getElementById("passwordCheck").value)){
+            target.disabled = false;
     } else{
         target.disabled = true;
     }

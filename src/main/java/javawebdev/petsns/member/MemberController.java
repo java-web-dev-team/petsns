@@ -4,6 +4,7 @@ import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -108,15 +110,6 @@ public class MemberController {
             model.addAttribute("pwdCheckMsg", "바꿀 비밀번호와 바꿀 비밀번호 체크가 다릅니다. 다시 확인해 주세요.");
             return "redirect:/pwdChange";
         }
-    }
-
-    @PostMapping("/member/profile/modify/{nickname}")
-    public String firstUpdateMember(@PathVariable String nickname, Member updatedMember, Model model) {
-        Member member = memberService.findByNickname(nickname);
-        model.addAttribute("member", member);
-        updatedMember.setId(member.getId());
-        memberService.updateMember(updatedMember);
-        return "redirect:/login-form";
     }
 
     @GetMapping("/member/delete")
@@ -213,19 +206,18 @@ public class MemberController {
     /**
      * 회원 프로필 사진 생성, Ajax
      */
-    @PostMapping("/memberImg/upload")
-    public Path upLoadImg(MultipartFile uploadFiles, @AuthenticationPrincipal UserDetails userDetails) {
+    @ResponseBody
+    @RequestMapping(value = "/memberImg/upload", method = RequestMethod.POST)
+    public Path upLoadImg(@Param(value = "profileImg") MultipartFile profileImg) {
 
-        Member member = memberService.findByNickname(userDetails.getUsername());
-
+        log.info("profileImg = " + profileImg);
         // 지원하지 않는 이미지 형식
-        if (uploadFiles.getContentType().startsWith("image") == false) {
+        if (!profileImg.getContentType().startsWith("image")) {
             log.info("지원하지 않는 이미지 형식입니다.");
-            return null;
         }
 
         // 실제 파일 이름 IE, Edge 는 전체 경로
-        String originalName = uploadFiles.getOriginalFilename();
+        String originalName = profileImg.getOriginalFilename();
         String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
         log.info("fileName: " + fileName);
 
@@ -239,37 +231,23 @@ public class MemberController {
         Path savePath = Paths.get(saveName);
 
         try {
-            uploadFiles.transferTo(savePath);
+            profileImg.transferTo(savePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println("savePath = " + savePath);
         return savePath;
     }
 
-    @GetMapping("/memberImg/display")
-    public ResponseEntity<byte[]> getProfileImgFile(String fileName){
-        ResponseEntity<byte[]> result = null;
-
-        try{
-            String srcFileName = URLEncoder.encode(fileName, "UTF-8");
-            log.info("profileImgFile : " + srcFileName);
-
-            File file = new File(getUpLoadPath + File.separator + srcFileName);
-
-            log.info("file : " + file);
-
-            HttpHeaders header = new HttpHeaders();
-
-            header.add("Content-Type", Files.probeContentType(file.toPath()));
-
-            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-        } catch(Exception e){
-            log.error(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return result;
+    @PostMapping("/member/profile/modify/{nickname}")
+    public String firstUpdateMember(@PathVariable String nickname, Member updatedMember, Model model) {
+        Member member = memberService.findByNickname(nickname);
+        updatedMember.setId(member.getId());
+        model.addAttribute("member", member);
+        System.out.println("updatedMember.getProfileImg() = " + updatedMember.getProfileImg());
+        System.out.println("updatedMember.getId() = " + updatedMember.getId());
+        memberService.updateProfileImg(updatedMember.getProfileImg(), updatedMember.getId());
+        return "redirect:/login-form";
     }
 }
 

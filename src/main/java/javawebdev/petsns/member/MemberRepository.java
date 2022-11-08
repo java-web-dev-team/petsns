@@ -3,6 +3,7 @@ package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public interface MemberRepository {
     int emailCheck(String email);
     int idCheck(String nickname);
 
-    void updateProfileImg(String Img, Integer id);
+    void updateProfileImg(@Param("profileImg") String profileImg, @Param("id") Integer id);
 
     void updatePwd(String password, Integer id);
 
