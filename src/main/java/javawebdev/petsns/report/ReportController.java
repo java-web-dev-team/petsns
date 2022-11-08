@@ -21,7 +21,7 @@ public class ReportController {
     private final MemberService memberService;
 
     // 신고하기
-    @PostMapping("/")
+    @PostMapping
     public String create(@AuthenticationPrincipal UserDetails userDetails, String reported, String content) throws Exception {
         Member member = memberService.findByNickname(userDetails.getUsername());
         reportService.create(member.getNickname(), reported, content);
@@ -29,11 +29,11 @@ public class ReportController {
     }
 
     // 신고 작성 폼 가져오기
-    @GetMapping("/form")
+    @GetMapping
     public String form(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         Member member = memberService.findByNickname(userDetails.getUsername());
         model.addAttribute("reporter", member.getNickname());
-        return "report-form";
+        return "/post/report";
     }
 
     // 내 신고목록

@@ -33,9 +33,9 @@ public class PostVO {
                 postWithUpdateDTOs.getContent(),
                 postWithUpdateDTOs.getNickname(),
                 postWithUpdateDTOs.getImageDTOList(),
-                (comments != null) ? comments : new ArrayList<>(),
-                (hearts != null) ? hearts : new ArrayList<>(),
-                (heartMembers != null) ? heartMembers : new ArrayList<>(),
+                comments,
+                hearts,
+                heartMembers,
                 postWithUpdateDTOs.getRegistered_at()
         );
     }
