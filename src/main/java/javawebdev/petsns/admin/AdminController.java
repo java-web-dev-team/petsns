@@ -1,6 +1,8 @@
 package javawebdev.petsns.admin;
 
 import javawebdev.petsns.help.HelpService;
+import javawebdev.petsns.member.MemberService;
+import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.report.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -19,41 +21,48 @@ public class AdminController {
 
     private final ReportService reportService;
     private final HelpService helpService;
+    private final MemberService memberService;
 
     //  report
     @GetMapping("/reports")
-    public String getReports(@AuthenticationPrincipal Member member, Model model) throws Exception {
+    public String getReports(@AuthenticationPrincipal CustomUser customUser, Model model) {
+        Member member = memberService.customUserToMember(customUser);
         model.addAttribute("reports", reportService.getAllReports(member.getId()));
         return "admin/report/list";
     }
 
     @GetMapping("/reports/{reportId}")
-    public String getReport(@PathVariable Integer reportId, @AuthenticationPrincipal Member member, Model model) throws Exception {
+    public String getReport(@PathVariable Integer reportId, @AuthenticationPrincipal CustomUser customUser, Model model) {
+        Member member = memberService.customUserToMember(customUser);
         model.addAttribute(reportService.getReportById(member.getId(), reportId));
         return "admin/reports/report-detail";
     }
 
     @PutMapping("/reports/{reportId}")
-    public String checkReport(@PathVariable Integer reportId, @AuthenticationPrincipal Member member) throws Exception {
+    public String checkReport(@PathVariable Integer reportId, @AuthenticationPrincipal CustomUser customUser) {
+        Member member = memberService.customUserToMember(customUser);
         reportService.checkReport(member.getId(), reportId);
         return "redirect:/admin/reports/{reportId}";
     }
 
     //  help
     @GetMapping("/helps")
-    public String getHelps(@AuthenticationPrincipal Member member, Model model) throws Exception {
+    public String getHelps(@AuthenticationPrincipal CustomUser customUser, Model model) {
+        Member member = memberService.customUserToMember(customUser);
         model.addAttribute("helps", helpService.getAll(member.getId()));
         return "admin/help/list";
     }
 
     @GetMapping("/helps/{helpId}")
-    public String getHelp(@PathVariable Integer helpId, @AuthenticationPrincipal Member member, Model model) throws Exception {
+    public String getHelp(@PathVariable Integer helpId, @AuthenticationPrincipal CustomUser customUser, Model model) {
+        Member member = memberService.customUserToMember(customUser);
         model.addAttribute("help", helpService.getHelp(member.getId(), helpId));
         return "admin/help/detail";
     }
 
     @PutMapping("/helps/{helpId}")
-    public String checkHelp(@PathVariable Integer helpId, @AuthenticationPrincipal Member member) throws Exception {
+    public String checkHelp(@PathVariable Integer helpId, @AuthenticationPrincipal CustomUser customUser) {
+        Member member = memberService.customUserToMember(customUser);
         helpService.check(member.getId(), helpId);
         return "redirect:/admin/helps/{helpId}";
     }
