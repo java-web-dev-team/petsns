@@ -256,7 +256,7 @@ public class MemberController {
         model.addAttribute("member", member);
         memberService.updateProfileImg(updatedMember.getProfileImg(), member.getEmail());
 
-        return "redirect:/";
+        return "redirect:/login-form";
     }
 
     @PostMapping("/member/profileImg/modify/{email}")

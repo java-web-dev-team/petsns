@@ -34,8 +34,8 @@
     </select>
 
     <insert id="insertMember" parameterType="Member">
-        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email, profileImg)
-        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email}, "profile_normal.jpeg");
+        INSERT INTO snsdb.member(nickname, password, introduce, update_at, email)
+        VALUES (#{nickname}, #{password}, #{introduce}, NOW(), #{email});
     </insert>
 
     <delete id="deleteMember">

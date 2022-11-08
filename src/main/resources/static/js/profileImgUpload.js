@@ -60,7 +60,7 @@ $(document).ready(function (e) {
 
             success: function (result) {
                 console.log("result = -> " + result);
-                    memberDtoResult = result;
+                memberDtoResult = result;
                 changeImgFile.disabled = false;
             },
             error: function (jqxHR, textStatus) {
@@ -72,16 +72,15 @@ $(document).ready(function (e) {
     $(".primary-btn").on("click", function (e) {
         alert("회원가입이 완료되었습니다.");
         e.preventDefault();
-        if(document.getElementById("profileImg") == null)  {
-            str = "<input type='hidden' name='profileImg' value='profile_normal.png'>";
-        }  else{
+        if(memberDtoResult != null) {
             str = "<input type='hidden' name='profileImg' value='" + memberDtoResult.uuid + "_" + memberDtoResult.imgName + "'>";
-
+        } else{
+            str = "<input type='hidden' name='profileImg' value='profile_normal.png'>";
         }
         console.log("primary-btn str -> " + str)
 
         $(".str-box").html(str);
-        $("form1").submit();
+        $("form").submit();
     });
 
     $(".img-primary-btn").on("click", function (e) {
