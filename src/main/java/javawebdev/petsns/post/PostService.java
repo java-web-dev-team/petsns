@@ -101,7 +101,8 @@ public class PostService {
         return PostVO.fromDTO(
                 postWithUpdateDTOs,
                 commentMapper.findByPostId(id),
-                heartMapper.findByPostId(id)
+                heartMapper.findByPostId(id),
+                heartMapper.findMembersByPostId(id)
         );
     }
 

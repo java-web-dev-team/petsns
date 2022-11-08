@@ -2,6 +2,7 @@ package javawebdev.petsns.post.dto;
 
 import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.heart.dto.Heart;
+import javawebdev.petsns.member.dto.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +23,11 @@ public class PostVO {
     private List<UpdateDTO> updateDTOS;
     private List<Comment> comments;
     private List<Heart> hearts;
+    private List<Member> heartMembers;
 
     private LocalDateTime registeredAt;
 
-    public static PostVO fromDTO(Post postWithUpdateDTOs, List<Comment> comments, List<Heart> hearts) {
+    public static PostVO fromDTO(Post postWithUpdateDTOs, List<Comment> comments, List<Heart> hearts, List<Member> heartMembers) {
         return new PostVO(
                 postWithUpdateDTOs.getId(),
                 postWithUpdateDTOs.getContent(),
@@ -33,6 +35,7 @@ public class PostVO {
                 postWithUpdateDTOs.getImageDTOList(),
                 (comments != null) ? comments : new ArrayList<>(),
                 (hearts != null) ? hearts : new ArrayList<>(),
+                (heartMembers != null) ? heartMembers : new ArrayList<>(),
                 postWithUpdateDTOs.getRegistered_at()
         );
     }
