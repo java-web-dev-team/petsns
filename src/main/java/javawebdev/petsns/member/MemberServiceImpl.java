@@ -32,8 +32,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     public void joinMember(Member member){
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(member.getPassword()) );
-        member.setProfileImg("profile_normal_image");
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.insertMember(member);
     }
 
@@ -44,15 +43,15 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public void updateMember(String password, Integer id){
+    public void updateMember(String password, String email){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String changedPwd = passwordEncoder.encode(password);
-        memberRepository.updatePwd(changedPwd, id);
+        memberRepository.updatePwd(changedPwd, email);
     }
 
     @Override
-    public void updateProfileImg(String profileImg, Integer id) {
-        memberRepository.updateProfileImg(profileImg, id);
+    public void updateProfileImg(String profileImg, String email) {
+        memberRepository.updateProfileImg(profileImg, email);
     }
 
     @Override

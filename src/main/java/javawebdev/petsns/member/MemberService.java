@@ -30,9 +30,9 @@ public interface MemberService {
 
     boolean expression(String email);
 
-    void updateMember(String password, Integer id);
+    void updateMember(String password, String email);
 
-    void updateProfileImg(String profileImg, Integer id);
+    void updateProfileImg(String profileImg, String email);
 
     StringBuffer mailSend(String email);
 

@@ -29,6 +29,7 @@ function idCheck(){
 // 이메일 중복확인
 function emailCheck(){
     const email = $("#email").val();
+    const certBtn = document.getElementById("certificationBtn");
     const token = $("meta[name='_csrf']").attr("content");      // html 에 저장된 meta 값 불러오기 , 내용에 content 저장
     const header = $("meta[name='_csrf_header']").attr("content");
 
@@ -46,6 +47,7 @@ function emailCheck(){
             } else if (count == 0){
                 $("#msg").html("사용 가능한 이메일 입니다.");
                 $("#msg").css('color', 'green');
+                certBtn.disabled = false;
             } else{
                 $("#msg").html("이메일 형식에 맞춰 다시 입력해주세요. ex)aaa@aaa.com");
                 $("#msg").css('color', 'red');

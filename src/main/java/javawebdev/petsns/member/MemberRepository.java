@@ -21,7 +21,7 @@ public interface MemberRepository {
 
     int updateMember(Member member);
 
-    int deleteMember(String nickname);
+    int deleteMember(String email);
 
     int count();
 
@@ -38,8 +38,8 @@ public interface MemberRepository {
     int emailCheck(String email);
     int idCheck(String nickname);
 
-    void updateProfileImg(@Param("profileImg") String profileImg, @Param("id") Integer id);
+    void updateProfileImg(@Param("profileImg") String profileImg, @Param("email") String email);
 
-    void updatePwd(String password, Integer id);
+    void updatePwd(String password, String email);
 
 }

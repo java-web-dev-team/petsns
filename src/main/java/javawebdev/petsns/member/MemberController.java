@@ -75,10 +75,10 @@ public class MemberController {
         return "pwd-edit";
     }
 
-    @GetMapping("/member/profile/{id}")
-    public String MyProfile(@PathVariable Integer id, @AuthenticationPrincipal CustomUser user, Principal principal, Model model) {
+    @GetMapping("/member/profile/{email}")
+    public String MyProfile(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
         Member me = memberService.findByEmail(user.getUsername());
-        Member member = memberService.findById(id);
+        Member member = memberService.findByEmail(email);
         model.addAttribute("isMe", memberService.isMyProfile(me.getNickname(), member.getNickname()));
         model.addAttribute("member", member);
         model.addAttribute("posts", postService.getPosts(member.getId()));
@@ -102,8 +102,8 @@ public class MemberController {
     }
 
     @PostMapping("/member/modify/pwd")
-    public String updatePwd(@AuthenticationPrincipal UserDetails userDetails, String pwd, String password, String passwordCheck, Model model) {
-        Member member = memberService.findByNickname(userDetails.getUsername());
+    public String updatePwd(@AuthenticationPrincipal CustomUser user, String pwd, String password, String passwordCheck, Model model) {
+        Member member = memberService.findByEmail(user.getUsername());
         System.out.println("pwd = " + pwd);
         System.out.println("password = " + password);
         System.out.println("passwordCheck = " + passwordCheck);
@@ -113,8 +113,8 @@ public class MemberController {
         }
 
         if ((!pwd.equals(password)) && (password.equals(passwordCheck))) {
-            memberService.updateMember(password, member.getId());
-            return "redirect:/member/profile/" + member.getId();
+            memberService.updateMember(password, user.getUsername());
+            return "redirect:/member/profile/" + user.getUsername();
         } else {
             model.addAttribute("pwdCheckMsg", "바꿀 비밀번호와 바꿀 비밀번호 체크가 다릅니다. 다시 확인해 주세요.");
             return "redirect:/pwdChange";
@@ -122,8 +122,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/delete")
-    public String deleteByNickname(@AuthenticationPrincipal UserDetails userDetails) {
-        memberService.deleteMember(userDetails.getUsername());
+    public String deleteByNickname(@AuthenticationPrincipal CustomUser user) {
+        memberService.deleteMember(user.getUsername());
         SecurityContextHolder.clearContext();   // 탈퇴 시 로그아웃 처리됌
         return "redirect:/login-form";
     }
@@ -136,17 +136,17 @@ public class MemberController {
                 && memberService.isValidEmail(member.getEmail())
                 && memberService.expression(member.getEmail())) {
             memberService.joinMember(member);
-            String nickname = memberService.findByNickname(member.getNickname()).getNickname();
-            return "redirect:/memberImg/" + nickname;
+            String email = memberService.findByEmail(member.getEmail()).getEmail();
+            return "redirect:/memberImg/" + email;
         }
         model.addAttribute("regiCheck", "닉네임, 이메일 중복확인을 진행해 주세요.");
         return "signup";
     }
 
     // 이미지 등록
-    @GetMapping("/memberImg/{nickname}")
-    public String memberImg(Model model, @PathVariable String nickname) {
-        Member member = memberService.findByNickname(nickname);
+    @GetMapping("/memberImg/{email}")
+    public String memberImg(Model model, @PathVariable String email) {
+        Member member = memberService.findByEmail(email);
         model.addAttribute("member", member);
         return "memberImg";
     }
@@ -241,8 +241,7 @@ public class MemberController {
 
         try {
             profileImg.transferTo(savePath);
-            MemberDto memberDtos = new MemberDto(uuid, fileName);
-            return memberDtos;
+            return new MemberDto(uuid, fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -250,14 +249,13 @@ public class MemberController {
         return null;
     }
 
-    @PostMapping("/member/profile/modify/{nickname}")
-    public String firstUpdateMember(@PathVariable String nickname, Member updatedMember, Model model) {
-        Member member = memberService.findByNickname(nickname);
-        updatedMember.setId(member.getId());
+    @PostMapping("/member/profile/modify/{email}")
+    public String firstUpdateMember(@PathVariable String email, Member updatedMember, Model model) {
+        Member member = memberService.findByEmail(email);
+        updatedMember.setEmail(member.getEmail());
         model.addAttribute("member", member);
-        System.out.println("updatedMember.getProfileImg() = " + updatedMember.getProfileImg());
-        System.out.println("updatedMember.getId() = " + updatedMember.getId());
-        memberService.updateProfileImg(updatedMember.getProfileImg(), updatedMember.getId());
+        memberService.updateProfileImg(updatedMember.getProfileImg(), member.getEmail());
+
         return "redirect:/login-form";
     }
 }

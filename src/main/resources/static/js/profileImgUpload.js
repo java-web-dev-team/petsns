@@ -1,5 +1,7 @@
 $(document).ready(function (e) {
     let memberDtoResult;
+    let fileCheck = true;
+    let str = "";
     const token = $("meta[name='_csrf']").attr("content");      // html 에 저장된 meta 값 불러오기 , 내용에 content 저장
     const header = $("meta[name='_csrf_header']").attr("content");
 
@@ -57,7 +59,7 @@ $(document).ready(function (e) {
 
             success: function (result) {
                 console.log("result = -> " + result);
-                memberDtoResult = result;
+                    memberDtoResult = result;
             },
             error: function (jqxHR, textStatus) {
                 console.log("textStatus = " + textStatus);
@@ -66,10 +68,14 @@ $(document).ready(function (e) {
     })
 
     $(".primary-btn").on("click", function (e) {
-        alert("사진이 등록되었습니다.");
+        alert("회원가입이 완료되었습니다.");
         e.preventDefault();
-        let str = "<input type='hidden' name='profileImg' value='" + memberDtoResult.uuid + "_" + memberDtoResult.imgName + "'>";
+        if(document.getElementById("profileImg") == null)  {
+            str = "<input type='hidden' name='profileImg' value='profile_normal.jpeg'>";
+        }  else{
+            str = "<input type='hidden' name='profileImg' value='" + memberDtoResult.uuid + "_" + memberDtoResult.imgName + "'>";
 
+        }
         console.log("primary-btn str -> " + str)
 
         $(".str-box").html(str);
