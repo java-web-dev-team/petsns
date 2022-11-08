@@ -85,20 +85,20 @@ public class MemberController {
         return "profile";
     }
 
-    @GetMapping("/member/{id}")
-    public String updateForm(@PathVariable Integer id, Model model, @AuthenticationPrincipal CustomUser user) {
+    @GetMapping("/member/{email}")
+    public String updateForm(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
         Member member = memberService.findByEmail(user.getUsername());
         model.addAttribute("member", member);
         return "profile-edit";
     }
 
+
     @PostMapping("/member/modify")
     public String updateMember(@AuthenticationPrincipal CustomUser user, Member updatedMember) {
-        Integer id = (memberService.findByEmail(user.getUsername())).getId();
-        System.out.println("id = " + id);
-        updatedMember.setId(id);
+        String email = (memberService.findByEmail(user.getUsername())).getEmail();
+        updatedMember.setEmail(email);
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/" + id;
+        return "redirect:/member/profile/" + email;
     }
 
     @PostMapping("/member/modify/pwd")
@@ -256,7 +256,19 @@ public class MemberController {
         model.addAttribute("member", member);
         memberService.updateProfileImg(updatedMember.getProfileImg(), member.getEmail());
 
-        return "redirect:/login-form";
+        return "redirect:/";
     }
+
+    @PostMapping("/member/profileImg/modify/{email}")
+    public String imgUpdateMember(@PathVariable String email, Member updatedMember, Model model) {
+        Member member = memberService.findByEmail(email);
+        updatedMember.setEmail(member.getEmail());
+        model.addAttribute("member", member);
+        System.out.println("updatedMember.getProfileImg() = " + updatedMember.getProfileImg());
+        memberService.updateProfileImg(updatedMember.getProfileImg(), member.getEmail());
+
+        return "redirect:/member/profile/" + email;
+    }
+
 }
 

@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript" th:inline="javascript" th:src="@{/js/check.js}"></script>    <!-- js 파일 추가 -->
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/profileImgUpload.js}"></script>
+
+
 <meta th:name="_csrf" th:content="${_csrf.token}"/>
 <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 
@@ -41,29 +44,50 @@
     </ul>
 </nav>
 <!-- 사이드 바 끝 -->
-<div class="post">
+<div class="post1">
+
     <div class="info">
 
-        <div class="user">
-            <div class="profile-pic"><img src="templates/img/cat3.jpg" alt=""></div>  <!-- 프로필 사진 -->
-            <p class="username" th:text="${member.nickname}"></p>              <!-- 유저 이름 -->
+        <div class="profile-image">
+
         </div>
     </div>
+</div>
+
+<div class="post">
+
+        <div class="user">
+            <p class="username" th:text="${member.nickname}"></p>              <!-- 유저 이름 -->
+        </div>
+
+
     <div class="post-content">
+
+        <img th:src="@{/img/profile-picture/{path} (path = ${member.profileImg})}" style= "width:152px; height:152px;" alt="" id="submitForm1">
 
         <div class="reaction-wrapper">                        <!-- Feed 아래 쪽 -->
         </div>
-        <form th:action="@{/member/modify}" method="POST">
+        <form th:action="@{/member/modify}" method="POST" id="form1">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <p class="description">닉네임 <input type="text" name="nickname" id="nickname" th:value="${member.nickname}" onchange="idCheck()" required>
-        <span id="msgId"></span></p>
-        <p class="description"><span>이메일 </span> <input type="email" name="email" id="email" th:value="${member.email}" readonly></p>
-        <p class="description"><span>소개 </span> <input name="introduce" id="introduce" th:value="${member.introduce}"></p>
-        <p>
+                <p class="description">닉네임 <input type="text" name="nickname" id="nickname" th:value="${member.nickname}" onchange="idCheck()" required>
+                <span id="msgId"></span></p>
+                <p class="description"><span>이메일 </span> <input type="email" name="email" id="email" th:value="${member.email}" readonly style="color: gray"></p>
+                <p class="description"><span>소개 </span> <input name="introduce" id="introduce" th:value="${member.introduce}"></p>
+                <p>
             <button title="profile-picture">제출</button>
-        </p>
+                </p>
         </form>
-    </div>
 
+
+        <form class="login-form" id="form2" th:action="@{/member/profileImg/modify/{email} (email = ${member.email})}" method="post", enctype="multipart/form-data">
+            <input type="file" class="profileUploadBtn" id="profileImg" />
+            <button type="submit" class="img-primary-btn" id="changeImgFile" disabled=true>변경하기</button>
+
+            <div class="str-box1">
+            </div>
+        </form>
+
+    </div>
 </div>
+
 </body>

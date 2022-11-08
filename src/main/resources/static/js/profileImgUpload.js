@@ -24,6 +24,7 @@ $(document).ready(function (e) {
     $(".profileUploadBtn").on("change", function () {
 
         let fileName = $(this).val().split("\\").pop();
+        const changeImgFile = document.getElementById("changeImgFile");
         $(this).siblings(".custom-file-label1").addClass("selected").html(fileName);
 
 
@@ -60,6 +61,7 @@ $(document).ready(function (e) {
             success: function (result) {
                 console.log("result = -> " + result);
                     memberDtoResult = result;
+                changeImgFile.disabled = false;
             },
             error: function (jqxHR, textStatus) {
                 console.log("textStatus = " + textStatus);
@@ -79,7 +81,18 @@ $(document).ready(function (e) {
         console.log("primary-btn str -> " + str)
 
         $(".str-box").html(str);
-        $("form").submit();
+        $("form1").submit();
+    });
+
+    $(".img-primary-btn").on("click", function (e) {
+        alert("사진이 변경되었습니다.");
+        e.preventDefault();
+
+        str = "<input type='hidden' name='profileImg' value='" + memberDtoResult.uuid + "_" + memberDtoResult.imgName + "'>";
+        console.log("primary-btn str -> " + str)
+
+        $(".str-box1").html(str);
+        $("#form2").submit();
     });
 
 });

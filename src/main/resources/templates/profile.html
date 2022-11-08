@@ -6,6 +6,7 @@
 	<link href="/css/profile.css" rel="stylesheet">
     <link href="/css/Side.css" rel="stylesheet">
 </head>
+
 <body>
 
 	<div class="wrapper">
@@ -14,7 +15,7 @@
             <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
             <div><img src="/img/foot2.png" style="width:25px; "> 알    람</div>
             <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
-            <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{id} (id = ${member.id})}">마이프로필</a></div>
+            <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
             <div><img src="/img/foot2.png" style="width:25px;">
                 <input type="text" style="border: white; border-bottom: outset; width: 100px;">
             </div>
@@ -35,7 +36,7 @@
                 <!--유저 이름-->
                 <div class="profile-user-settings">
                     <h1 class="profile-user-name" th:text="${member.nickname}"></h1>
-                    <button th:if="${isMe}" class="btn profile-edit-btn"><a th:href="@{/member/{id} (id = ${member.id})}">프로필 편집</a></button>
+                    <button th:if="${isMe}" class="btn profile-edit-btn"><a th:href="@{/member/{email} (email = ${member.email})}">프로필 편집</a></button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
 
