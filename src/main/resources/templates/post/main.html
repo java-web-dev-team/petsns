@@ -484,9 +484,25 @@
         .modalBox {
             position: absolute;
             background-color: #fff;
-            width: 400px;
-            height: 200px;
+            width: 450px;
+            height: 300px;
+            padding: 5px;
+        }
+
+        .listBox {
+            position: absolute;
+            background-color: #dfdfdf;
+            width: 398px;
+            height: 230px;
             padding: 15px;
+        }
+
+        .listBox2{
+            position: absolute;
+            background-color: #ffffff;
+            width: 400px;
+            height: 20px;
+            padding: 11px;
         }
 
         .modalBox button {
@@ -518,7 +534,7 @@
 </div>
 
     <div class="none">
-    <div class="main_body"
+    <div class="main_body">
     <article>
         <div class="empty_box"></div>
         <div class="feed" th:each="post:${posts}">
@@ -565,6 +581,9 @@
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
+                        <div class="listBox2">
+                            <div class="listBox">asdf</div>
+                        </div>
                         <button class="closeBtn" style="width:25px;float:right;">X</button>
                     </div>
                 </div>
@@ -612,6 +631,7 @@
         </div>
     </article>
 </div>
+    </div>
 </body>
 </html>
 
