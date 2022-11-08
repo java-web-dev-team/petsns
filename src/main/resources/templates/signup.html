@@ -26,46 +26,46 @@
 
       <div class="field">
         <input id="nickname" name="nickname" type="name" placeholder="nickname" onchange="idCheck()" required maxlength="30"/>
-        <label for="nickname">Nickname</label>
+        <label2 for="nickname">Nickname</label2>
       </div>
       &nbsp;<span id="msgId"></span><br>
 
       <div class="field">
         <input id="password" name="password" type="password" placeholder="password" onchange="check_pw()" required />
-        <label for="password">Password</label>
+        <label2 for="password">Password</label2>
         <br>
       </div>
 
       <div class="field">
         <input id="passwordCheck" type="password" placeholder="passwordCheck" oninput="check_pw_re()" required />
-        <label for="passwordCheck">PasswordCheck</label>
+        <label2 for="passwordCheck">PasswordCheck</label2>
         </br>
         &nbsp;<span id="CheckPwd"></span>
       </div>
 
       <div class="field">
         <input id="introduce" name="introduce" type="text" placeholder="introduce" />
-        <label for="introduce">Introduce</label>
+        <label2 for="introduce">Introduce</label2>
       </div>
 
       <div class="field">
         <input id="email" name="email" type="name" placeholder="Email ex)aaa@aaa.com" onchange="emailCheck()"/>
-        <label for="email">Email</label>
+        <label2 for="email">Email</label2>
         </br>
       &nbsp;&nbsp;<span id="msg"></span><br>
       </div>
 
-      <button type="button" class="login-button" onclick="mail_post_btn()">인증번호 요청</button>
+      <button type="button" class="login-button2" onclick="mail_post_btn()">인증번호 요청</button>
       </br>
       &nbsp;<span id="emailMsg"></span>
 
       <div class="field">
         <input id="check_mail" name="check_mail" type="name" placeholder="인증번호를 입력해주세요." maxlength="10" oninput="mail_certification_check()">
-        <label for="check_mail">인증번호</label>
+        <label2 for="check_mail">인증번호</label2>
       </div>
 
 
-      <button type="submit" id="login-button" name="login-button" class="login-button" title="login" disabled=true >회원가입</button>
+      <button type="submit" id="login-button2" name="login-button2" class="login-button2" title="login" disabled=true >회원가입</button>
 
 
       <div class="separator">
