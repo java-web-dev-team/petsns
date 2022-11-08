@@ -126,10 +126,8 @@ function mail_post_btn() {
 
 function mail_certification_check(){
     const check_mail = $("#check_mail").val();
-    const target = document.getElementById("login-button");
+    const target = document.getElementById("login-button2");
     console.log("check_mail ->" + check_mail)
-    console.log("check_mail_certification2 ->" + check_mail_certification)
-    console.log()
     if(check_mail == check_mail_certification && (document.getElementById("password").value == document.getElementById("passwordCheck").value)){
             target.disabled = false;
     } else{
@@ -138,6 +136,3 @@ function mail_certification_check(){
 
 }
 
-function alert(){
-    alert("CC");
-}

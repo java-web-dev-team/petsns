@@ -1,5 +1,6 @@
 package javawebdev.petsns.member;
 
+import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.MemberDto;
 import javawebdev.petsns.member.dto.PrincipalDetails;
@@ -32,6 +33,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -74,9 +76,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/profile/{id}")
-    public String MyProfile(@PathVariable Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
-        String email = principalDetails.getMember().getEmail();
-        Member me = memberService.findByEmail(email);
+    public String MyProfile(@PathVariable Integer id, @AuthenticationPrincipal CustomUser user, Principal principal, Model model) {
+        Member me = memberService.findByEmail(user.getUsername());
         Member member = memberService.findById(id);
         model.addAttribute("isMe", memberService.isMyProfile(me.getNickname(), member.getNickname()));
         model.addAttribute("member", member);
@@ -85,15 +86,15 @@ public class MemberController {
     }
 
     @GetMapping("/member/{id}")
-    public String updateForm(@PathVariable Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        Member member = memberService.findByEmail(principalDetails.getMember().getEmail());
+    public String updateForm(@PathVariable Integer id, Model model, @AuthenticationPrincipal CustomUser user) {
+        Member member = memberService.findByEmail(user.getUsername());
         model.addAttribute("member", member);
         return "profile-edit";
     }
 
     @PostMapping("/member/modify")
-    public String updateMember(@AuthenticationPrincipal PrincipalDetails principalDetails, Member updatedMember) {
-        Integer id = (memberService.findByEmail(principalDetails.getMember().getEmail())).getId();
+    public String updateMember(@AuthenticationPrincipal CustomUser user, Member updatedMember) {
+        Integer id = (memberService.findByEmail(user.getUsername())).getId();
         System.out.println("id = " + id);
         updatedMember.setId(id);
         memberService.updateMember(updatedMember);

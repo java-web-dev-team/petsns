@@ -1,6 +1,7 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.Validation;
+import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +109,8 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         } else {
             member = memberRepository.findMemberByNickname(name);
         }
-        return new User(member.getNickname(), member.getPassword(), Arrays.asList(new SimpleGrantedAuthority(member.getAuth())));
+
+        return member == null ? null : new CustomUser(member);
     }
 
 
