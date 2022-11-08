@@ -73,7 +73,7 @@ $(document).ready(function (e) {
         alert("회원가입이 완료되었습니다.");
         e.preventDefault();
         if(document.getElementById("profileImg") == null)  {
-            str = "<input type='hidden' name='profileImg' value='profile_normal.jpeg'>";
+            str = "<input type='hidden' name='profileImg' value='profile_normal.png'>";
         }  else{
             str = "<input type='hidden' name='profileImg' value='" + memberDtoResult.uuid + "_" + memberDtoResult.imgName + "'>";
 
