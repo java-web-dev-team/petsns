@@ -1,5 +1,6 @@
 package javawebdev.petsns.member;
 
+import javawebdev.petsns.follow.FollowService;
 import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.MemberDto;
@@ -45,6 +46,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final PostService postService;
+    private final FollowService followService;
 
     @Value("${upload.path2}")
     private String getUpLoadPath;
@@ -79,9 +81,13 @@ public class MemberController {
     public String MyProfile(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
         Member me = memberService.findByEmail(user.getUsername());
         Member member = memberService.findByEmail(email);
+        List<Member> followers = followService.getFollowersByFollowing(member.getNickname());
+        List<Member> followings = followService.getFollowingsByFollower(member.getNickname());
         model.addAttribute("isMe", memberService.isMyProfile(me.getNickname(), member.getNickname()));
         model.addAttribute("member", member);
         model.addAttribute("posts", postService.getPosts(member.getId()));
+        model.addAttribute("followers", followers);
+        model.addAttribute("followings", followings);
         return "profile";
     }
 
