@@ -30,11 +30,11 @@ public class ReportController {
     }
 
     // 신고 작성 폼 가져오기
-    @GetMapping
+    @GetMapping("/form")
     public String form(@AuthenticationPrincipal CustomUser customUser, Model model) {
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("reporter", member.getNickname());
-        return "/post/report";
+        return "/report/report";
     }
 
     // 내 신고목록
@@ -43,7 +43,7 @@ public class ReportController {
         Member member = memberService.customUserToMember(customUser);
         List<Report> reports = reportService.getReportsByMember(member.getId());
         model.addAttribute("reports", reports);
-        return "reports";
+        return "/admin/adminreport";
     }
 
     // 개별 신고조회
@@ -52,7 +52,7 @@ public class ReportController {
         Member member = memberService.customUserToMember(customUser);
         Report report = reportService.getReportById(member.getId(), reportId);
         model.addAttribute("report", report);
-        return "report-detail";
+        return "/admin/reportdetail";
     }
 
     // report 수정

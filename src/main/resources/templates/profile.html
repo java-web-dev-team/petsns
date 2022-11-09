@@ -12,14 +12,14 @@
 	<div class="wrapper">
         <div class="sidebar">
             <div style="margin-bottom: 50px;">A N I P I C</div>
-            <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
-            <div><img src="/img/foot2.png" style="width:25px; "> 알    람</div>
+            <div><img src="/img/foot1.png" style="width:25px;"><a href="/posts">메인페이지</a></div>
             <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
             <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
             <div><img src="/img/foot2.png" style="width:25px;">
                 <input type="text" style="border: white; border-bottom: outset; width: 100px;">
             </div>
-            <div><img src="/img/foot5.png" style="width:25px;"> H E L P</div>
+            <div><img src="/img/foot5.png" style="width:25px;"><a href="/helps/form"> H E L P </a></div>
+            <div><img src="/img/foot3.png" style="width:25px;"><a href="/reports/form"> 신고하기 </a></div>
             <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
         </div>
 		<div class="section">
@@ -42,7 +42,7 @@
 
                 <div class="profile-stats">
                     <ul>
-                        <li>게시물 <span class="profile-stat-count">164</span></li>
+                        <li>게시물 <span class="profile-stat-count" th:text="${posts.size}"></span></li>
                         <li>팔로워 <span class="profile-stat-count">188</span></li>
                         <li>팔로우 <span class="profile-stat-count">206</span></li>
                     </ul>
@@ -62,6 +62,7 @@
                 <!--/*@thymesVar id="posts" type="java.util.List<javawebdev.petsns.post.dto.PostVO>"*/-->
                 <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
                 <div th:each="post:${posts}" class="gallery-item" tabindex="0">
+
                     <a th:href="@{/posts/{id} (id = ${post.id})}"><img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}"
                          style= "width:285px; height:285px;" class="gallery-image">
                     <div class="gallery-item-info">
@@ -70,6 +71,7 @@
                             <li th:value="${post.comments.size()}" class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>
                         </ul>
                     </div></a>
+
                 </div>
     
 <!--                <div class="gallery-item" tabindex="0">-->

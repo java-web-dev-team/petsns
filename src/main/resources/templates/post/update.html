@@ -13,18 +13,20 @@
     </script>
 </head>
 <body>
+
 <div class="sidebar">
     <div style="margin-bottom: 50px;">A N I P I C</div>
-    <div><img src="/img/foot1.png" style="width:25px;"> 메인페이지</div>
-    <div><img src="/img/foot2.png" style="width:25px;"> 알    람</div>
-    <div><img src="/img/foot3.png" style="width:25px;"> 게시물작성</div>
-    <div><img src="/img/foot4.png" style="width:25px;"> 마이프로필</div>
+    <div><img src="/img/foot1.png" style="width:25px;"><a href="/posts">메인페이지</a></div>
+    <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
+    <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
     <div><img src="/img/foot2.png" style="width:25px;">
         <input type="text" style="border: white; border-bottom: outset; width: 100px;">
     </div>
-    <div><img src="/img/foot5.png" style="width:25px;"> H E L P</div>
-    <div><img src="/img/foot1.png" style="width:25px;"> 로 그 아 웃</div>
+    <div><img src="/img/foot5.png" style="width:25px;"><a href="/helps/form"> H E L P </a></div>
+    <div><img src="/img/foot3.png" style="width:25px;"><a href="/reports/form"> 신고하기 </a></div>
+    <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
 </div>
+
 <div class="body-text">
     <form action="/posts/update" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

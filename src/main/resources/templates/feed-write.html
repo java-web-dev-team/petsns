@@ -8,30 +8,18 @@
 </head>
 <body>
 <!-- 사이드 바 -->
-<nav>
-  <ul>
-    <li class="logo"><img alt="" src="../static/img/logo.png"></li>
-    <a></a>
-    <li>
-      <a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  홈</a>
-    </li>
-    <li>
-      <a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  알림</a>
-    </li>
-    <li>
-      <a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  글쓰기</a>
-    </li>
-    <li>
-      <a href="#"><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  프로필</a>
-    </li>
-    <li>
-      <a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  고객센터</a>
-    </li>
-    <li>
-      <a href="#"></i><img src="../static/img/home.PNG" style= "width:20px; height:20px; float: left;" alt="">  로그아웃</a>
-    </li>
-  </ul>
-</nav>
+<div class="sidebar">
+  <div style="margin-bottom: 50px;">A N I P I C</div>
+  <div><img src="/img/foot1.png" style="width:25px;"><a href="/posts">메인페이지</a></div>
+  <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
+  <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
+  <div><img src="/img/foot2.png" style="width:25px;">
+    <input type="text" style="border: white; border-bottom: outset; width: 100px;">
+  </div>
+  <div><img src="/img/foot5.png" style="width:25px;"><a href="/helps/form"> H E L P </a></div>
+  <div><img src="/img/foot3.png" style="width:25px;"><a href="/reports/form"> 신고하기 </a></div>
+  <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
+</div>
 <!-- 사이드 바 끝 -->
 <div class="profile-edit-box" style="margin-left: 30%; margin-top: 80px;">
   <div class="profile-info">

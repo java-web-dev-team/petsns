@@ -21,7 +21,7 @@ public class HelpController {
     public String getForm(@AuthenticationPrincipal CustomUser customUser, Model model) {
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
-        return "/helps/help-form";
+        return "/report/help";
     }
 
     @PostMapping("/")
