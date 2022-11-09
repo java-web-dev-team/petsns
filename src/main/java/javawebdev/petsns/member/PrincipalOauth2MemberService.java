@@ -3,12 +3,14 @@ package javawebdev.petsns.member;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class PrincipalOauth2MemberService extends DefaultOAuth2UserService {
         String password = bCryptPasswordEncoder.encode("패스워드" + uuid);
 
         String email = oAuth2User.getAttribute("email");
+
 
         Member member = memberRepository.findMemberByEmail(email);
         if (member == null) {

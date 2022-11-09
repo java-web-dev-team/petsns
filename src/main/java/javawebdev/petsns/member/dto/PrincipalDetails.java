@@ -3,12 +3,15 @@ package javawebdev.petsns.member.dto;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @ToString
@@ -26,6 +29,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         this.member = member;
         this.attributes = attributes;
     }
+
 
     @Override
     public String getName() {

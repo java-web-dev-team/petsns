@@ -56,10 +56,6 @@
 
 <div class="post">
 
-        <div class="user">
-            <p class="username" th:text="${member.nickname}"></p>              <!-- 유저 이름 -->
-        </div>
-
 
     <div class="post-content">
 
@@ -67,7 +63,7 @@
 
         <div class="reaction-wrapper">                        <!-- Feed 아래 쪽 -->
         </div>
-        <form th:action="@{/member/modify}" method="POST" id="form1">
+        <form th:action="@{/member/modify/{email} (email = ${member.email})}" method="POST" id="form1">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <p class="description">닉네임 <input type="text" name="nickname" id="nickname" th:value="${member.nickname}" onchange="idCheck()" required>
                 <span id="msgId"></span></p>

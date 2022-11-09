@@ -31,17 +31,17 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("onAuthenticationSuccess");
 
         PrincipalDetails member = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("member = " + member);
 
         boolean nicknameCheck = member.getName().length() == 21;
 
-        Member m = memberRepository.selectMember(member.getName());
-        String id = String.valueOf(m.getId());
+        String email = member.getMember().getEmail();
 
         if(nicknameCheck){
-            redirectStrategy.sendRedirect(request, response, "/member/"+ id);
+            redirectStrategy.sendRedirect(request, response, "/member/"+ email);
         } else{
 
-            redirectStrategy.sendRedirect(request, response, "/member/profile/"+ id);
+            redirectStrategy.sendRedirect(request, response, "/member/profile/"+ email);
         }
     }
 }

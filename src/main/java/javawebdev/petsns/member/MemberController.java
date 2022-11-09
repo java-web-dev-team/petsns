@@ -87,18 +87,23 @@ public class MemberController {
 
     @GetMapping("/member/{email}")
     public String updateForm(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
-        Member member = memberService.findByEmail(user.getUsername());
+        Member member = memberService.findByEmail(email);
         model.addAttribute("member", member);
         return "profile-edit";
     }
 
 
-    @PostMapping("/member/modify")
-    public String updateMember(@AuthenticationPrincipal CustomUser user, Member updatedMember) {
-        String email = (memberService.findByEmail(user.getUsername())).getEmail();
-        updatedMember.setEmail(email);
+    @PostMapping("/member/modify/{email}")
+    public String updateMember(@PathVariable("email") String email, @AuthenticationPrincipal CustomUser user, Member updatedMember) {
+        String e;
+        if(user == null){
+            e = memberService.findByEmail(email).getEmail();
+        } else {
+            e = (memberService.findByEmail(user.getUsername())).getEmail();
+        }
+        updatedMember.setEmail(e);
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/" + email;
+        return "redirect:/member/profile/" + e;
     }
 
     @PostMapping("/member/modify/pwd")

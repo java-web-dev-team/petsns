@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             http.oauth2Login()
                     .loginPage("/login-form")
+                    .defaultSuccessUrl("/posts")
                     .userInfoEndpoint()
                     .userService(principalOauth2MemberService)
                     .and()
