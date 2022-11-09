@@ -576,13 +576,18 @@
             </div>
             <!--/feedbottom-->
             <div class="feed_like_box">
-                <button class="openBtn" style="border: 0px; background-color: #ffffff;"> <div th:value="${post.hearts.get(0)} + 외 + ${post.hearts.size()} + 명이 좋아합니다." class="feed_like">s_sewon님 외 263명이 좋아합니다.</div></button>
+                <button class="openBtn" style="border: 0px; background-color: #ffffff;"> <div th:value="${post.hearts.get(0)} 외 ${post.hearts.size()} 명이 좋아합니다." class="feed_like">s_sewon님 외 263명이 좋아합니다.</div></button>
                 <div class="modal hidden">
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
                         <div class="listBox2">
-                            <div class="listBox">asdf</div>
+                            <div class="listBox">
+                                <tr th:each="heartMember:${post.heartMembers}">
+                                    <td th:value="${heartMember.nickname}"><a th:href="@{/member/profile/{id} (id = ${heartMember.id})}">aaaa</a></td>
+                                </tr>
+
+                            </div>
                         </div>
                         <button class="closeBtn" style="width:25px;float:right;">X</button>
                     </div>

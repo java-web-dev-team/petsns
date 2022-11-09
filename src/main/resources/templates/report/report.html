@@ -52,20 +52,16 @@
         잘못된 내용으로 신고할 경우 신고자에게
         불이익이 갈 수 있습니다.
         <br>
+        <form action="/reports" method="post">
         <br>
-        <input type="text" name="email" placeholder="연락받으실 메일">
-        <br>
-        <br>
-        <input type="text" name="report" placeholder="신고 할 아이디" style="border-radius: 20px;">
-        <br>
-        <br>
-        <input type="text" name="title" placeholder="제 목" style="border-radius:20px; width: 500px;">
+        <input type="text" name="reported" placeholder="신고 할 아이디" style="border-radius: 20px;">
         <br>
         <br>
         <textarea name="content" cols="60" placeholder="내 용" style="border-radius:20px; height: 250px;"></textarea>
         <br>
         <br>
         <button type="submit" value="submit" style="border-radius:20px; background-color: white">제출하기</button>
+        </form>
     </div>
 </div>
 </body>
