@@ -131,19 +131,6 @@ label {
   padding-top: 6px;
 }
 
-label2 {
-  position: absolute;
-  pointer-events: none;
-  left: 55px;
-  padding-bottom: 15px;
-  transform: translateY(10px);
-  line-height: 6px;
-  transition: all ease-out 0.1s;
-  font-size: 14px;
-  color: #999;
-  padding-top: 6px;
-}
-
 /* hiding placeholder in all browsers */
 
 input::placeholder {
