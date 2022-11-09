@@ -46,7 +46,7 @@
     <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
 </div>
 
-<div class="body-text">
+<div class="body-text" style="margin-top: 250px;">
      <form action="/posts" method="post">
          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
          <input type="text" name="content"/>
