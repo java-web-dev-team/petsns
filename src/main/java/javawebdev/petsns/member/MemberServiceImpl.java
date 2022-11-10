@@ -3,6 +3,7 @@ package javawebdev.petsns.member;
 import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -75,7 +76,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     }
 
     @Override
-    public Member customUserToMember(CustomUser customUser) {
+    public Member customUserToMember(PrincipalDetails customUser) {
         return findByEmail(customUser.getUsername());
     }
 
@@ -104,6 +105,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         return memberRepository.idCheck(nickname);
     }
 
+    // 일반 유저 로그인
     @Override
     public UserDetails loadUserByUsername(String name){
         log.info("loadUserByName: " + name);
@@ -114,7 +116,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
             member = memberRepository.findMemberByNickname(name);
         }
 
-        return member == null ? null : new CustomUser(member);
+        return member == null ? null : new PrincipalDetails(member);
     }
 
 

@@ -2,6 +2,9 @@ package javawebdev.petsns.member;
 
 import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.PrincipalDetails;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
@@ -42,7 +45,9 @@ public interface MemberService {
 
     Member findByEmail(String email);
 
-    Member customUserToMember(CustomUser customUser);
+    Member customUserToMember(PrincipalDetails customUser);
+
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
 }
 

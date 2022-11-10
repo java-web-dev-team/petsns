@@ -3,6 +3,7 @@ package javawebdev.petsns.report;
 import javawebdev.petsns.member.MemberService;
 import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.PrincipalDetails;
 import javawebdev.petsns.report.dto.Report;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public class ReportController {
 
     // 신고하기
     @PostMapping
-    public String create(@AuthenticationPrincipal CustomUser customUser, String reported, String content) throws Exception {
+    public String create(@AuthenticationPrincipal PrincipalDetails customUser, String reported, String content) throws Exception {
         Member member = memberService.customUserToMember(customUser);
         reportService.create(member.getNickname(), reported, content);
         return "redirect:/reports";
@@ -31,7 +32,7 @@ public class ReportController {
 
     // 신고 작성 폼 가져오기
     @GetMapping("/form")
-    public String form(@AuthenticationPrincipal CustomUser customUser, Model model) {
+    public String form(@AuthenticationPrincipal PrincipalDetails customUser, Model model) {
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("reporter", member.getNickname());
         return "/report/report";
@@ -39,7 +40,7 @@ public class ReportController {
 
     // 내 신고목록
     @GetMapping("/")
-    public String getMy(@AuthenticationPrincipal CustomUser customUser, Model model) {
+    public String getMy(@AuthenticationPrincipal PrincipalDetails customUser, Model model) {
         Member member = memberService.customUserToMember(customUser);
         List<Report> reports = reportService.getReportsByMember(member.getId());
         model.addAttribute("reports", reports);
@@ -48,7 +49,7 @@ public class ReportController {
 
     // 개별 신고조회
     @GetMapping("/{reportId}")
-    public String getReport(@PathVariable Integer reportId, @AuthenticationPrincipal CustomUser customUser, Model model) throws Exception {
+    public String getReport(@PathVariable Integer reportId, @AuthenticationPrincipal PrincipalDetails customUser, Model model) throws Exception {
         Member member = memberService.customUserToMember(customUser);
         Report report = reportService.getReportById(member.getId(), reportId);
         model.addAttribute("report", report);
@@ -57,7 +58,7 @@ public class ReportController {
 
     // report 수정
     @PutMapping("/{reportId}")
-    public String update(@PathVariable Integer reportId, @AuthenticationPrincipal CustomUser customUser, String updatedContent, String updatedReported) throws Exception {
+    public String update(@PathVariable Integer reportId, @AuthenticationPrincipal PrincipalDetails customUser, String updatedContent, String updatedReported) throws Exception {
         Member member = memberService.customUserToMember(customUser);
         reportService.update(member.getNickname(), updatedReported, reportId, updatedContent);
         return "redirect:/reports/{reportId}";
@@ -65,7 +66,7 @@ public class ReportController {
 
     // report 삭제
     @DeleteMapping("/{reportId}")
-    public String delete(@PathVariable Integer reportId, @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public String delete(@PathVariable Integer reportId, @AuthenticationPrincipal PrincipalDetails customUser) throws Exception {
         Member member = memberService.customUserToMember(customUser);
         reportService.delete(reportId, member.getNickname());
         return "redirect:/reports/{memberId}";

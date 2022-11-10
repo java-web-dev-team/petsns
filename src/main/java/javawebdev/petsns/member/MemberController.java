@@ -9,10 +9,13 @@ import javawebdev.petsns.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +39,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +51,9 @@ public class MemberController {
     private final MemberService memberService;
     private final PostService postService;
     private final FollowService followService;
+
+    @Autowired
+    private final AuthenticationManager authenticationManager;
 
     @Value("${upload.path2}")
     private String getUpLoadPath;
@@ -73,13 +80,15 @@ public class MemberController {
     }
 
     @GetMapping("/pwdChange")
-    public String pwdChange() {
+    public String pwdChange(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+        model.addAttribute("member", memberService.findByEmail(principalDetails.getMember().getEmail()));
         return "pwd-edit";
     }
 
     @GetMapping("/member/profile/{email}")
-    public String MyProfile(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
-        Member me = memberService.findByEmail(user.getUsername());
+    public String MyProfile(@PathVariable String email, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletRequest request) {
+
+        Member me = memberService.findByEmail(principalDetails.getUsername());
         Member member = memberService.findByEmail(email);
         List<Member> followers = followService.getFollowersByFollowing(member.getNickname());
         List<Member> followings = followService.getFollowingsByFollower(member.getNickname());
@@ -92,7 +101,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/{email}")
-    public String updateForm(@PathVariable String email, @AuthenticationPrincipal CustomUser user, Model model) {
+    public String updateForm(@PathVariable String email, Model model) {
         Member member = memberService.findByEmail(email);
         model.addAttribute("member", member);
         return "profile-edit";
@@ -100,32 +109,24 @@ public class MemberController {
 
 
     @PostMapping("/member/modify/{email}")
-    public String updateMember(@PathVariable("email") String email, @AuthenticationPrincipal CustomUser user, Member updatedMember) {
-        String e;
-        if(user == null){
-            e = memberService.findByEmail(email).getEmail();
-        } else {
-            e = (memberService.findByEmail(user.getUsername())).getEmail();
-        }
-        updatedMember.setEmail(e);
+    public String updateMember(@PathVariable("email") String email, @AuthenticationPrincipal PrincipalDetails principalDetails, Member updatedMember) {
+        updatedMember.setEmail(principalDetails.getUsername());
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/" + e;
+        return "redirect:/member/profile/" + email;
     }
 
     @PostMapping("/member/modify/pwd")
-    public String updatePwd(@AuthenticationPrincipal CustomUser user, String pwd, String password, String passwordCheck, Model model) {
-        Member member = memberService.findByEmail(user.getUsername());
-        System.out.println("pwd = " + pwd);
-        System.out.println("password = " + password);
-        System.out.println("passwordCheck = " + passwordCheck);
+    public String updatePwd(@AuthenticationPrincipal PrincipalDetails principalDetails, String pwd, String password, String passwordCheck, Model model) {
+        Member member = memberService.findByEmail(principalDetails.getUsername());
+        model.addAttribute("model", model);
         if (pwd.equals(password)) {
             model.addAttribute("pwdCheckMsg", "현재 비밀번호와 같습니다. 다른 비밀번호로 변경해주세요.");
             return "redirect:/pwdChange";
         }
 
         if ((!pwd.equals(password)) && (password.equals(passwordCheck))) {
-            memberService.updateMember(password, user.getUsername());
-            return "redirect:/member/profile/" + user.getUsername();
+            memberService.updateMember(password, principalDetails.getUsername());
+            return "redirect:/member/profile/" + principalDetails.getUsername();
         } else {
             model.addAttribute("pwdCheckMsg", "바꿀 비밀번호와 바꿀 비밀번호 체크가 다릅니다. 다시 확인해 주세요.");
             return "redirect:/pwdChange";
@@ -133,8 +134,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/delete")
-    public String deleteByNickname(@AuthenticationPrincipal CustomUser user) {
-        memberService.deleteMember(user.getUsername());
+    public String deleteByNickname(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        memberService.deleteMember(principalDetails.getUsername());
         SecurityContextHolder.clearContext();   // 탈퇴 시 로그아웃 처리됌
         return "redirect:/login-form";
     }
@@ -186,10 +187,10 @@ public class MemberController {
 
     @ResponseBody
     @RequestMapping(value = "/pwdCheck", method = RequestMethod.POST)
-    public int pwdCheck(@RequestParam("password") String password, @AuthenticationPrincipal UserDetails userDetails) {
+    public int pwdCheck(@RequestParam("password") String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         log.info("/pwdCheck ----");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String nowPwd = memberService.findByNickname(userDetails.getUsername()).getPassword();
+        String nowPwd = memberService.findByEmail(principalDetails.getUsername()).getPassword();
 
         if (encoder.matches(password, nowPwd)) {
             return 1;
@@ -281,5 +282,11 @@ public class MemberController {
         return "redirect:/member/profile/" + email;
     }
 
+    @GetMapping("/user")
+    public String testLogin(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails.getMember() = " + principalDetails.getMember());
+        System.out.println("principalDetails.getMember().getEmail() = " + principalDetails.getMember().getEmail());
+        return "user";
+    }
 }
 

@@ -1,5 +1,6 @@
 package javawebdev.petsns.member.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,18 +14,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@ToString
+@Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Member member;
     private Map<String, Object> attributes;
 
 
+    // 일반 로그인 생성자
     public PrincipalDetails(Member member){
         this.member = member;
     }
 
+    // 구글 로그인 생성자
     public PrincipalDetails(Member member, Map<String, Object> attributes){
         this.member = member;
         this.attributes = attributes;
@@ -47,7 +49,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 
     @Override
@@ -64,8 +66,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        String sub = attributes.get("sub").toString();
-        return sub;
+        return member.getEmail();
     }
 
     @Override

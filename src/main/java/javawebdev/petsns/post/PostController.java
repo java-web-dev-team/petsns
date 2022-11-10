@@ -24,8 +24,8 @@ public class PostController {
 
     //  내가 팔로우한 사람의 게시물 가져오기
     @GetMapping("/posts")
-    public String getPosts(@AuthenticationPrincipal CustomUser customUser, Model model) {
-        Member member = memberService.customUserToMember(customUser);
+    public String getPosts(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+        Member member = memberService.findByEmail(principalDetails.getUsername());
         List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
         model.addAttribute("member", member);
         model.addAttribute("posts", myFollowingPosts);
@@ -34,7 +34,7 @@ public class PostController {
 
     //  게시물 작성 폼 가져오기
     @GetMapping("/posts/post-form")
-    public String registerForm(@AuthenticationPrincipal CustomUser customUser, Model model){
+    public String registerForm(@AuthenticationPrincipal PrincipalDetails customUser, Model model){
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
         return "/post/register";
@@ -42,7 +42,7 @@ public class PostController {
 
     //  게시물 등록
     @PostMapping("/posts")
-    public String register(@ModelAttribute Post post, @AuthenticationPrincipal CustomUser customUser){
+    public String register(@ModelAttribute Post post, @AuthenticationPrincipal PrincipalDetails customUser){
         Member member = memberService.customUserToMember(customUser);
         postService.register(member, post);
         return "redirect:/posts";
@@ -50,7 +50,7 @@ public class PostController {
 
     //  개별 게시물 가져오기
     @GetMapping("/posts/{postId}")
-    public String read(Model model, @PathVariable Integer postId, @AuthenticationPrincipal CustomUser customUser){
+    public String read(Model model, @PathVariable Integer postId, @AuthenticationPrincipal PrincipalDetails customUser){
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
         PostVO postVO = postService.getPost(postId);
@@ -60,7 +60,7 @@ public class PostController {
 
     //  게시물 수정 폼 가져오기
     @GetMapping("/posts/{postId}/update-form")
-    public String updateForm(Model model, @PathVariable Integer postId, @AuthenticationPrincipal CustomUser customUser){
+    public String updateForm(Model model, @PathVariable Integer postId, @AuthenticationPrincipal PrincipalDetails customUser){
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
         Post post = postService.getPostForUpdate(postId);
@@ -70,7 +70,7 @@ public class PostController {
 
     //  게시물 수정하기(content 만 수정 가능)
     @PostMapping("/posts/{postId}/update")
-    public String update(@AuthenticationPrincipal CustomUser customUser, @PathVariable Integer postId, String content) {
+    public String update(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId, String content) {
         Member member = memberService.customUserToMember(customUser);
         postService.update(member, postId, content);
         return "redirect:/posts/{postId}";
@@ -78,7 +78,7 @@ public class PostController {
 
     //  게시글 삭제
     @PostMapping("/posts/{postId}/delete")
-    public String delete(@AuthenticationPrincipal CustomUser customUser, @PathVariable Integer postId) {
+    public String delete(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId) {
         Member member = memberService.customUserToMember(customUser);
         postService.remove(member, postId);
         return "redirect:/posts";

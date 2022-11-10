@@ -1,5 +1,6 @@
 package javawebdev.petsns.member.dto;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Setter
+@Getter
 public class CustomUser extends User  {
 
 

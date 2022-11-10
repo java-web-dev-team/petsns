@@ -3,6 +3,7 @@ package javawebdev.petsns.follow;
 import javawebdev.petsns.member.MemberService;
 import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
+import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ public class FollowController {
     private final MemberService memberService;
 
     @PostMapping("/follows/{memberId}")
-    public String click(@PathVariable Integer memberId, @AuthenticationPrincipal CustomUser customUser) {
+    public String click(@PathVariable Integer memberId, @AuthenticationPrincipal PrincipalDetails customUser) {
         Member member = memberService.customUserToMember(customUser);
         Member target = memberService.findById(memberId);
         followService.click(member.getNickname(), target.getNickname());
