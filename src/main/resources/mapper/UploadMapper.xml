@@ -19,7 +19,7 @@
         where post_id = #{postId};
     </select>
 
-    <delete id="delete">
+    <delete id="deleteAll">
         DELETE FROM post_image where id = #{id};
     </delete>
 

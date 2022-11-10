@@ -34,12 +34,12 @@
             <td th:text="${post.id}"></td>
             <td th:text="${post.nickname}"></td>
             <td th:text="${post.content}"></td>
-            <a th:href="@{/posts/{id}/update (id = ${post.id})}">
+            <a th:href="@{/posts/{postId}/update (postId = ${postId})}">
                 <button name="update">수정하기</button></a>
-            <form action="/posts/remove" method="post">
+            <form th:action="@{/posts/{postId}/delete (postId = ${postId})}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <input type="hidden" th:name="id" th:value="${id}">
-                <input type="submit" name="remove" value="삭제"/>
+                <input type="submit" name="delete" value="삭제"/>
 
             </form>
         </tr>

@@ -59,27 +59,29 @@ public class PostController {
     }
 
     //  게시물 수정 폼 가져오기
-    @GetMapping("/posts/{postId}/update-form")
+    @GetMapping("/posts/{postId}/update")
     public String updateForm(Model model, @PathVariable Integer postId, @AuthenticationPrincipal PrincipalDetails customUser){
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
         Post post = postService.getPostForUpdate(postId);
-        model.addAttribute("post", post);
-        return "/post/update";
+        model.addAttribute("postId", postId);
+        return "post/update";
     }
 
     //  게시물 수정하기(content 만 수정 가능)
     @PostMapping("/posts/{postId}/update")
-    public String update(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId, String content) {
+    public String update(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId, String content, Model model) {
         Member member = memberService.customUserToMember(customUser);
+        model.addAttribute("postId" , postId);
         postService.update(member, postId, content);
         return "redirect:/posts/{postId}";
     }
 
     //  게시글 삭제
     @PostMapping("/posts/{postId}/delete")
-    public String delete(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId) {
+    public String delete(@AuthenticationPrincipal PrincipalDetails customUser, @PathVariable Integer postId, Model model) {
         Member member = memberService.customUserToMember(customUser);
+        model.addAttribute("postId", postId);
         postService.remove(member, postId);
         return "redirect:/posts";
     }
