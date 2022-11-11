@@ -542,10 +542,10 @@
                 <div class="id_round">
                     <div class="id_box">
                         <div class="id_box_img">
-                            <img class="id_img" alt="userphoto">
+                            <img class="id_img" th:src="@{/img/profile-picture/{path} (path = ${postMemberImg.profileImg})}" alt="">
                         </div>
                         <div class="id_container">
-                            <div class="id_name" th:value="${post.nickname}">userid</div>
+                            <div class="id_name" th:text="${post.getNickname()}"></div>
                         </div>
                     </div>
                     <div class="more_details">

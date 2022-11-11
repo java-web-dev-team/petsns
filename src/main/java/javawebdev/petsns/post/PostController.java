@@ -34,6 +34,7 @@ public class PostController {
         getPost.addAll(myFollowingPosts);
         model.addAttribute("member", member);
         model.addAttribute("posts", getPost);
+        model.addAttribute("postMemberImg", memberService.findByNickname(getPost.get(0).getNickname()));
         return "/post/main";
     }
 
