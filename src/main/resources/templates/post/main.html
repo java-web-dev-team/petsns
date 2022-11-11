@@ -578,18 +578,18 @@
             <div class="feed_like_box">
 
 
-                <a th:unless="${post.hearts.isEmpty() || post.hearts == null}"
-                        th:value="${post.hearts.get(0).nickname}"
-                        class="openBtn" style="border: 0px; background-color: #ffffff;">
-<!--                    <div th:unless="${post.hearts.isEmpty() || post.hearts == null}" class="feed_like">-->
-<!--                        <a th:value="${post.hearts.get(0).nickname}">-->
-<!--                        </a>-->
-<!--                        외-->
-<!--                        <a th:value="${post.hearts.size() - 1}">-->
-<!--                        </a>-->
-<!--                        명이 좋아합니다.-->
-<!--                    </div>-->
-                </a>
+                <button th:if="${!post.hearts.isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
+                    <div class="feed_like">
+                        <span th:text="${post.heartMembers.get(0).nickname}">
+                            nickname
+                        </span>
+                        외
+                        <span th:text="${post.heartMembers.size() - 1}">
+                            size
+                        </span>
+                        명이 좋아합니다.
+                    </div>
+                </button>
 
 
                 <div class="modal hidden">
@@ -599,8 +599,8 @@
                         <div class="listBox2">
                             <div class="listBox">
                                 <tr th:if="${post.heartMembers != null}" th:each="heartMember:${post.heartMembers}">
-                                    <img th:src="@{/img/profile-picture/{path} (path = ${heartMember.profileImg})}">
-                                    <a th:value="${heartMember.nickname}" th:href="@{/member/profile/{email} (email = ${heartMember.email})}" >1</a>
+                                    <img style="width: 8%; height: 12%; margin-left: -300px; vertical-align: bottom;" th:src="@{/img/profile-picture/{path} (path = ${heartMember.profileImg})}">
+                                    <a th:text="${heartMember.nickname}" th:href="@{/member/profile/{email} (email = ${heartMember.email})}" >1</a>
                                 </tr>
 
                             </div>
@@ -609,20 +609,7 @@
                     </div>
                 </div>
 
-                <script>
-                    const open = () => {
-                        document.querySelector(".modal").classList.remove("hidden");
-                    }
 
-                    const close = () => {
-                        document.querySelector(".modal").classList.add("hidden");
-                    }
-
-                    document.querySelector(".openBtn").addEventListener("click", open);
-                    document.querySelector(".closeBtn").addEventListener("click", close);
-                    document.querySelector(".bg").addEventListener("click", close);
-
-                </script>
             </div>
 
             <div class="feed_article">
@@ -654,6 +641,22 @@
     </article>
 </div>
     </div>
+
+<script>
+    const open = () => {
+        document.querySelector(".modal").classList.remove("hidden");
+    }
+
+    const close = () => {
+        document.querySelector(".modal").classList.add("hidden");
+    }
+
+    document.querySelector(".openBtn").addEventListener("click", open);
+    document.querySelector(".closeBtn").addEventListener("click", close);
+    document.querySelector(".bg").addEventListener("click", close);
+</script>
+
+
 </body>
 </html>
 
