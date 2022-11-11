@@ -4,6 +4,7 @@ import javawebdev.petsns.comment.dto.Comment;
 import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.member.dto.Member;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 public class PostVO {
 
     private Integer id;
@@ -39,4 +40,5 @@ public class PostVO {
                 postWithUpdateDTOs.getRegistered_at()
         );
     }
+
 }

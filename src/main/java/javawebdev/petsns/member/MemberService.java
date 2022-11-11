@@ -1,11 +1,9 @@
 package javawebdev.petsns.member;
 
-import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 

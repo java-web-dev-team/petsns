@@ -1,18 +1,18 @@
 package javawebdev.petsns.post;
 
 import javawebdev.petsns.member.MemberService;
-import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import javawebdev.petsns.post.dto.Post;
 import javawebdev.petsns.post.dto.PostVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -27,8 +27,13 @@ public class PostController {
     public String getPosts(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         Member member = memberService.findByEmail(principalDetails.getUsername());
         List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
+        List<PostVO> myPosts = postService.getMyPosts(member.getNickname());
+
+        List<PostVO> getPost = new ArrayList<>();
+        getPost.addAll(myPosts);
+        getPost.addAll(myFollowingPosts);
         model.addAttribute("member", member);
-        model.addAttribute("posts", myFollowingPosts);
+        model.addAttribute("posts", getPost);
         return "/post/main";
     }
 

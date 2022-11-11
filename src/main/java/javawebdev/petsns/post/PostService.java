@@ -34,6 +34,16 @@ public class PostService {
         return myFollowingPosts;
     }
 
+    // 내 게시글
+    public List<PostVO> getMyPosts(String nickname){
+        List<PostVO> myPosts = new ArrayList<>();
+        List<Post> posts = postMapper.findByNickname(nickname);
+        for(Post post : posts){
+            myPosts.add(postToVO(post));
+        }
+        return myPosts;
+    }
+
     // 게시물 작성
     public void register(Member member, Post post) {
         post.setNickname(member.getNickname());

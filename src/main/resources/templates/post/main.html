@@ -310,7 +310,7 @@
 
         .inputBox{
             background-color: #FAFAFA;
-            font:  14px;
+            /*font:  13px;*/
             color: black;
             outline: none;
             width:550px;
@@ -576,14 +576,21 @@
             </div>
             <!--/feedbottom-->
             <div class="feed_like_box">
-                <button class="openBtn" style="border: 0px; background-color: #ffffff;"> <div th:value="${post.hearts.get(0)} 외 ${post.hearts.size()} 명이 좋아합니다." class="feed_like">s_sewon님 외 263명이 좋아합니다.</div></button>
+
+
+                <button class="openBtn" style="border: 0px; background-color: #ffffff;">
+                    <div th:value="${post.hearts}" class="feed_like"></div> 외
+                    <div th:value="${post.hearts.size() - 1 }" class="feed_like"></div> 명이 좋아합니다.
+                </button>
+
+
                 <div class="modal hidden">
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
                         <div class="listBox2">
                             <div class="listBox">
-                                <tr th:each="heartMember:${post.heartMembers}">
+                                <tr th:if="${post.hearts != null}" th:each="heartMember:${post.heartMembers}">
                                     <td th:value="${heartMember.nickname}"><a th:href="@{/member/profile/{id} (id = ${heartMember.id})}">aaaa</a></td>
                                 </tr>
 
@@ -611,13 +618,13 @@
             <div class="feed_article">
                 <div class="feed_article_box">
                     <div class="comments_container">
-                        <div class="comments" th:value="${post.content}">s_sewon 귀여운 냥이 산책</div>
+                        <div class="comments" th:if="${post.content != null}" th:value="${post.content}">s_sewon 귀여운 냥이 산책</div>
                         <div class="comments1" >더 보기</div>
 <!--                        TODO: 댓글 펼쳐보기-->
                     </div>
                     <div class="comments1">댓글 <span id="count"></span> 모두 보기</div>
                     <div class="comments1_box">
-                        <div class="comments" th:value="${post.comments.get(0)}">sunmerrr 고양이 너무 귀여워요</div>
+                        <div class="comments" th:if="${post.comments != null}" th:value="${post.comments}">sunmerrr 고양이 너무 귀여워요</div>
                     </div>
                     <div class="new_comments">
                     </div>

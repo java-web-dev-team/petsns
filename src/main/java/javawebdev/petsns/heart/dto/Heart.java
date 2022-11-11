@@ -1,11 +1,12 @@
 package javawebdev.petsns.heart.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 public class Heart {
 
     private Integer id;

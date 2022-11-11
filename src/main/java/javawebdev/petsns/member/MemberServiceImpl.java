@@ -1,22 +1,17 @@
 package javawebdev.petsns.member;
 
 import javawebdev.petsns.Validation;
-import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 

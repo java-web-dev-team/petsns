@@ -1,7 +1,6 @@
 package javawebdev.petsns.help;
 
 import javawebdev.petsns.member.MemberService;
-import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import lombok.RequiredArgsConstructor;

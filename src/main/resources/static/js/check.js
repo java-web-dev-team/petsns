@@ -16,6 +16,7 @@ function idCheck(){
             if(count > 0){
                 $("#msgId").html("중복된 닉네임 입니다.");
                 $("#msgId").css('color', 'red');
+                document.getElementById("login-button2").disabled = true;
             } else if(count == 0){
                 $("#msgId").html("사용 가능한 닉네임 입니다.");
                 $("#msgId").css('color', 'green');

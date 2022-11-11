@@ -2,7 +2,6 @@ package javawebdev.petsns.admin;
 
 import javawebdev.petsns.help.HelpService;
 import javawebdev.petsns.member.MemberService;
-import javawebdev.petsns.member.dto.CustomUser;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
 import javawebdev.petsns.report.ReportService;
