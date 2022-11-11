@@ -38,7 +38,7 @@
     </select>
 
     <select id="findMembersByPostId" resultType="Member">
-        select m.id, m.nickname
+        select m.email, m.nickname, m.profileImg
         from heart h
                  join member m on h.nickname = m.nickname;
     </select>

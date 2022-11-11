@@ -200,13 +200,13 @@ public class Validation {
     }
 
     public Heart isValidAccess(Heart heart, Member member, Post post) {
-        if (Objects.equals(member.getNickname(), heart.getNickName()) && Objects.equals(heart.getPostId(), post.getId())) {
+        if (Objects.equals(member.getNickname(), heart.getNickname()) && Objects.equals(heart.getPostId(), post.getId())) {
             return heart;
         } else {
-            log.info("Not valid access. heart.nickname = {}, current member = {}", heart.getNickName(), member.getNickname());
+            log.info("Not valid access. heart.nickname = {}, current member = {}", heart.getNickname(), member.getNickname());
             throw new IllegalArgumentException(
                     "Not valid access. heart.nickname = " +
-                    heart.getNickName() +
+                    heart.getNickname() +
                     ", current member = " +
                     member.getNickname() +
                     "heart.postId = " +

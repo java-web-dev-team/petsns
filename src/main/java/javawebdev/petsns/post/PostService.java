@@ -3,6 +3,7 @@ package javawebdev.petsns.post;
 import javawebdev.petsns.Validation;
 import javawebdev.petsns.comment.CommentMapper;
 import javawebdev.petsns.heart.HeartMapper;
+import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.post.dto.Post;
 import javawebdev.petsns.post.dto.PostVO;
@@ -105,11 +106,13 @@ public class PostService {
 
     private PostVO postToVO(Post post) {
         validation.getPostOrException(post.getId());
+        Member member = validation.getMemberOrException(post.getNickname());
         Post postWithUpdateDTOs = postWithUpdateDTOs(post.getId());
         int id = postWithUpdateDTOs.getId();
 
         return PostVO.fromDTO(
                 postWithUpdateDTOs,
+                member,
                 commentMapper.findByPostId(id),
                 heartMapper.findByPostId(id),
                 heartMapper.findMembersByPostId(id)

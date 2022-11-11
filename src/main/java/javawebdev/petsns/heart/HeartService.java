@@ -52,7 +52,7 @@ public class HeartService {
     private List<Member> heartsToMembers(List<Heart> hearts) {
         List<Member> members = new ArrayList<>();
         for (Heart heart : hearts) {
-            members.add(validation.getMemberOrException(heart.getNickName()));
+            members.add(validation.getMemberOrException(heart.getNickname()));
         }
         return members;
     }

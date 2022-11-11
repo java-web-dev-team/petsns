@@ -542,7 +542,7 @@
                 <div class="id_round">
                     <div class="id_box">
                         <div class="id_box_img">
-                            <img class="id_img" th:src="@{/img/profile-picture/{path} (path = ${postMemberImg.profileImg})}" alt="">
+                            <img class="id_img" th:src="@{/img/profile-picture/{path} (path = ${post.member.profileImg})}" alt="">
                         </div>
                         <div class="id_container">
                             <div class="id_name" th:text="${post.getNickname()}"></div>
@@ -578,10 +578,18 @@
             <div class="feed_like_box">
 
 
-                <button class="openBtn" style="border: 0px; background-color: #ffffff;">
-                    <div th:value="${post.hearts}" class="feed_like"></div> 외
-                    <div th:value="${post.hearts.size() - 1 }" class="feed_like"></div> 명이 좋아합니다.
-                </button>
+                <a th:unless="${post.hearts.isEmpty() || post.hearts == null}"
+                        th:value="${post.hearts.get(0).nickname}"
+                        class="openBtn" style="border: 0px; background-color: #ffffff;">
+<!--                    <div th:unless="${post.hearts.isEmpty() || post.hearts == null}" class="feed_like">-->
+<!--                        <a th:value="${post.hearts.get(0).nickname}">-->
+<!--                        </a>-->
+<!--                        외-->
+<!--                        <a th:value="${post.hearts.size() - 1}">-->
+<!--                        </a>-->
+<!--                        명이 좋아합니다.-->
+<!--                    </div>-->
+                </a>
 
 
                 <div class="modal hidden">
@@ -590,8 +598,9 @@
                         좋아요
                         <div class="listBox2">
                             <div class="listBox">
-                                <tr th:if="${post.hearts != null}" th:each="heartMember:${post.heartMembers}">
-                                    <td th:value="${heartMember.nickname}"><a th:href="@{/member/profile/{id} (id = ${heartMember.id})}">aaaa</a></td>
+                                <tr th:if="${post.heartMembers != null}" th:each="heartMember:${post.heartMembers}">
+                                    <img th:src="@{/img/profile-picture/{path} (path = ${heartMember.profileImg})}">
+                                    <a th:value="${heartMember.nickname}" th:href="@{/member/profile/{email} (email = ${heartMember.email})}" >1</a>
                                 </tr>
 
                             </div>
@@ -615,6 +624,7 @@
 
                 </script>
             </div>
+
             <div class="feed_article">
                 <div class="feed_article_box">
                     <div class="comments_container">

@@ -1,5 +1,6 @@
 package javawebdev.petsns.post;
 
+import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.member.MemberService;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.PrincipalDetails;
@@ -30,11 +31,13 @@ public class PostController {
         List<PostVO> myPosts = postService.getMyPosts(member.getNickname());
 
         List<PostVO> getPost = new ArrayList<>();
+
         getPost.addAll(myPosts);
         getPost.addAll(myFollowingPosts);
+        List<Heart> ex = getPost.get(1).getHearts();
         model.addAttribute("member", member);
         model.addAttribute("posts", getPost);
-        model.addAttribute("postMemberImg", memberService.findByNickname(getPost.get(0).getNickname()));
+        model.addAttribute("hearts", getPost.get(0).getHeartMembers());
         return "/post/main";
     }
 

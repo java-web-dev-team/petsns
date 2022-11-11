@@ -34,7 +34,7 @@ class HeartMapperTest {
         List<Heart> heart1 = heartMapper.findByNickName("cpiatek3");
         Heart findHeart = heart1.get(0);
 
-        assertThat(findHeart.getNickName()).isEqualTo("cpiatek3");
+        assertThat(findHeart.getNickname()).isEqualTo("cpiatek3");
 
 
     }
@@ -59,18 +59,17 @@ class HeartMapperTest {
         List<Heart> hearts = heartMapper.findAll();
         Heart findHeart = hearts.get(0);
 
-        assertThat(findHeart.getNickName()).isEqualTo(nickname);
+        assertThat(findHeart.getNickname()).isEqualTo(nickname);
         assertThat(findHeart.getPostId()).isEqualTo(postId);
     }
 
     @Test
     void findByPostId() {
 
-        heartMapper.findByPostId(50);
-        List<Heart> heart3 = heartMapper.findByPostId(50);
-        Heart findHearts = heart3.get(0);
+        List<Heart> hearts = heartMapper.findByPostId(82);
 
-        assertThat(findHearts.getPostId()).isEqualTo(50);
+        assertThat(hearts.get(0).getNickname()).isEqualTo("dhkd");
+
     }
 
     @Test
@@ -80,7 +79,7 @@ class HeartMapperTest {
 
         heartMapper.save(new Heart(member.getNickname(), post.getId()));
         Heart heart = heartMapper.findByNicknameAndPostId(member.getNickname(), post.getId()).get();
-        assertThat(heart.getNickName()).isEqualTo(member.getNickname());
+        assertThat(heart.getNickname()).isEqualTo(member.getNickname());
         assertThat(heart.getPostId()).isEqualTo(post.getId());
 
     }

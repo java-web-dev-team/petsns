@@ -20,6 +20,7 @@ public class PostVO {
     private Integer id;
     private String content;
     private String nickname;
+    private Member member;
 
     private List<UpdateDTO> updateDTOS;
     private List<Comment> comments;
@@ -28,11 +29,12 @@ public class PostVO {
 
     private LocalDateTime registeredAt;
 
-    public static PostVO fromDTO(Post postWithUpdateDTOs, List<Comment> comments, List<Heart> hearts, List<Member> heartMembers) {
+    public static PostVO fromDTO(Post postWithUpdateDTOs, Member member, List<Comment> comments, List<Heart> hearts, List<Member> heartMembers) {
         return new PostVO(
                 postWithUpdateDTOs.getId(),
                 postWithUpdateDTOs.getContent(),
                 postWithUpdateDTOs.getNickname(),
+                member,
                 postWithUpdateDTOs.getImageDTOList(),
                 comments,
                 hearts,
