@@ -29,6 +29,6 @@ public class UpdateDTO{
     }
 
     public String getThumbnailURL() {
-        return URLEncoder.encode(path + "/" + postId + "/s_" + uuid + "_" + imgName, StandardCharsets.UTF_8);
+        return URLEncoder.encode(path + "/s_" + uuid + "_" + imgName, StandardCharsets.UTF_8);
     }
 }

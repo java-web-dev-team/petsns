@@ -109,7 +109,7 @@ public class UploadController {
                     File thumbnailFile = new File(thumbnailSaveName);
                     // 썸네일 생성
 
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 400, 400);
                     UpdateDTOList.add(new UpdateDTO(fileName,uuid,path,0));
                 } catch (IOException e){
                     e.printStackTrace();
