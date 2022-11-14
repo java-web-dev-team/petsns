@@ -3,7 +3,9 @@ package javawebdev.petsns.heart;
 import javawebdev.petsns.Validation;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.heart.dto.Heart;
+import javawebdev.petsns.post.PostService;
 import javawebdev.petsns.post.dto.Post;
+import javawebdev.petsns.post.dto.PostVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ public class HeartService {
 
     private final HeartMapper heartMapper;
     private final Validation validation;
+    private final PostService postService;
 
     public void delete(Integer postId, String nickName) throws Exception {
         Post post = validation.getPostOrException(postId);
@@ -55,6 +58,17 @@ public class HeartService {
             members.add(validation.getMemberOrException(heart.getNickname()));
         }
         return members;
+    }
+
+    public boolean isInHeart(String principalName, Integer postId){
+        PostVO postVO = postService.getPost(postId);
+        for(int i=0; i<postVO.getHeartMembers().size(); i++){
+            if(postVO.getHeartMembers().get(i).getNickname() == principalName){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

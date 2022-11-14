@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">-->
+    <th:block th:fragment="content">
+
+        <div class="container">
+            <div class="col-6">
+                <label><b>채팅방</b></label>
+            </div>
+            <div>
+                <div id="msgArea" class="col"></div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                            <button class="btn btn-outline-secondary" type="button" id="disconnect">전송</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--    </th:block>-->
+</th:block>
+</html>
+
+
+<script th:inline="javascript">
+
+    const username = [[${#authentication.principal.getName()}]];
+    $(function(){
+
+        console.log("username = " , username);
+
+        $("#disconnect").on("click", (e) => {
+            onClose();
+        })
+
+        $("#button-send").on("click", (e) => {
+            send();
+        })
+
+        const websocket = new WebSocket("ws://localhost:8080/ws/chat");
+
+        websocket.onmessage = onMsg;
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+
+        // 메시지 보내기
+        function send(){
+            let msg = document.getElementById("msg");
+
+            console.log(username + ": " + msg.value);
+            websocket.send(username + ": " + msg.value);
+            msg.value = '';
+        }
+
+        // 채팅방 들어왔을 때
+        function onOpen(evt){
+            let str = username + ": 님이 입장하셨습니다.";
+            websocket.send(str);
+        }
+
+        function onClose(evt){
+            let str = username + ": 님이 방을 나가셨습니다.";
+            websocket.send(str);
+        }
+
+        function onMsg(msg){
+            let data = msg.data;
+            let sessionId = null;
+            let message = null;
+            let arr = data.split(":");
+
+            for(let i=0; i<arr.length; i++){
+                console.log('arr[' + i + "]: " + arr[i]);
+            }
+
+            let cur_session = username;
+
+            // 현재 세션에 로그인 한 사람
+            console.log("cur_session : " + cur_session);
+            sessionId = arr[0];
+            message = arr[1];
+
+            console.log("sessionId : " + sessionId);
+            console.log("message : " + message);
+
+            // 로그인 한 클라이언트와 타 클라이언트 분류
+
+            if(sessionId == cur_session){
+                let str = "<div class='col-6'>";
+                str += "<div class='alert alert-secondary'>";
+                str += "<b>" + sessionId + " : " + message + "</b>";
+                str += "</div></div>";
+                $("#msgArea").append(str);
+            } else{
+                let str = "<div class='col-6'>";
+                str += "<div class='alert alert-warning'>";
+                str += "<b>" + sessionId + " : " + message + "</b>";
+                str += "</div></div>";
+                $("#msgArea").append(str);
+            }
+        }
+
+    })
+</script>

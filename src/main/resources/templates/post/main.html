@@ -537,7 +537,7 @@
     <div class="main_body">
     <article>
         <div class="empty_box"></div>
-        <div class="feed" th:each="post:${posts}">
+        <div class="feed" th:if="${!posts.isEmpty()}" th:each="post, i:${posts}" >
             <div class="feed_id">
                 <div class="id_round">
                     <div class="id_box">
@@ -563,7 +563,9 @@
                 <div class="emoticon_box">
                     <div class="emoticon_box2">
                         <div class="heart_box">
-                            <img class="heart" src="/img/heart.png" alt="하트">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <img class="heart" th:src="@{/img/heart.png}" alt="하트">
+<!--                            <img class="heart" th:if="${isHeart == true}" th:src="@{/img/heart2.png}" alt="하트" onclick="heart()">-->
 <!--                            TODO: 좋아요 버튼 구현 필요-->
                         </div>
                         <div class="comment_box">
@@ -578,7 +580,7 @@
             <div class="feed_like_box">
 
 
-                <button th:if="${!post.hearts.isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
+                <button th:if="${!post.getHearts().isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
                     <div class="feed_like">
                         <span th:text="${post.heartMembers.get(0).nickname}">
                             nickname

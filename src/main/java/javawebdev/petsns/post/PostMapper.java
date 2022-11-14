@@ -21,4 +21,6 @@ public interface PostMapper {
     List<Post> findAllOfFollowingMember(Member member);
 
     List<Post> findByNickname(String nickname);
+
+    void updateNickname(String changeNickname, String changedNickname);
 }

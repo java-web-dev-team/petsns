@@ -1,4 +1,4 @@
-package javawebdev.petsns;
+package javawebdev.petsns.config;
 
 
 import org.slf4j.Logger;

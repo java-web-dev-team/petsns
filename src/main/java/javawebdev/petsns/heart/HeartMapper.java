@@ -23,4 +23,6 @@ public interface HeartMapper {
     List<Heart> findAll();
 
     List<Member> findMembersByPostId(Integer postId);
+
+    List<Heart> isInHeart(Integer postId);
 }

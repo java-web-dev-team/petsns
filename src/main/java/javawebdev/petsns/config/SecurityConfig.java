@@ -1,4 +1,4 @@
-package javawebdev.petsns;
+package javawebdev.petsns.config;
 
 import javawebdev.petsns.member.handler.ClubLoginSuccessHandler;
 import javawebdev.petsns.member.PrincipalOauth2MemberService;

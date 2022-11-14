@@ -42,4 +42,10 @@
         from heart h
                  join member m on h.nickname = m.nickname;
     </select>
+
+    <select id="isInHeart" parameterType="Integer">
+       SELECT nickname
+        FROM heart
+        where post_id = #{postId}
+    </select>
 </mapper>

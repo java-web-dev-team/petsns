@@ -53,4 +53,10 @@
         from post
         where nickname = #{nickname};
     </select>
+
+    <update id="updateNickname" parameterType="String">
+        UPDATE snsdb.post
+        SET nickname = #{changedNickname}
+        WHERE nickname = #{changeNickname};
+    </update>
 </mapper>

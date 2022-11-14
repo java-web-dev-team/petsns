@@ -1,5 +1,6 @@
 package javawebdev.petsns.post;
 
+import javawebdev.petsns.heart.HeartService;
 import javawebdev.petsns.heart.dto.Heart;
 import javawebdev.petsns.member.MemberService;
 import javawebdev.petsns.member.dto.Member;
@@ -22,11 +23,13 @@ public class PostController {
 
     private final PostService postService;
     private final MemberService memberService;
+    private final HeartService heartService;
 
     //  내가 팔로우한 사람의 게시물 가져오기
     @GetMapping("/posts")
     public String getPosts(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         Member member = memberService.findByEmail(principalDetails.getUsername());
+        model.addAttribute("member", member);
         List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
         List<PostVO> myPosts = postService.getMyPosts(member.getNickname());
 
@@ -34,10 +37,10 @@ public class PostController {
 
         getPost.addAll(myPosts);
         getPost.addAll(myFollowingPosts);
-        List<Heart> ex = getPost.get(1).getHearts();
-        model.addAttribute("member", member);
+        if(getPost.isEmpty()){
+            return "/post/main";
+        }
         model.addAttribute("posts", getPost);
-        model.addAttribute("hearts", getPost.get(0).getHeartMembers());
         return "/post/main";
     }
 

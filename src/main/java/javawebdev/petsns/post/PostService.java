@@ -88,6 +88,10 @@ public class PostService {
         postMapper.update(post);
     }
 
+    public void updatePostNickname(String changeNickname, String ChangedNickname){
+        postMapper.updateNickname(changeNickname, ChangedNickname);
+    }
+
     //  게시글 삭제
     public void remove(Member member, Integer postId) {
         Post post = validation.getPostOrException(postId);

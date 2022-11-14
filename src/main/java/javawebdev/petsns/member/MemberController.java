@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +38,7 @@ public class MemberController {
     private final MemberService memberService;
     private final PostService postService;
     private final FollowService followService;
+    private final AuthenticationManager authenticationManager;
 
     @Value("${upload.path2}")
     private String getUpLoadPath;
@@ -89,10 +93,17 @@ public class MemberController {
 
 
     @PostMapping("/member/modify/{email}")
-    public String updateMember(@PathVariable("email") String email, @AuthenticationPrincipal PrincipalDetails principalDetails, Member updatedMember) {
+    public void updateMember(@PathVariable("email") String email, @AuthenticationPrincipal PrincipalDetails principalDetails, Member updatedMember) {
         updatedMember.setEmail(principalDetails.getUsername());
+
+        postService.updatePostNickname(principalDetails.getName(), updatedMember.getNickname());
         memberService.updateMember(updatedMember);
-        return "redirect:/member/profile/" + email;
+
+        // 세션 재등록
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principalDetails.getName(), principalDetails.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        log.info("updateMember = -> ");
     }
 
     @PostMapping("/member/modify/pwd")
