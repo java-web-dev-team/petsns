@@ -67,7 +67,7 @@ public class PostController {
         model.addAttribute("member", member);
         PostVO postVO = postService.getPost(postId);
         model.addAttribute("post", postVO);
-        return "/post/view";
+        return "post/view";
     }
 
     //  게시물 수정 폼 가져오기
@@ -75,6 +75,8 @@ public class PostController {
     public String updateForm(Model model, @PathVariable Integer postId, @AuthenticationPrincipal PrincipalDetails customUser){
         Member member = memberService.customUserToMember(customUser);
         model.addAttribute("member", member);
+        PostVO postVO = postService.getPost(postId);
+        model.addAttribute("post", postVO);
         Post post = postService.getPostForUpdate(postId);
         model.addAttribute("postId", postId);
         return "post/update";

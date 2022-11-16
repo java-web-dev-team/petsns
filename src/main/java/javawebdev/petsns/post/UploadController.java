@@ -13,10 +13,8 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -69,7 +67,8 @@ public class UploadController {
     }
 
     @PostMapping("/posts/uploadAjax")
-    public ResponseEntity<List<UpdateDTO>> uploadFile(MultipartFile[] uploadFiles){ // uploadFile메서드 -> MultipartFile 배열 받도록-> 여러개의 파일처리
+    public ResponseEntity<List<UpdateDTO>> uploadFile(MultipartFile[] uploadFiles){
+        // uploadFile메서드 -> MultipartFile 배열 받도록-> 여러개의 파일처리
             List<UpdateDTO> UpdateDTOList = new ArrayList<>();
 
         for (MultipartFile uploadFile : uploadFiles){
