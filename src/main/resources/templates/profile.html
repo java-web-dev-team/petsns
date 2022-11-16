@@ -63,7 +63,7 @@
                 <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
                 <div th:each="post:${posts}" class="gallery-item" tabindex="0">
 
-                    <a th:href="@{/posts/{id} (id = ${post.id})}"><img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}"
+                    <a th:href="@{/posts/{postId} (postId = ${post.id})}"><img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}"
                          style= "width:285px; height:285px;" class="gallery-image">
                     <div class="gallery-item-info">
                         <ul>

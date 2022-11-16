@@ -46,28 +46,29 @@
     <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
 </div>
 
-<div class="body-text" style="margin-top: 250px;">
+<div class="body-text" style="margin-top: 100px; border-style: outset; padding: 50px; width: 500px; margin-left: 550px;">
+    <p>게시물 작성</p>
      <form action="/posts" method="post">
-         <label>사진 미리보기</label>
-
          <div class="custom-file">
              <input type="file" class="custom-file-input files" id="fileInput" multiple>
              <label class="custom-file-label" data-browse="browse"></label>
          </div>
+         <br>
+         <label style="margin-left: 20px;">사진 미리보기</label>
 
          <div class="uploadResult">
              <ul>
              </ul>
          </div>
          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-         <input type="text" name="content" style="width: 500px; height: 150px;"/>
+         <input type="text" name="content" placeholder="내용을 입력해주세요." style="width: 500px; height: 150px;"/>
          <br>
         <div class ="form-group">
 
         <div class="box">
 
         </div>
-        <button type="submit" class="btn btn-primary" id="Check-Btn" disabled=true>등록하기</button>
+        <button type="submit" class="btn btn-primary" id="Check-Btn" disabled=true style="margin-top:30px; background-color: white;">등록하기</button>
         </div>
      </form>
 </div>
@@ -104,11 +105,8 @@
                 const changeImgFile = document.getElementById("Check-Btn");
 
                 var formData = new FormData();
-
                 var inputFile =$(this);
-
                 var files = inputFile[0].files;
-
                 var appended = false;
 
                 for (var i = 0; i < files.length; i++){
@@ -117,13 +115,10 @@
 
                     }
                     console.log(files[i]);
-
                     formData.append("uploadFiles", files[i]);
                     appended = true;
                 }
-
                 if (!appended) {return;}
-
                 for (var value of formData.values()){
                     console.log(value);
                 }
@@ -197,7 +192,7 @@
             });
 
             $(".btn-primary").on("click", function (e) {
-                alert("here");
+                alert("게시물이 등록되었습니다.");
                 e.preventDefault();
 
                 var str = "";
