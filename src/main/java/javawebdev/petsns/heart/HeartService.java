@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -43,6 +44,10 @@ public class HeartService {
         return heartMapper.findByNickName(nickName);
     }
 
+    public Set<Member> findByNickNameM(String nickName) {
+        return heartMapper.findByNickNameM(nickName);
+    }
+
     public List<Member> getMembersByPostId(Integer postId) {
         List<Heart> hearts = heartMapper.findByPostId(postId);
         return heartsToMembers(hearts);
@@ -60,16 +65,16 @@ public class HeartService {
         return members;
     }
 
-    public boolean isInHeart(String principalName, Integer postId){
-        PostVO postVO = postService.getPost(postId);
-        for(int i=0; i<postVO.getHeartMembers().size(); i++){
-            if(postVO.getHeartMembers().get(i).getNickname() == principalName){
-                return true;
-            }
-        }
+//    public boolean isInHeart(String principalName, Integer postId){
+//        PostVO postVO = postService.getPost(postId);
+//        for(int i=0; i<postVO.getHeartMembers().size(); i++){
+//            if(postVO.getHeartMembers() == principalName){
+//                return true;
+//            }
+//        }
 
-        return false;
-    }
+//        return false;
+//    }
 
 }
 

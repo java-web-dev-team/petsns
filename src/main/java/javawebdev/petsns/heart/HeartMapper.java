@@ -6,11 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Mapper
 public interface HeartMapper {
 
     List<Heart> findByNickName(String nickName);
+
+    Set<Member> findByNickNameM(String nickName);
 
     void delete(Heart heart);
 

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @RequiredArgsConstructor
@@ -113,13 +115,19 @@ public class PostService {
         Member member = validation.getMemberOrException(post.getNickname());
         Post postWithUpdateDTOs = postWithUpdateDTOs(post.getId());
         int id = postWithUpdateDTOs.getId();
+        List<Heart> heart = heartMapper.findByPostId(id);
+        Set<Member> set = new HashSet<>();
+        for(Heart hearts : heart){
+            hearts.getNickname();
+            set.addAll(heartMapper.findByNickNameM(hearts.getNickname()));
+        }
 
         return PostVO.fromDTO(
                 postWithUpdateDTOs,
                 member,
                 commentMapper.findByPostId(id),
                 heartMapper.findByPostId(id),
-                heartMapper.findMembersByPostId(id)
+                set
         );
     }
 

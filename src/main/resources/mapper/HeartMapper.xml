@@ -18,6 +18,12 @@
         from heart
         where nickname = #{nickname};
     </select>
+
+    <select id="findByNickNameM" resultType="Member">
+        select *
+        from snsdb.member
+        where nickname = #{nickname};
+    </select>
     
     <select id="findByPostId" resultType="Heart">
         select *

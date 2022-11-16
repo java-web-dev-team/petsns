@@ -537,7 +537,7 @@
     <div class="main_body">
     <article>
         <div class="empty_box"></div>
-        <div class="feed" th:if="${!posts.isEmpty()}" th:each="post, i:${posts}" >
+        <div class="feed" th:if="${!posts.isEmpty()}" th:each="post, i : ${posts}">
             <div class="feed_id">
                 <div class="id_round">
                     <div class="id_box">
@@ -564,12 +564,13 @@
                     <div class="emoticon_box2">
                         <div class="heart_box">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <img class="heart" th:src="@{/img/heart.png}" alt="하트">
+                            <a th:href="@{/posts/{postId}/H/delete (postId = ${post.getId()})}">
+                                <img class="heart" th:src="@{/img/heart.png}" alt="하트"></a>
 <!--                            <img class="heart" th:if="${isHeart == true}" th:src="@{/img/heart2.png}" alt="하트" onclick="heart()">-->
 <!--                            TODO: 좋아요 버튼 구현 필요-->
                         </div>
                         <div class="comment_box">
-                            <a th:href="@{/posts/{id} (id = post.id)}"><img class="coment" src="/img/comment.png" alt="코멘트" /></a>
+                            <a th:href="@{/posts/{id} (id = ${post.id})}"><img class="coment" src="/img/comment.png" alt="코멘트" /></a>
 
 
                         </div>
@@ -577,32 +578,33 @@
                 </div>
             </div>
             <!--/feedbottom-->
-            <div class="feed_like_box">
+            <div class="feed_like_box" >
 
+                <button th:if="${!post.getHeartMembers().isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
 
-                <button th:if="${!post.getHearts().isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
                     <div class="feed_like">
-                        <span th:text="${post.heartMembers.get(0).nickname}">
+                        <span th:text="${post.hearts.get(0).getNickname()}">
                             nickname
                         </span>
                         외
-                        <span th:text="${post.heartMembers.size() - 1}">
+                        <span th:text="${post.hearts.size() - 1}">
                             size
                         </span>
                         명이 좋아합니다.
                     </div>
                 </button>
-
-
-                <div class="modal hidden">
+                <!-------------------------------------------------------------------------------------------------------- -->
+                <div class="modal hidden"  th:id="${post.getId()}">
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
                         <div class="listBox2">
                             <div class="listBox">
-                                <tr th:if="${post.heartMembers != null}" th:each="heartMember:${post.heartMembers}">
-                                    <img style="width: 8%; height: 12%; margin-left: -300px; vertical-align: bottom;" th:src="@{/img/profile-picture/{path} (path = ${heartMember.profileImg})}">
-                                    <a th:text="${heartMember.nickname}" th:href="@{/member/profile/{email} (email = ${heartMember.email})}" >1</a>
+                                <tr th:each="postList : ${posts.get(i.index).getHeartMembers()}">
+                                    <td>
+                                    <img style="width: 8%; height: 12%; margin-left: -150px; vertical-align: bottom;" th:src="@{/img/profile-picture/{path} (path = ${postList.getProfileImg()})}" >
+                                    <a th:text="${postList.getNickname()}" th:href="@{/member/profile/{email} (email = ${postList.getEmail()})}" >1</a>
+                                    </td>
                                 </tr>
 
                             </div>
@@ -610,8 +612,7 @@
                         <button class="closeBtn" style="width:25px;float:right;">X</button>
                     </div>
                 </div>
-
-
+                <!-------------------------------------------------------------------------------------------------------- -->
             </div>
 
             <div class="feed_article">
@@ -644,22 +645,7 @@
 </div>
     </div>
 
-<script>
-    const open = () => {
-        document.querySelector(".modal").classList.remove("hidden");
-    }
-
-    const close = () => {
-        document.querySelector(".modal").classList.add("hidden");
-    }
-
-    document.querySelector(".openBtn").addEventListener("click", open);
-    document.querySelector(".closeBtn").addEventListener("click", close);
-    document.querySelector(".bg").addEventListener("click", close);
-</script>
-
-
+<script type="text/javascript" th:src="@{/js/hiddenModal.js}"></script>
 </body>
 </html>
-
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +26,11 @@ public class PostVO {
     private List<UpdateDTO> updateDTOS;
     private List<Comment> comments;
     private List<Heart> hearts;
-    private List<Member> heartMembers;
+    private Set<Member> heartMembers;
 
     private LocalDateTime registeredAt;
 
-    public static PostVO fromDTO(Post postWithUpdateDTOs, Member member, List<Comment> comments, List<Heart> hearts, List<Member> heartMembers) {
+    public static PostVO fromDTO(Post postWithUpdateDTOs, Member member, List<Comment> comments, List<Heart> hearts, Set<Member> heartMembers) {
         return new PostVO(
                 postWithUpdateDTOs.getId(),
                 postWithUpdateDTOs.getContent(),
