@@ -552,7 +552,7 @@
                             </div>
                             <div class="more_details">
                                 <a th:href="@{/posts/{postId}/update (postId = ${postId})}">
-                                    <button class="buttonBox" name="update">수정</button></a>
+                                    <input type="button" name="update" value="수정" style="color:#4d90fe; border: 0px; background: #FAFAFA;"/></a>
 
                                 <!--                        TODO: 더보기 -> 삭제 및 신고 활성화 필요-->
                             </div>
@@ -641,9 +641,7 @@
                             <div class="type_comment">
                                 <input class="inputBox" type="text" placeholder="댓글 달기...">
                             </div>
-                            <span>
             <button class="buttonBox" type="summit">게시</button>
-          </span>
                         </div>
                     </form>
                 </div>

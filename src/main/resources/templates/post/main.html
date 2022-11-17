@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/css/Side.css" rel="stylesheet">
-
+    <script src="/js/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider').bxSlider();
+        });
+    </script>
     <style>
         body {
             background-color: #fafafa;
@@ -165,7 +173,7 @@
         }
 
         .feed_picture img {
-            width: 601px;
+            width: 600px;
             height: 598px;
         }
 
@@ -516,8 +524,6 @@
         }
 
     </style>
-
-
 </head>
 <body>
 <div class="sidebar">
@@ -537,7 +543,7 @@
     <div class="main_body">
     <article>
         <div class="empty_box"></div>
-        <div class="feed" th:if="${!posts.isEmpty()}" th:each="post, i : ${posts}">
+        <div class="feed" th:if="${!posts.isEmpty()}" th:each="post, i : ${posts}" th:id="${post.getId()}">
             <div class="feed_id">
                 <div class="id_round">
                     <div class="id_box">
@@ -555,8 +561,11 @@
                 </div>
             </div>
             <div class="feed_picture">
-                <!--/*@thymesVar id="post" type="javawebdev.petsns.post.dto.PostVO"*/-->
-                <img th:src="@{/img/post/{path} (path = ${post.updateDTOS.get(0).getImagePath()})}" alt="피드 사진">
+                <div class="slider">
+                    <tr th:each="postDTO : ${post.updateDTOS}">
+                        <img th:src="@{/img/post/{path} (path = ${postDTO.getImagePath()})}" alt="피드 사진">
+                    </tr>
+                </div>
             </div>
             <!--feedbottom-->
             <div class="feed_bottom">
@@ -618,7 +627,7 @@
             <div class="feed_article">
                 <div class="feed_article_box">
                     <div class="comments_container">
-                        <div class="comments" th:if="${post.content != null}" th:value="${post.content}">s_sewon 귀여운 냥이 산책</div>
+                        <div class="comments" th:if="${post.content != null}" th:value="${post.content}"></div>
                         <div class="comments1" >더 보기</div>
 <!--                        TODO: 댓글 펼쳐보기-->
                     </div>
@@ -630,21 +639,47 @@
                     </div>
                 </div>
             </div>
-            <form th:action="@{/posts/{postId}/comments (postId = post.id)}" th:method="POST">
+
             <div class="inputContainer">
                 <div class="type_comment">
-                    <input class="inputBox" type="text" placeholder="댓글 달기...">
+                    <input class="inputBox" type="text" name="content" placeholder="댓글 달기...">
                 </div>
-                <span>
-            <button class="buttonBox" type="summit">게시</button>
-          </span>
+
+                    <button class="rsave" style="border:0; background: white;">게시</button>
             </div>
-            </form>
+
         </div>
     </article>
 </div>
     </div>
 
+<script th:inline="javascript">
+    $(document).ready(function (e){
+
+    })
+    $("").on("click", function() {
+        console.log("rsave");
+        var comment = {
+            postId: $(".feed").attr("id"),
+            content: $('input[name="content"]').val()
+        }
+        // console.log(comment)
+        // $.ajax({
+        //     url: '/posts/{postId}/comments',
+        //     method: 'post',
+        //     data: JSON.stringify(comment),
+        //     contentType: 'application/json; charset=utf-8',
+        //     dataType: 'json',
+        //     success: function (data) {
+        //         console.log(data);
+        //         var newComment = parseInt(data);
+        //         alert(newComment + "번 댓글이 등록되었습니다.")
+        //         modal.modal('hide');
+        //         loadJSONData();
+        //     }
+        // })
+    })
+</script>
 <script type="text/javascript" th:src="@{/js/hiddenModal.js}"></script>
 </body>
 </html>
