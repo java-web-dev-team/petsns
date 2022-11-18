@@ -562,13 +562,17 @@
             <div class="feed_bottom">
                 <div class="emoticon_box">
                     <div class="emoticon_box2">
+
                         <div class="heart_box">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <input type="hidden" th:name="postId" th:value="${post.getId()}"/>
+
                             <a th:href="@{/posts/{postId}/H/delete (postId = ${post.getId()})}">
                                 <img class="heart" th:src="@{/img/heart.png}" alt="하트"></a>
 <!--                            <img class="heart" th:if="${isHeart == true}" th:src="@{/img/heart2.png}" alt="하트" onclick="heart()">-->
 <!--                            TODO: 좋아요 버튼 구현 필요-->
                         </div>
+
                         <div class="comment_box">
                             <a th:href="@{/posts/{id} (id = ${post.id})}"><img class="coment" src="/img/comment.png" alt="코멘트" /></a>
 
@@ -580,7 +584,7 @@
             <!--/feedbottom-->
             <div class="feed_like_box" >
 
-                <button th:if="${!post.getHeartMembers().isEmpty()}" style="border: 0px; background-color: #ffffff;" class="openBtn">
+                <button th:if="${!post.getHeartMembers().isEmpty()}" style="border: 0px; background-color: #ffffff;" th:name="${i.index}" onclick="modal_open(this.name)">
 
                     <div class="feed_like">
                         <span th:text="${post.hearts.get(0).getNickname()}">
@@ -594,7 +598,7 @@
                     </div>
                 </button>
                 <!-------------------------------------------------------------------------------------------------------- -->
-                <div class="modal hidden"  th:id="${post.getId()}">
+                <div class="modal hidden" th:id="${i.index}">
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
@@ -609,7 +613,7 @@
 
                             </div>
                         </div>
-                        <button class="closeBtn" style="width:25px;float:right;">X</button>
+                        <button th:name="${i.index}" onclick="modal_close(this.name)" style="width:25px;float:right;">X</button>
                     </div>
                 </div>
                 <!-------------------------------------------------------------------------------------------------------- -->
