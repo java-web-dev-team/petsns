@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -33,13 +34,21 @@ public class PostController {
         List<PostVO> myFollowingPosts = postService.getMyFollowingPosts(member);
         List<PostVO> myPosts = postService.getMyPosts(member.getNickname());
 
-        List<PostVO> getPost = new ArrayList<>();
+        ArrayList<PostVO> getPost = new ArrayList<>();
 
         getPost.addAll(myPosts);
         getPost.addAll(myFollowingPosts);
         if(getPost.isEmpty()){
             return "/post/main";
         }
+
+        // 정렬
+        getPost.sort(new Comparator<PostVO>() {
+            @Override
+            public int compare(PostVO o1, PostVO o2) {
+                return Integer.compare(o1.getId(), o2.getId()) == 1 ? -1 : Integer.compare(o1.getId(), o2.getId()) == 0 ? 0 : 1;
+            }
+        });
         model.addAttribute("posts", getPost);
         return "/post/main";
     }
