@@ -532,7 +532,7 @@
     <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
     <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
     <div><img src="/img/foot2.png" style="width:25px;">
-        <input type="text" style="border: white; border-bottom: outset; width: 100px;">
+        <input type="text" name="memberName" style="border: white; border-bottom: outset; width: 100px;" oninput="memberCheck()">
     </div>
     <div><img src="/img/foot5.png" style="width:25px;"><a href="/helps/form"> H E L P </a></div>
     <div><img src="/img/foot3.png" style="width:25px;"><a href="/reports/form"> 신고하기 </a></div>
