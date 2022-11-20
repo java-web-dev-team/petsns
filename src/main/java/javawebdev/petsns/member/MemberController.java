@@ -279,5 +279,8 @@ public class MemberController {
         System.out.println("principalDetails.getMember().getEmail() = " + principalDetails.getMember().getEmail());
         return "user";
     }
+
+//    @PostMapping("/memberCheck")
+//    public List<Member>
 }
 

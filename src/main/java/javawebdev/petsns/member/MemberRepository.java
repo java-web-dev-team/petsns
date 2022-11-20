@@ -35,6 +35,8 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
+    List<Member> findLikeMember(String nickname);
+
     int emailCheck(String email);
     int idCheck(String nickname);
 

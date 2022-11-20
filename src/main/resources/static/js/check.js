@@ -40,7 +40,7 @@ function memberCheck(){
             xhr.setRequestHeader(header, token);
         },
         success(data){
-
+            
         }
 
     })

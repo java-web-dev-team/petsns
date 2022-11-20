@@ -12,8 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -175,6 +174,10 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
         }
 
         return buffer;
+    }
+
+    public List<Member> searchMember(String nickname){
+        return memberRepository.findLikeMember(nickname);
     }
 
 }

@@ -83,7 +83,14 @@
 
     <select id="findAll" resultType="Member">
         select *
-        from member;
+        from member
+    </select>
+
+    <select id="findLikeMember" resultType="Member" parameterType="String">
+        select id, nickname, email, profileImg
+        from member
+        WHERE nickname
+        like CONCAT('%', #{nickname}, '%')
     </select>
 
     <select id="emailCheck" resultType="Integer" parameterType="String">

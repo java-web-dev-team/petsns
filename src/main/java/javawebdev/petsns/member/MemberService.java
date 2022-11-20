@@ -5,6 +5,9 @@ import javawebdev.petsns.member.dto.PrincipalDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+import java.util.Set;
+
 public interface MemberService {
 
     void joinMember(Member member);
@@ -46,6 +49,8 @@ public interface MemberService {
     Member customUserToMember(PrincipalDetails customUser);
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
+    List<Member> searchMember(String nickname);
 
 }
 
