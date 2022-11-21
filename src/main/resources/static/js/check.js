@@ -46,9 +46,9 @@ function memberCheck(){
         success: function(data){
             var str = "";
             for (let i = 0; i<data.length; i++){
-                str += "<div style='border: 1px solid black;'>";
-                str += "<img th:src='@{/img/profile-picture/" + data[i].profileImg + "}' alt=' ' style='width: 8%; height: 12%; vertical-align: bottom;'>"
-                str += "<a style='color: white; height: 15px; width: 15px;' th:text='" + data[i].username + "'  th:href='@{/member/profile/"+ data[i].email +"}'></a>";
+                str += "<div style='border: 1px solid black;' href='/member/profile/"+ data[i].email +"'>";
+                str += "<img src='/img/profile-picture/" + data[i].profileImg + "' alt=' ' style='width: 25%; height: 30%; vertical-align: bottom;'>"
+                str += "<a style='height: 15px; width: 15px;' aria-valuetext='" + data[i].username + "'></a>";
                 str += "</div>";
             }
             $(".smallBox").html(str);
