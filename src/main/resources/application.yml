@@ -26,6 +26,9 @@ spring:
       remote:
         restart:
           enabled: true
+    mvc:
+      converters:
+        preferred-json-mapper: gson
 
   security:
     oauth2:

@@ -16,3 +16,7 @@ function modal_open(id){
 function modal_close(id){
     document.getElementById(id).classList.add("hidden");
 }
+
+function openModal(){
+    document.getElementById("sideModal").classList.remove("hidden");
+}

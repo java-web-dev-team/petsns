@@ -87,7 +87,7 @@
     </select>
 
     <select id="findLikeMember" resultType="Member" parameterType="String">
-        select id, nickname, email, profileImg
+        select id, nickname, email, profileImg, auth
         from member
         WHERE nickname
         like CONCAT('%', #{nickname}, '%')

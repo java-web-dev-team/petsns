@@ -27,22 +27,32 @@ function idCheck(){
 }
 
 function memberCheck(){
-    var name = $("#memberName").val();
+    var memberName = $("#memberName").val();
+    if (memberName == null || memberName == " " || memberName == "") {
+        return false;
+    }
     const token = $("meta[name='_csrf']").attr("content");      // html 에 저장된 meta 값 불러오기 , 내용에 content 저장
     const header = $("meta[name='_csrf_header']").attr("content");
 
 
     $.ajax({
         type: "POST",
-        data: {name: name},
-        url: "/memberCheck",
+        data: {memberName: memberName},
+        url: "/searchMember",
+        dataType: 'json',
         beforeSend(xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success(data){
-            
+        success: function(data){
+            var str = "";
+            for (let i = 0; i<data.length; i++){
+                str += "<div style='border: 1px solid black;'>";
+                str += "<img th:src='@{/img/profile-picture/" + data[i].profileImg + "}' alt=' ' style='width: 8%; height: 12%; vertical-align: bottom;'>"
+                str += "<a style='color: white; height: 15px; width: 15px;' th:text='" + data[i].username + "'  th:href='@{/member/profile/"+ data[i].email +"}'></a>";
+                str += "</div>";
+            }
+            $(".smallBox").html(str);
         }
-
     })
 }
 

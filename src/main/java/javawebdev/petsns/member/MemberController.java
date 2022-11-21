@@ -1,5 +1,6 @@
 package javawebdev.petsns.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javawebdev.petsns.follow.FollowService;
 import javawebdev.petsns.member.dto.Member;
 import javawebdev.petsns.member.dto.MemberDto;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -267,20 +269,23 @@ public class MemberController {
         Member member = memberService.findByEmail(email);
         updatedMember.setEmail(member.getEmail());
         model.addAttribute("member", member);
-        System.out.println("updatedMember.getProfileImg() = " + updatedMember.getProfileImg());
         memberService.updateProfileImg(updatedMember.getProfileImg(), member.getEmail());
 
         return "redirect:/member/profile/" + email;
     }
 
-    @GetMapping("/user")
-    public String testLogin(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println("principalDetails.getMember() = " + principalDetails.getMember());
-        System.out.println("principalDetails.getMember().getEmail() = " + principalDetails.getMember().getEmail());
-        return "user";
-    }
+//    @GetMapping("/user")
+//    public String testLogin(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        System.out.println("principalDetails.getMember() = " + principalDetails.getMember());
+//        System.out.println("principalDetails.getMember().getEmail() = " + principalDetails.getMember().getEmail());
+//        return "user";
+//    }
 
-//    @PostMapping("/memberCheck")
-//    public List<Member>
+    @ResponseBody
+    @RequestMapping(value = "/searchMember", method = RequestMethod.POST)
+    public List<Member> searchedMember(@RequestParam("memberName") String memberName, Model model) {
+        List<Member> list = memberService.searchMember(memberName);
+        return list;
+    }
 }
 

@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title>Title</title>
     <link href="/css/Side.css" rel="stylesheet">
     <script src="/js/jquery.js"></script>
@@ -526,17 +529,22 @@
     </style>
 </head>
 <body>
-<div class="sidebar">
+<div th:class="sidebar">
     <div style="margin-bottom: 50px;">A N I P I C</div>
     <div><img src="/img/foot1.png" style="width:25px;"><a href="/posts">메인페이지</a></div>
     <div><img src="/img/foot3.png" style="width:25px;"><a href="/posts/post-form">게시물작성</a></div>
     <div><img src="/img/foot4.png" style="width:25px;"><a th:href="@{/member/profile/{email} (email = ${member.email})}">마이프로필</a></div>
-    <div><img src="/img/foot2.png" style="width:25px;">
-        <input type="text" name="memberName" style="border: white; border-bottom: outset; width: 100px;" oninput="memberCheck()">
-    </div>
     <div><img src="/img/foot5.png" style="width:25px;"><a href="/helps/form"> H E L P </a></div>
     <div><img src="/img/foot3.png" style="width:25px;"><a href="/reports/form"> 신고하기 </a></div>
     <div><img src="/img/foot1.png" style="width:25px;"><a href="/logout"> 로 그 아 웃</a></div>
+
+    <div><img src="/img/foot2.png" style="width:25px;">
+        <input type="text" id="memberName" name="memberName" placeholder="멤버 검색" style="border: white; border-bottom: outset; width: 100px;" oninput="memberCheck()">
+    </div>
+
+    <div class="smallBox">
+
+    </div>
 </div>
 
     <div class="none">
@@ -593,7 +601,7 @@
             <!--/feedbottom-->
             <div class="feed_like_box" >
 
-                <button th:if="${!post.getHeartMembers().isEmpty()}" style="border: 0px; background-color: #ffffff;" th:name="${i.index}" onclick="modal_open(this.name)">
+                <button th:if="${!post.getHeartMembers().isEmpty()}" style="border: 0px; background-color: #ffffff;" th:name="${i.index} + M" onclick="modal_open(this.name)">
 
                     <div class="feed_like">
                         <span th:text="${post.hearts.get(0).getNickname()}">
@@ -607,7 +615,7 @@
                     </div>
                 </button>
                 <!-------------------------------------------------------------------------------------------------------- -->
-                <div class="modal hidden" th:id="${i.index}">
+                <div class="modal hidden" th:id="${i.index} + M">
                     <div class="bg"></div>
                     <div class="modalBox">
                         좋아요
@@ -622,7 +630,7 @@
 
                             </div>
                         </div>
-                        <button th:name="${i.index}" onclick="modal_close(this.name)" style="width:25px;float:right;">X</button>
+                        <button th:name="${i.index} + M" onclick="modal_close(this.name)" style="width:25px;float:right;">X</button>
                     </div>
                 </div>
                 <!-------------------------------------------------------------------------------------------------------- -->
@@ -685,6 +693,7 @@
     })
 </script>
 <script type="text/javascript" th:src="@{/js/hiddenModal.js}"></script>
+<script type="text/javascript" th:src="@{/js/check.js}"></script>
 </body>
 </html>
 

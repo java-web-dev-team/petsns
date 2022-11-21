@@ -65,6 +65,10 @@ class MemberServiceImplTest {
     void findMember() throws Exception{
         memberService.searchMember("a");
         System.out.println("memberService.searchMember(\"a\") = " + memberService.searchMember("a"));
+
+        memberService.searchMember("as");
+        System.out.println("memberService.searchMember(\"as\") = " + memberService.searchMember("as"));
+
     }
 
 
