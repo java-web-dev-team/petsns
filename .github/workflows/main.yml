@@ -13,9 +13,9 @@ env:
   S3_BUCKET_NAME: anipic-s3-bucket
   PROJECT_NAME: anipic
   REGION: ap-northeast-2
-#   DeployAppName:
-#   DeployGroupName:
-  
+  DeployAppName: anipic-deploy-app
+  DeployGroupName: anipic-deploy-group
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,10 +26,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Set up JDK 17
+      - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
-          java-version: "17"
+          java-version: "11"
           distribution: "temurin"
           
       - name: Grant execute permission for gradlew
@@ -58,6 +58,6 @@ jobs:
         run: aws s3 cp --region $REGION ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
         working-directory: ${{ env.working-directory }}
 
-#       - name: Code Deploy
-#         run: aws deploy create-deployment --application-name $DeployAppName --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $DeployGroupName --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-#         working-directory: ${{ env.working-directory }}
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name $DeployAppName --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $DeployGroupName --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        working-directory: ${{ env.working-directory }}
