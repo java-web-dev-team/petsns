@@ -1,6 +1,6 @@
 # airbnb-deploy.yml
 
-name: test-deploy
+name: anipic-sns
 on:
   push:
     branches: [master]
