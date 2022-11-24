@@ -48,7 +48,7 @@ function memberCheck(){
             for (let i = 0; i<data.length; i++){
                 str += "<div style='border: 1px solid black;' href='/member/profile/"+ data[i].email +"'>";
                 str += "<img src='/img/profile-picture/" + data[i].profileImg + "' alt=' ' style='width: 25%; height: 30%; vertical-align: bottom;'>"
-                str += "<a style='height: 15px; width: 15px;' aria-valuetext='" + data[i].username + "'></a>";
+                str += "<textarea style='height: 15px; width: 15px;' th:text='" + data[i].username + "'></textarea>";
                 str += "</div>";
             }
             $(".smallBox").html(str);
