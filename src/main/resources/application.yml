@@ -1,8 +1,10 @@
 spring:
+  profiles:
+    active: local
   datasource:
-    url: jdbc:mysql://rds.crcp79odgpcq.ap-northeast-2.rds.amazonaws.com/snsdb
-    username: admin
-    password: pizzadbmysql1!
+    url: ${datasource}
+    username: ${username}
+    password: ${password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
