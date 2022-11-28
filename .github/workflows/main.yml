@@ -60,4 +60,3 @@ jobs:
       - name: Code Deploy
         run: aws deploy create-deployment --application-name airbnb-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name airbnb-code-deploy --s3-location bucket=$S3.BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
         working-directory: ${{ env.working-directory }}
-
