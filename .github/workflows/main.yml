@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+env:
+  S3_BUCKET_NAME: build-jar-shine-deploy
+  PROJECT_NAME: petsns
+
 jobs:
   build:
     runs-on: ubuntu-latest
