@@ -15,9 +15,9 @@ fi
 
 TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
 
-if [ ! -z "${TARGET_PID}" ]; then
+if [ ! -z ${TARGET_PID} ]; then
   echo "> Kill WAS running at ${TARGET_PORT}."
-  sudo kill "${TARGET_PID}"
+  sudo kill ${TARGET_PID}
 fi
 
 nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/airbnb-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
