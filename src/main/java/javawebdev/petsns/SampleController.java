@@ -1,4 +1,4 @@
-package javawebdev;
+package javawebdev.petsns;
 
 import javawebdev.petsns.aws.AwsS3Service;
 import lombok.RequiredArgsConstructor;
