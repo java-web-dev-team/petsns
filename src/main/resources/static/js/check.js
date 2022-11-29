@@ -48,7 +48,9 @@ function memberCheck(){
             for (let i = 0; i<data.length; i++){
                 str += "<div style='border: 1px solid black;'>";
                 str += "<img th:src='@{/img/profile-picture/" + data[i].profileImg + "}' alt=' ' style='width: 8%; height: 12%; vertical-align: bottom;'>"
-                str += "<a style='color: white; height: 15px; width: 15px;' th:text='" + data[i].username + "'  th:href='@{/member/profile/"+ data[i].email +"}'></a>";
+                str += "<a style='color: black; height: 15px; width: 15px;'>";
+                str += "<text th:src='@{/member/profile/" + data[i].email+"'>"+data[i].username+""
+                str += "</a>";
                 str += "</div>";
             }
             $(".smallBox").html(str);
@@ -75,7 +77,7 @@ function emailCheck(){
             if(count > 0){
                 $("#msg").html("중복된 이메일 입니다.");
                 $("#msg").css('color', 'red');
-            } else if (count == 0){
+            } else if (count == 0)
                 $("#msg").html("사용 가능한 이메일 입니다.");
                 $("#msg").css('color', 'green');
                 certBtn.disabled = false;
