@@ -1,11 +1,13 @@
 spring:
   profiles:
     active: local
+    include: aws
   datasource:
-    url: jdbc:mysql://rds-db-petsns.cntojem7zxoa.ap-northeast-2.rds.amazonaws.com:3306
+    url: jdbc:mysql://rds-db-petsns.cntojem7zxoa.ap-northeast-2.rds.amazonaws.com:3306/snsdb
     username: root
     password: petsns1!
     driver-class-name: com.mysql.cj.jdbc.Driver
+
 
   servlet:
     multipart:
@@ -59,13 +61,6 @@ spring:
     debug: true
     default:
         encoding: UTF-8
-
-
-
-custom:
-  oauth2:
-    kakao:
-      client-id: a20980458986232608718c57c6d843e9
 
 logging:
   level:

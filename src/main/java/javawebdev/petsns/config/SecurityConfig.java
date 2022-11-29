@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         {
             http.authorizeRequests()
-                    .antMatchers("/register", "/login-form", "/signUp", "/img/**", "/login", "/emailCheck", "/idCheck", "/memberImg/**", "/memberImg/upload", "/memberImg/img/**", "/member/profile/modify/**", "/email/Certification/**").permitAll()
+                    .antMatchers("/api/**","/register", "/login-form", "/signUp", "/img/**", "/login", "/emailCheck", "/idCheck", "/memberImg/**", "/memberImg/upload", "/memberImg/img/**", "/member/profile/modify/**", "/email/Certification/**").permitAll()
                     .anyRequest()
                     .authenticated();       // 나머지 모든 요청은 권한종류 상관없이 권한이 있어야 접근가능
 

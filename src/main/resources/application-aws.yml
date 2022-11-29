@@ -1,0 +1,12 @@
+# s3
+cloud:
+  aws:
+    s3:
+      bucket: build-jar-shine-deploy
+    credentials:
+      access-key: AKIAZFCGSLTLGX6BYN3N
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
