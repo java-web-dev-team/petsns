@@ -2,9 +2,9 @@ spring:
   profiles:
     active: local
   datasource:
-    url: ${datasource}
-    username: ${username}
-    password: ${password}
+    url: jdbc:mysql://rds-db-petsns.cntojem7zxoa.ap-northeast-2.rds.amazonaws.com:3306
+    username: root
+    password: petsns1!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
