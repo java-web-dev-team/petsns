@@ -102,8 +102,10 @@ public class MemberController {
         memberService.updateMember(updatedMember);
 
         // 세션 재등록
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principalDetails.getName(), principalDetails.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(principalDetails != null) {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(principalDetails.getName(), principalDetails.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
         log.info("updateMember = -> ");
     }
@@ -220,39 +222,39 @@ public class MemberController {
     /**
      * 회원 프로필 사진 생성, Ajax
      */
-    @ResponseBody
-    @RequestMapping(value = "/memberImg/upload", method = RequestMethod.POST)
-    public MemberDto upLoadImg(@Param(value = "profileImg") MultipartFile profileImg) {
-
-        log.info("profileImg = " + profileImg);
-        // 지원하지 않는 이미지 형식
-        if (!profileImg.getContentType().startsWith("image")) {
-            log.info("지원하지 않는 이미지 형식입니다.");
-        }
-
-        // 실제 파일 이름 IE, Edge 는 전체 경로
-        String originalName = profileImg.getOriginalFilename();
-        String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
-        log.info("fileName: " + fileName);
-
-
-        //UUID
-        String uuid = UUID.randomUUID().toString();
-
-        //저장할 파일 이름 중간에 "_" 를 이용해서 구분
-        String saveName = getUpLoadPath + File.separator + uuid + "_" + fileName;
-
-        Path savePath = Paths.get(saveName);
-
-        try {
-            profileImg.transferTo(savePath);
-            return new MemberDto(uuid, fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/memberImg/upload", method = RequestMethod.POST)
+//    public MemberDto upLoadImg(@Param(value = "profileImg") MultipartFile profileImg) {
+//
+//        log.info("profileImg = " + profileImg);
+//        // 지원하지 않는 이미지 형식
+//        if (!profileImg.getContentType().startsWith("image")) {
+//            log.info("지원하지 않는 이미지 형식입니다.");
+//        }
+//
+//        // 실제 파일 이름 IE, Edge 는 전체 경로
+//        String originalName = profileImg.getOriginalFilename();
+//        String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
+//        log.info("fileName: " + fileName);
+//
+//
+//        //UUID
+//        String uuid = UUID.randomUUID().toString();
+//
+//        //저장할 파일 이름 중간에 "_" 를 이용해서 구분
+//        String saveName = getUpLoadPath + File.separator + uuid + "_" + fileName;
+//
+//        Path savePath = Paths.get(saveName);
+//
+//        try {
+//            profileImg.transferTo(savePath);
+//            return new MemberDto(uuid, fileName);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
     @PostMapping("/member/profile/modify/{email}")
     public String firstUpdateMember(@PathVariable String email, Member updatedMember, Model model) {

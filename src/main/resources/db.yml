@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://rds-db-petsns.cntojem7zxoa.ap-northeast-2.rds.amazonaws.com:3306
+    username: root
+    password: petsns1!
+    driver-class-name: com.mysql.cj.jdbc.Driver
