@@ -1,7 +1,6 @@
 HELP.md
 .gradle
-aws.yml
-db.yml
+application-aws.yml
 
 build/
 !gradle/wrapper/gradle-wrapper.jar

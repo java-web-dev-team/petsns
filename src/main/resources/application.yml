@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: local
+    include: aws
+
   datasource:
     url: jdbc:mysql://rds-db-petsns.cntojem7zxoa.ap-northeast-2.rds.amazonaws.com:3306
     username: root
