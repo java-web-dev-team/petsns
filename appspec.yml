@@ -1,0 +1,31 @@
+# appspect.yml
+
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/airbnb-deploy
+    overwrite: yes
+
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+# 배포 스크립트 추가
+# timeout -> codedeploy 수명주기
+hooks:
+  ApplicationStart:
+    - location: /scripts/run_new_was.sh
+      timeout: 180
+#      runas: ec2-user
+
+    - location: /scripts/health_check.sh
+      timeout: 180
+#      runas: ec2-user
+
+    - location: /scripts/switch.sh
+      timeout: 180
+#      runas: ec2-user
