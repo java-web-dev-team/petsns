@@ -22,4 +22,4 @@ fi
 
 nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/airbnb-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new WAS runs at ${TARGET_PORT}."
-exit 0n
+exit 0
